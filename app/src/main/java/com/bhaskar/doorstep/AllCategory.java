@@ -42,9 +42,6 @@ public class AllCategory extends AppCompatActivity {
                 Intent back = new Intent(AllCategory.this, MainActivity.class);
                 startActivity(back);
                 finish();
-
-                
-
             }
         });
 
@@ -60,8 +57,6 @@ public class AllCategory extends AppCompatActivity {
         allCategoryModelList.add(new AllCategoryModel(7, R.drawable.ic_drink));
         allCategoryModelList.add(new AllCategoryModel(8, R.drawable.ic_cookies));
         allCategoryModelList.add(new AllCategoryModel(8, R.drawable.ic_juce));
-
-
         setCategoryRecycler(allCategoryModelList);
 
     }
