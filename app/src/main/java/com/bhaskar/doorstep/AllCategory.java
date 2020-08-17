@@ -43,6 +43,8 @@ public class AllCategory extends AppCompatActivity {
                 startActivity(back);
                 finish();
 
+                
+
             }
         });
 
