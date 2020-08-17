@@ -42,6 +42,7 @@ public class AllCategory extends AppCompatActivity {
                 Intent back = new Intent(AllCategory.this, MainActivity.class);
                 startActivity(back);
                 finish();
+
             }
         });
 
