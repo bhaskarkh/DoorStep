@@ -59,6 +59,8 @@ public class AllCategory extends AppCompatActivity {
         allCategoryModelList.add(new AllCategoryModel(8, R.drawable.ic_juce));
         setCategoryRecycler(allCategoryModelList);
 
+
+
     }
 
     private void setCategoryRecycler(List<AllCategoryModel> allcategoryModelList) {
