@@ -1,10 +1,14 @@
 package com.bhaskar.doorstep;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +18,16 @@ import com.bhaskar.doorstep.adapter.DiscountedProductAdapter;
 import com.bhaskar.doorstep.adapter.RecentlyViewedAdapter;
 import com.bhaskar.doorstep.model.Category;
 import com.bhaskar.doorstep.model.DiscountedProducts;
+import com.bhaskar.doorstep.model.GoogleSignInDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
     List<RecentlyViewed> recentlyViewedList;
 
     TextView allCategory;
+    ImageView account_setting,profile_pic;
+    private GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInDTO googleSignInDTO;
 
 
     @Override
@@ -59,6 +75,30 @@ public class MainActivity extends AppCompatActivity {
         categoryRecyclerView = findViewById(R.id.categoryRecycler);
         allCategory = findViewById(R.id.allCategoryImage);
         recentlyViewedRecycler = findViewById(R.id.recently_item);
+        account_setting=findViewById(R.id.account_setting);
+        profile_pic=findViewById(R.id.profile_pic);
+
+        googleSignInDTO=getUserDetailFromGoogle();
+        Log.d("MainActivity","googleSignInDTO to String= "+googleSignInDTO.toString());
+        createGoogleSignInRequest();
+      Glide.with(MainActivity.this).load(String.valueOf(googleSignInDTO.getUserPhoto())).circleCrop().into(profile_pic);
+
+       // Glide.with(this).load(String.valueOf(googleSignInDTO.getUserPhoto())).into(profile_pic);
+
+        account_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+               mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                 @Override
+                 public void onComplete(@NonNull Task<Void> task) {
+                     Intent i = new Intent(MainActivity.this, LoginScreen.class);
+                     startActivity(i);
+                 }
+             });
+
+            }
+        });
 
 
         allCategory.setOnClickListener(new View.OnClickListener() {
@@ -125,4 +165,31 @@ public class MainActivity extends AppCompatActivity {
     }
     //Now again we need to create a adapter and model class for recently viewed items.
     // lets do it fast.
+
+    private void createGoogleSignInRequest() {
+// Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+    }
+
+    public GoogleSignInDTO getUserDetailFromGoogle()
+    {
+        GoogleSignInDTO googleSignInDTO=new GoogleSignInDTO();
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(MainActivity.this);
+        if (acct != null) {
+            googleSignInDTO.setUserName(acct.getDisplayName());
+            googleSignInDTO.setUserGivenName(acct.getGivenName());
+            googleSignInDTO.setUserFamilyName(acct.getFamilyName());
+            googleSignInDTO.setUserEmail(acct.getEmail());
+            googleSignInDTO.setUserId(acct.getId());
+            googleSignInDTO.setUserPhoto(acct.getPhotoUrl());
+        }
+
+        return googleSignInDTO;
+    }
+
 }
