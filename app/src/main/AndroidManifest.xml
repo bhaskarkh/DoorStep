@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.bhaskar.doorstep">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -10,16 +11,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-       <!--loding screen activity-->
+        <activity android:name=".OtpValidation"></activity>
+        <!-- loding screen activity -->
         <activity android:name=".LoginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!--Other screen activity-->
-        <activity android:name=".MainActivity"></activity>
+        </activity> <!-- Other screen activity -->
+        <activity android:name=".MainActivity" />
         <activity android:name=".ProductDetails" />
         <activity android:name=".AllCategory" />
         <activity android:name=".SingleCategory" />
