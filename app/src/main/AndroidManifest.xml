@@ -15,7 +15,9 @@
             android:windowSoftInputMode="adjustResize"
 
             ></activity>
-        <activity android:name=".EnterMobileNumber" /> <!-- loding screen activity -->
+        <activity android:name=".EnterMobileNumber"
+            android:windowSoftInputMode="adjustResize"
+            /> <!-- loding screen activity -->
         <activity android:name=".LoginScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

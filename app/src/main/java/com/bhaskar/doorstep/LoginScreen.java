@@ -41,7 +41,7 @@ public class LoginScreen extends AppCompatActivity {
         FirebaseUser user=mAuth.getCurrentUser();
         if(user!=null)
         {
-            Intent intent=new Intent(getApplicationContext(),VerifyOtp.class);
+            Intent intent=new Intent(getApplicationContext(),EnterMobileNumber.class);
             startActivity(intent);
             finish();
         }
