@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.agrawalsuneet.dotsloader.loaders.AllianceLoader;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -21,7 +19,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +41,7 @@ public class LoginScreen extends AppCompatActivity {
         FirebaseUser user=mAuth.getCurrentUser();
         if(user!=null)
         {
-            Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+            Intent intent=new Intent(getApplicationContext(),VerifyOtp.class);
             startActivity(intent);
             finish();
         }
@@ -120,7 +117,7 @@ public class LoginScreen extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Log.d(TAG, "user= "+user.toString());
                            loginProgressBar.setVisibility(View.GONE);
-                            Intent intent=new Intent(LoginScreen.this,MainActivity.class);
+                            Intent intent=new Intent(LoginScreen.this, EnterMobileNumber.class);
                             startActivity(intent);
                           //  updateUI(user);
                         } else {
