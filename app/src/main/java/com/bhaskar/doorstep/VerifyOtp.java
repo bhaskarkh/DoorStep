@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +31,7 @@ public class VerifyOtp extends AppCompatActivity {
     TextView mobile_number_in_verify;
     private static final String TAG = "VerifyOtp";
     ProgressBar otp_verify_progressBar;
+    FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +41,7 @@ public class VerifyOtp extends AppCompatActivity {
         verify_otp_btn=findViewById(R.id.verify_otp_btn);
         mobile_number_in_verify=findViewById(R.id.mobile_number_in_verify);
         otp_verify_progressBar=findViewById(R.id.otp_verify_progressBar);
-
+        firebaseFirestore=FirebaseFirestore.getInstance();
         otp_text.requestFocus();
         final String phoneFromPreviousActivity=getIntent().getStringExtra("mobileNumber");
 
@@ -123,7 +125,7 @@ public class VerifyOtp extends AppCompatActivity {
     }
 
     private void signInTheUserByCredential(PhoneAuthCredential credential) {
-        FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
+        final FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
 
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(VerifyOtp.this, new OnCompleteListener<AuthResult>() {
@@ -132,7 +134,11 @@ public class VerifyOtp extends AppCompatActivity {
                         if(task.isSuccessful())
                         {
                             otp_verify_progressBar.setVisibility(View.GONE);
-                            Toast.makeText(VerifyOtp.this, "Signin Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VerifyOtp.this, "otp verified successfully Signin Success", Toast.LENGTH_SHORT).show();
+                            firebaseAuth.getCurrentUser().getUid();
+
+
+
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
