@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bhaskar.doorstep.R.drawable.abc_cab_background_internal_bg;
 import static com.bhaskar.doorstep.R.drawable.b1;
 import static com.bhaskar.doorstep.R.drawable.b2;
 import static com.bhaskar.doorstep.R.drawable.b3;
@@ -61,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
     List<RecentlyViewed> recentlyViewedList;
 
     TextView allCategory;
-    ImageView account_setting,profile_pic;
+    ImageView account_setting,profile_pic,main_cart;
     private GoogleSignInClient mGoogleSignInClient;
     GoogleSignInDTO googleSignInDTO;
+    FirebaseAuth fAuth;
 
 
     @Override
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
         recentlyViewedRecycler = findViewById(R.id.recently_item);
         account_setting=findViewById(R.id.account_setting);
         profile_pic=findViewById(R.id.profile_pic);
+        main_cart=findViewById(R.id.main_cart);
+        fAuth=FirebaseAuth.getInstance();
 
         googleSignInDTO=getUserDetailFromGoogle();
         Log.d("MainActivity","googleSignInDTO to String= "+googleSignInDTO.toString());
@@ -105,6 +109,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, AllCategory.class);
+                startActivity(i);
+            }
+        });
+
+        main_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(MainActivity.this,EnterMobileNumber.class);
+                i.putExtra("fuid",fAuth.getCurrentUser().getUid());
                 startActivity(i);
             }
         });

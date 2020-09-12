@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -151,15 +152,62 @@ public class LoginScreen extends AppCompatActivity {
                 });
     }
 
-    private void RegisterUserInFireBase(FirebaseUser fuser) {
+    private void RegisterUserInFireBase(final FirebaseUser fuser) {
         Log.d(TAG,"inside RegisterUserInFireBase");
         final UserRegistrationDTO userRegistrationDTO=getUserDetailFromGoogle(fuser);
         if(userRegistrationDTO!=null)
         {
             Log.d(TAG,"userRegistrationDTO= "+userRegistrationDTO.toString());
 
-            final CollectionReference collectionReference = firebaseFirestore.collection("doorstep").document("prod").collection("user").document("user_registration").collection(fuser.getUid());
-            collectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            final CollectionReference collectionReference = firebaseFirestore.collection("prod").document("user").collection("user_registration");
+
+            collectionReference.document(fuser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful())
+                    {
+                        if(task.getResult().exists())
+                        {
+                            Log.d(TAG,"Document is not Empty Old User");
+                            Intent intent=new Intent(LoginScreen.this, MainActivity.class);
+                            startActivity(intent);
+
+                        }
+                        else {
+                            Log.d(TAG,"Document is  Empty New User");
+                         Toast.makeText(LoginScreen.this, "User Registred Succesfully",
+                                    Toast.LENGTH_LONG).show();
+                            collectionReference.document(fuser.getUid()).set(userRegistrationDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG,"Document Added in firestore with id= "+fuser.getUid());
+                                    Intent intent=new Intent(LoginScreen.this, EnterMobileNumber.class);
+                                    intent.putExtra("fuid",fuser.getUid());
+                                    startActivity(intent);
+                                }
+                            })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            Log.d(TAG,"onFailure firestore save"+e.getMessage());
+                                            //signout from google
+                                            FirebaseAuth.getInstance().signOut();
+                                            mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    Intent i = new Intent(LoginScreen.this, LoginScreen.class);
+                                                    startActivity(i);
+                                                }
+                                            });
+                                        }
+                                    });
+                        }
+                    }
+                }
+            });
+
+            /* collectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                 @Override
                 public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                     if(queryDocumentSnapshots.isEmpty()){
@@ -167,14 +215,15 @@ public class LoginScreen extends AppCompatActivity {
 
                         Toast.makeText(LoginScreen.this, "Collection is Empty",
                                 Toast.LENGTH_LONG).show();
-                        collectionReference.add(userRegistrationDTO).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                        collectionReference.document(fuser.getUid()).set(userRegistrationDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG,"Document Added in firestore with id= "+documentReference.getId());
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG,"Document Added in firestore with id= "+fuser.getUid().toString());
                                 Intent intent=new Intent(LoginScreen.this, EnterMobileNumber.class);
                                 startActivity(intent);
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
+                        })
+                    .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
 
@@ -199,35 +248,8 @@ public class LoginScreen extends AppCompatActivity {
                     }
 
                 }
-            });
+            });*/
 
-
-/*
-            firebaseFirestore.collection("doorstep").document("prod").collection("user").document("user_registration").collection(fuser.getUid()).add(userRegistrationDTO)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG,"Document Added in firestore with id= "+documentReference.getId());
-                            Intent intent=new Intent(LoginScreen.this, EnterMobileNumber.class);
-                            startActivity(intent);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG,"onFailure firestore save"+e.getMessage());
-                            //signout from google
-                            FirebaseAuth.getInstance().signOut();
-                            mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Intent i = new Intent(LoginScreen.this, LoginScreen.class);
-                                    startActivity(i);
-                                }
-                            });
-
-                        }
-                    });*/
 
         }
 

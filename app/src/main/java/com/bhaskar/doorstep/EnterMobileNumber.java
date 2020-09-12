@@ -28,6 +28,7 @@ public class EnterMobileNumber extends AppCompatActivity {
     Button verify_btn;
 
     String phone_number_text;
+    String fuid;
 
     private static final String TAG = "EnterMobileNumber";
     @Override
@@ -37,6 +38,7 @@ public class EnterMobileNumber extends AppCompatActivity {
         phone_number=findViewById(R.id.phone_number_text);
         phone_number.requestFocus();
         verify_btn=findViewById(R.id.verify_otp_btn);
+        fuid=getIntent().getStringExtra("fuid");
 
 
         verify_btn.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +70,7 @@ public class EnterMobileNumber extends AppCompatActivity {
             Log.d(TAG,"Valid mobile number= "+phone_number_text);
             Intent intent=new Intent(EnterMobileNumber.this,VerifyOtp.class);
             intent.putExtra("mobileNumber",phone_number_text);
+            intent.putExtra("fuid",fuid);
             startActivity(intent);
            // sendOtpToUser(phone_number_text);
 

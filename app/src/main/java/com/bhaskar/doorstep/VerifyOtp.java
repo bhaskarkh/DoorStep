@@ -14,12 +14,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
@@ -32,6 +35,7 @@ public class VerifyOtp extends AppCompatActivity {
     private static final String TAG = "VerifyOtp";
     ProgressBar otp_verify_progressBar;
     FirebaseFirestore firebaseFirestore;
+    String phoneFromPreviousActivity,fuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,8 @@ public class VerifyOtp extends AppCompatActivity {
         otp_verify_progressBar=findViewById(R.id.otp_verify_progressBar);
         firebaseFirestore=FirebaseFirestore.getInstance();
         otp_text.requestFocus();
-        final String phoneFromPreviousActivity=getIntent().getStringExtra("mobileNumber");
+        phoneFromPreviousActivity=getIntent().getStringExtra("mobileNumber");
+        fuid=getIntent().getStringExtra("fuid");
 
         if(phoneFromPreviousActivity!=null) {
             mobile_number_in_verify.setText(phoneFromPreviousActivity);
@@ -135,10 +140,10 @@ public class VerifyOtp extends AppCompatActivity {
                         {
                             otp_verify_progressBar.setVisibility(View.GONE);
                             Toast.makeText(VerifyOtp.this, "otp verified successfully Signin Success", Toast.LENGTH_SHORT).show();
-                            firebaseAuth.getCurrentUser().getUid();
-
-
-
+                            Log.d(TAG,"firebaseAuth.getCurrentUser().getUid()= "+firebaseAuth.getCurrentUser().getUid()+" fuid= "+fuid);
+                            DocumentReference documentReference=  firebaseFirestore.collection("prod").document("user").collection("user_registration").document(fuid);
+                            updateUserMobileNumber(documentReference);
+                            Log.d(TAG,"after updateUserMobileNumber");
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -151,5 +156,28 @@ public class VerifyOtp extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void updateUserMobileNumber(DocumentReference documentReference) {
+        Log.d(TAG,"inside updateUserMobileNumber");
+
+        if(phoneFromPreviousActivity!=null)
+        {
+            documentReference.update("rmn",phoneFromPreviousActivity,"rmnVerified",true).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG,"RMN verified and Updated ");
+                    Toast.makeText(VerifyOtp.this, "Mobile Number Verified Successfull", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d(TAG,"RMN verification failed error msg= "+e.getMessage());
+                    Toast.makeText(VerifyOtp.this, "Mobile Number Verification Failed Try Again", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+        }
+
     }
 }
