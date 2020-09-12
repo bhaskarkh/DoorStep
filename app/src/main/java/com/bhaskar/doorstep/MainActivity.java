@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         discountedProductsList.add(new DiscountedProducts(6, discountmeat));
 
         // adding data to model
+        //jcdj
         categoryList = new ArrayList<>();
         categoryList.add(new Category(1, ic_home_fruits));
         categoryList.add(new Category(2, ic_home_fish));
