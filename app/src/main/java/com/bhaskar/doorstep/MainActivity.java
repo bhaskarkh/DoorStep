@@ -1,21 +1,28 @@
 package com.bhaskar.doorstep;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bhaskar.doorstep.adapter.CategoryAdapter;
 import com.bhaskar.doorstep.adapter.DiscountedProductAdapter;
 import com.bhaskar.doorstep.adapter.RecentlyViewedAdapter;
+import com.bhaskar.doorstep.adapter.SliderAdapterExample;
 import com.bhaskar.doorstep.model.Category;
 import com.bhaskar.doorstep.model.DiscountedProducts;
 import com.bhaskar.doorstep.model.GoogleSignInDTO;
@@ -28,6 +35,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     GoogleSignInDTO googleSignInDTO;
     FirebaseAuth fAuth;
+    SliderView sliderView;
 
 
     @Override
@@ -80,7 +91,20 @@ public class MainActivity extends AppCompatActivity {
         account_setting=findViewById(R.id.account_setting);
         profile_pic=findViewById(R.id.profile_pic);
         main_cart=findViewById(R.id.main_cart);
+        sliderView=findViewById(R.id.imageSlider);
         fAuth=FirebaseAuth.getInstance();
+        SliderAdapterExample sadapter = new SliderAdapterExample(this);
+
+        sliderView.setSliderAdapter(sadapter);
+
+        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using IndicatorAnimationType. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+        sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+        sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+        sliderView.setIndicatorSelectedColor(Color.WHITE);
+        sliderView.setIndicatorUnselectedColor(Color.GRAY);
+        sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
+        sliderView.startAutoCycle();
+
 
         googleSignInDTO=getUserDetailFromGoogle();
         Log.d("MainActivity","googleSignInDTO to String= "+googleSignInDTO.toString());
@@ -142,6 +166,13 @@ public class MainActivity extends AppCompatActivity {
         categoryList.add(new Category(6, ic_home_fish));
         categoryList.add(new Category(7, ic_home_meats));
         categoryList.add(new Category(8, ic_home_veggies));
+        categoryList.add(new Category(9, ic_home_veggies));
+        categoryList.add(new Category(10, ic_home_fruits));
+        categoryList.add(new Category(11, ic_home_fish));
+        categoryList.add(new Category(12, ic_home_meats));
+        categoryList.add(new Category(13, ic_home_veggies));
+        categoryList.add(new Category(14, ic_home_fish));
+
 
         // adding data to model
        recentlyViewedList = new ArrayList<>();
@@ -165,10 +196,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setCategoryRecycler(List<Category> categoryDataList) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        /*RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         categoryRecyclerView.setLayoutManager(layoutManager);
         categoryAdapter = new CategoryAdapter(this,categoryDataList);
+        categoryRecyclerView.setAdapter(categoryAdapter);*/
+
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 4);
+        categoryRecyclerView.setLayoutManager(layoutManager);
+       categoryRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(5), true));
+        categoryAdapter = new CategoryAdapter(this,categoryDataList);
         categoryRecyclerView.setAdapter(categoryAdapter);
+
     }
 
     private void setRecentlyViewedRecycler(List<RecentlyViewed> recentlyViewedDataList) {
@@ -204,6 +243,52 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return googleSignInDTO;
+    }
+
+
+    // now we need some item decoration class for manage spacing
+
+    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int spanCount;
+        private int spacing;
+        private boolean includeEdge;
+
+        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+            this.spanCount = spanCount;
+            this.spacing = spacing;
+            this.includeEdge = includeEdge;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int position = parent.getChildAdapterPosition(view); // item position
+            int column = position % spanCount; // item column
+
+            if (includeEdge) {
+                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+                if (position < spanCount) { // top edge
+                    outRect.top = spacing;
+                }
+                outRect.bottom = spacing; // item bottom
+            } else {
+                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+                if (position >= spanCount) {
+                    outRect.top = spacing; // item top
+                }
+            }
+        }
+    }
+
+    /**
+     * Converting dp to pixel
+     */
+    private int dpToPx(int dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
 }
