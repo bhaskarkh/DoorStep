@@ -27,6 +27,7 @@ import com.bhaskar.doorstep.model.Category;
 import com.bhaskar.doorstep.model.DiscountedProducts;
 import com.bhaskar.doorstep.model.GoogleSignInDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
+import com.bhaskar.doorstep.model.SliderItem;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecentlyViewedAdapter recentlyViewedAdapter;
     List<RecentlyViewed> recentlyViewedList;
+    SliderAdapterExample sadapter;
 
     TextView allCategory;
     ImageView account_setting,profile_pic,main_cart;
@@ -93,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
         main_cart=findViewById(R.id.main_cart);
         sliderView=findViewById(R.id.imageSlider);
         fAuth=FirebaseAuth.getInstance();
-        SliderAdapterExample sadapter = new SliderAdapterExample(this);
+        //slider
+        sadapter= new SliderAdapterExample(this);
 
         sliderView.setSliderAdapter(sadapter);
 
@@ -104,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
         sliderView.setIndicatorUnselectedColor(Color.GRAY);
         sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
         sliderView.startAutoCycle();
+        renewItems();
+        //slider
 
 
         googleSignInDTO=getUserDetailFromGoogle();
@@ -290,5 +295,57 @@ public class MainActivity extends AppCompatActivity {
         Resources r = getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
+
+
+    //Image Slider method
+
+    public void renewItems() {
+        List<SliderItem> sliderItemList = new ArrayList<>();
+        //dummy data
+        for (int i = 0; i < 5; i++) {
+            SliderItem sliderItem = new SliderItem();
+            sliderItem.setDescription("Slider Item " + i);
+            switch (i)
+            {
+                case 0:
+                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                    sliderItem.setDescription("slide 0");
+                    break;
+                case 1:
+                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                    sliderItem.setDescription("slide 1");
+                    break;
+                case 2:
+                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                    sliderItem.setDescription("slide 2");
+                    break;
+                case 3:
+                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                    sliderItem.setDescription("slide 3");
+                    break;
+                case 4:
+                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                    sliderItem.setDescription("slide 4");
+                    break;
+
+            }
+
+            sliderItemList.add(sliderItem);
+        }
+        sadapter.renewItems(sliderItemList);
+    }
+
+    public void removeLastItem() {
+        if (sadapter.getCount() - 1 >= 0)
+            sadapter.deleteItem(sadapter.getCount() - 1);
+    }
+
+    public void addNewItem() {
+        SliderItem sliderItem = new SliderItem();
+        sliderItem.setDescription("Slider Item Added Manually");
+        sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+        sadapter.addItem(sliderItem);
+    }
+
 
 }
