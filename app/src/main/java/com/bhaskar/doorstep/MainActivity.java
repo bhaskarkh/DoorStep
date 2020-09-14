@@ -88,8 +88,13 @@ public class MainActivity extends AppCompatActivity {
 
         discountRecyclerView = findViewById(R.id.discountedRecycler);
         categoryRecyclerView = findViewById(R.id.categoryRecycler);
-        allCategory = findViewById(R.id.allCategoryImage);
         recentlyViewedRecycler = findViewById(R.id.recently_item);
+        // disabling nested scroll view for fast scrolling
+        discountRecyclerView.setNestedScrollingEnabled(false);
+        categoryRecyclerView.setNestedScrollingEnabled(false);
+        recentlyViewedRecycler.setNestedScrollingEnabled(false);
+
+        allCategory = findViewById(R.id.allCategoryImage);
         account_setting=findViewById(R.id.account_setting);
         profile_pic=findViewById(R.id.profile_pic);
         main_cart=findViewById(R.id.main_cart);
@@ -103,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
         sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using IndicatorAnimationType. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
         sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
         sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
-        sliderView.setIndicatorSelectedColor(Color.WHITE);
-        sliderView.setIndicatorUnselectedColor(Color.GRAY);
         sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
         sliderView.startAutoCycle();
         renewItems();
@@ -153,10 +156,10 @@ public class MainActivity extends AppCompatActivity {
 
         // adding data to model
         discountedProductsList = new ArrayList<>();
-        discountedProductsList.add(new DiscountedProducts(1, discountberry));
-        discountedProductsList.add(new DiscountedProducts(2, discountbrocoli));
-        discountedProductsList.add(new DiscountedProducts(3, discountmeat));
-        discountedProductsList.add(new DiscountedProducts(4, discountberry));
+        discountedProductsList.add(new DiscountedProducts(1, b1));
+        discountedProductsList.add(new DiscountedProducts(2, b2));
+        discountedProductsList.add(new DiscountedProducts(3, b3));
+        discountedProductsList.add(new DiscountedProducts(4, b4));
         discountedProductsList.add(new DiscountedProducts(5, discountbrocoli));
         discountedProductsList.add(new DiscountedProducts(6, discountmeat));
 
@@ -308,15 +311,15 @@ public class MainActivity extends AppCompatActivity {
             switch (i)
             {
                 case 0:
-                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                    sliderItem.setImageUrl("https://image.shutterstock.com/image-vector/special-offer-banner-vector-format-260nw-717480880.jpg");
                     sliderItem.setDescription("slide 0");
                     break;
                 case 1:
-                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                    sliderItem.setImageUrl("https://www.winstar.com.tw/uploads/photos/special-offer.jpg");
                     sliderItem.setDescription("slide 1");
                     break;
                 case 2:
-                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                    sliderItem.setImageUrl("https://images.freekaamaal.com/post_images/1576047645.png");
                     sliderItem.setDescription("slide 2");
                     break;
                 case 3:
