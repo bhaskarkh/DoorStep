@@ -6,15 +6,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bhaskar.doorstep.MainActivity;
 import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.model.RecentlyViewed;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -32,7 +35,7 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
     @NonNull
     @Override
     public SingleCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.recently_viewed_items, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.single_cat_cardview, parent, false);
 
         return new SingleCategoryViewHolder(view);
     }
@@ -40,12 +43,10 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
     @Override
     public void onBindViewHolder(@NonNull SingleCategoryViewHolder holder, final int position) {
 
-        holder.name.setText(recentlyViewedList.get(position).getName());
-        holder.description.setText(recentlyViewedList.get(position).getDescription());
-        holder.price.setText(recentlyViewedList.get(position).getPrice());
-        holder.qty.setText(recentlyViewedList.get(position).getQuantity());
-        holder.unit.setText(recentlyViewedList.get(position).getUnit());
-        holder.bg.setBackgroundResource(recentlyViewedList.get(position).getImageUrl());
+
+        holder.description.setText(recentlyViewedList.get(position).getName());
+        Glide.with(context).load(recentlyViewedList.get(position).getBigimageurl()).into(holder.category_image);
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,18 +75,17 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
 
     public  static class SingleCategoryViewHolder extends RecyclerView.ViewHolder{
 
-        TextView name, description, price, qty, unit;
-        ConstraintLayout bg;
+        TextView description;
+        ImageView category_image;
+
 
         public SingleCategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.product_name);
-            description = itemView.findViewById(R.id.description);
-            price = itemView.findViewById(R.id.price);
-            qty = itemView.findViewById(R.id.qty);
-            unit = itemView.findViewById(R.id.unit);
-            bg = itemView.findViewById(R.id.recently_layout);
+
+            description = itemView.findViewById(R.id.single_cat_text1);
+            category_image=itemView.findViewById(R.id.single_cat_imageview);
+
 
         }
     }

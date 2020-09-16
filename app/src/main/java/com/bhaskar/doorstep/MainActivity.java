@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         googleSignInDTO=getUserDetailFromGoogle();
         Log.d("MainActivity","googleSignInDTO to String= "+googleSignInDTO.toString());
         createGoogleSignInRequest();
-      Glide.with(MainActivity.this).load(String.valueOf(googleSignInDTO.getUserPhoto())).circleCrop().into(profile_pic);
+       Glide.with(MainActivity.this).load(String.valueOf(googleSignInDTO.getUserPhoto())).circleCrop().into(profile_pic);
 
        // Glide.with(this).load(String.valueOf(googleSignInDTO.getUserPhoto())).into(profile_pic);
 
@@ -156,9 +156,9 @@ public class MainActivity extends AppCompatActivity {
 
         // adding data to model
         discountedProductsList = new ArrayList<>();
-        discountedProductsList.add(new DiscountedProducts(1, b1));
-        discountedProductsList.add(new DiscountedProducts(2, b2));
-        discountedProductsList.add(new DiscountedProducts(3, b3));
+        discountedProductsList.add(new DiscountedProducts(1, ic_home_fruits));
+        discountedProductsList.add(new DiscountedProducts(2, ic_home_fish));
+        discountedProductsList.add(new DiscountedProducts(3, ic_home_veggies));
         discountedProductsList.add(new DiscountedProducts(4, b4));
         discountedProductsList.add(new DiscountedProducts(5, discountbrocoli));
         discountedProductsList.add(new DiscountedProducts(6, discountmeat));
@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
             switch (i)
             {
                 case 0:
-                    sliderItem.setImageUrl("https://image.shutterstock.com/image-vector/special-offer-banner-vector-format-260nw-717480880.jpg");
+                    sliderItem.setImageUrl("https://images.freekaamaal.com/post_images/1576047645.png");
                     sliderItem.setDescription("slide 0");
                     break;
                 case 1:
@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
                     sliderItem.setDescription("slide 1");
                     break;
                 case 2:
-                    sliderItem.setImageUrl("https://images.freekaamaal.com/post_images/1576047645.png");
+                    sliderItem.setImageUrl("https://image.shutterstock.com/image-vector/special-offer-banner-vector-format-260nw-717480880.jpg");
                     sliderItem.setDescription("slide 2");
                     break;
                 case 3:

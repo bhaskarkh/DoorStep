@@ -41,6 +41,7 @@ public class SingleCategory extends AppCompatActivity {
 
         singleCategoryBack=findViewById(R.id.singleCategoryBack);
         singleCategoryRecycler=findViewById(R.id.single_category);
+        singleCategoryRecycler.setNestedScrollingEnabled(false);
         singleCategoryBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +61,14 @@ public class SingleCategory extends AppCompatActivity {
         singleCategoryItemsList.add(new RecentlyViewed("Papaya", "Papayas are spherical or pear-shaped fruits that can be as long as 20 inches.", "₹ 85", "1", "KG", card3, b3));
         singleCategoryItemsList.add(new RecentlyViewed("Strawberry", "The strawberry is a highly nutritious fruit, loaded with vitamin C.", "₹ 30", "1", "KG", card2, b1));
         singleCategoryItemsList.add(new RecentlyViewed("Kiwi", "Full of nutrients like vitamin C, vitamin K, vitamin E, folate, and potassium.", "₹ 30", "1", "PC", card1, b2));
+        singleCategoryItemsList.add(new RecentlyViewed("Watermelon", "Watermelon has high water content and also provides some fiber.", "₹ 80", "1", "KG", card4, b4));
+        singleCategoryItemsList.add(new RecentlyViewed("Papaya", "Papayas are spherical or pear-shaped fruits that can be as long as 20 inches.", "₹ 85", "1", "KG", card3, b3));
+        singleCategoryItemsList.add(new RecentlyViewed("Strawberry", "The strawberry is a highly nutritious fruit, loaded with vitamin C.", "₹ 30", "1", "KG", card2, b1));
+        singleCategoryItemsList.add(new RecentlyViewed("Kiwi", "Full of nutrients like vitamin C, vitamin K, vitamin E, folate, and potassium.", "₹ 30", "1", "PC", card1, b2));
+        singleCategoryItemsList.add(new RecentlyViewed("Watermelon", "Watermelon has high water content and also provides some fiber.", "₹ 80", "1", "KG", card4, b4));
+        singleCategoryItemsList.add(new RecentlyViewed("Papaya", "Papayas are spherical or pear-shaped fruits that can be as long as 20 inches.", "₹ 85", "1", "KG", card3, b3));
+        singleCategoryItemsList.add(new RecentlyViewed("Strawberry", "The strawberry is a highly nutritious fruit, loaded with vitamin C.", "₹ 30", "1", "KG", card2, b1));
+        singleCategoryItemsList.add(new RecentlyViewed("Kiwi", "Full of nutrients like vitamin C, vitamin K, vitamin E, folate, and potassium.", "₹ 30", "1", "PC", card1, b2));
 
 
 
@@ -70,9 +79,8 @@ public class SingleCategory extends AppCompatActivity {
 
 
     private void setCategoryRecycler(List<RecentlyViewed> singleCategoryItemsList) {
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
         singleCategoryRecycler.setLayoutManager(layoutManager);
-        singleCategoryRecycler.addItemDecoration(new SingleCategory.GridSpacingItemDecoration(2, dpToPx(16), true));
         singleCategoryRecycler.setItemAnimator(new DefaultItemAnimator());
         singleCategoryAdapter=new SingleCategoryAdapter(this,singleCategoryItemsList);
         singleCategoryRecycler.setAdapter(singleCategoryAdapter);
