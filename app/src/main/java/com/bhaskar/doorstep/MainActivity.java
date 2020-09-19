@@ -148,8 +148,7 @@ public class MainActivity extends AppCompatActivity {
         main_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,EnterMobileNumber.class);
-                i.putExtra("fuid",fAuth.getCurrentUser().getUid());
+                Intent i=new Intent(MainActivity.this,AddProductInDb.class);
                 startActivity(i);
             }
         });
@@ -212,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 4);
         categoryRecyclerView.setLayoutManager(layoutManager);
-       categoryRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(5), true));
+       categoryRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(5), false));
         categoryAdapter = new CategoryAdapter(this,categoryDataList);
         categoryRecyclerView.setAdapter(categoryAdapter);
 

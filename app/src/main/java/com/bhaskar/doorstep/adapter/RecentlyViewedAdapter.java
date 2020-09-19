@@ -43,7 +43,12 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
         holder.price.setText(recentlyViewedList.get(position).getPrice());
         holder.qty.setText(recentlyViewedList.get(position).getQuantity());
         holder.unit.setText(recentlyViewedList.get(position).getUnit());
-        holder.bg.setBackgroundResource(recentlyViewedList.get(position).getImageUrl());
+        if(position%2==0) {
+            holder.bg.setBackgroundResource(R.drawable.card_bg1);
+        }
+        else {
+            holder.bg.setBackgroundResource(R.drawable.card_bg2);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -141,6 +141,7 @@ public class LoginScreen extends AppCompatActivity {
                           //  updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
+                            Toast.makeText(LoginScreen.this, " signInWithCredential:failure exception= "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
 
                             Log.d(TAG, "signInWithCredential:failure", task.getException());
 
@@ -207,48 +208,6 @@ public class LoginScreen extends AppCompatActivity {
                 }
             });
 
-            /* collectionReference.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                @Override
-                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                    if(queryDocumentSnapshots.isEmpty()){
-                        Log.d(TAG,"Collection is Empty new User");
-
-                        Toast.makeText(LoginScreen.this, "Collection is Empty",
-                                Toast.LENGTH_LONG).show();
-                        collectionReference.document(fuser.getUid()).set(userRegistrationDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG,"Document Added in firestore with id= "+fuser.getUid().toString());
-                                Intent intent=new Intent(LoginScreen.this, EnterMobileNumber.class);
-                                startActivity(intent);
-                            }
-                        })
-                    .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-
-                                Log.d(TAG,"onFailure firestore save"+e.getMessage());
-                                //signout from google
-                                FirebaseAuth.getInstance().signOut();
-                                mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        Intent i = new Intent(LoginScreen.this, LoginScreen.class);
-                                        startActivity(i);
-                                    }
-                                });
-                            }
-                        });
-                    }
-                    else {
-                        Log.d(TAG,"Collection is Not Empty Old User");
-                        Intent intent=new Intent(LoginScreen.this, MainActivity.class);
-                        startActivity(intent);
-
-                    }
-
-                }
-            });*/
 
 
         }
