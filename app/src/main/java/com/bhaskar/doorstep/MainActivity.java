@@ -26,6 +26,7 @@ import com.bhaskar.doorstep.adapter.SliderAdapterExample;
 import com.bhaskar.doorstep.model.Category;
 import com.bhaskar.doorstep.model.DiscountedProducts;
 import com.bhaskar.doorstep.model.GoogleSignInDTO;
+import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
 import com.bhaskar.doorstep.model.SliderItem;
 import com.bumptech.glide.Glide;
@@ -34,8 +35,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -72,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     RecentlyViewedAdapter recentlyViewedAdapter;
     List<RecentlyViewed> recentlyViewedList;
     SliderAdapterExample sadapter;
+    List<ProductDTO> productDTOList;
 
     TextView allCategory;
     ImageView account_setting,profile_pic,main_cart;
@@ -79,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
     GoogleSignInDTO googleSignInDTO;
     FirebaseAuth fAuth;
     SliderView sliderView;
+    FirebaseFirestore firebaseFirestore;
+    private String TAG="MainActivity";
 
 
     @Override
@@ -100,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         main_cart=findViewById(R.id.main_cart);
         sliderView=findViewById(R.id.imageSlider);
         fAuth=FirebaseAuth.getInstance();
+        firebaseFirestore=FirebaseFirestore.getInstance();
         //slider
         sadapter= new SliderAdapterExample(this);
 
@@ -164,21 +177,16 @@ public class MainActivity extends AppCompatActivity {
 
         // adding data to model
         //jcdj
+
+
         categoryList = new ArrayList<>();
-        categoryList.add(new Category(1, ic_home_fruits));
-        categoryList.add(new Category(2, ic_home_fish));
-        categoryList.add(new Category(3, ic_home_meats));
-        categoryList.add(new Category(4, ic_home_veggies));
-        categoryList.add(new Category(5, ic_home_fruits));
-        categoryList.add(new Category(6, ic_home_fish));
-        categoryList.add(new Category(7, ic_home_meats));
-        categoryList.add(new Category(8, ic_home_veggies));
-        categoryList.add(new Category(9, ic_home_veggies));
-        categoryList.add(new Category(10, ic_home_fruits));
-        categoryList.add(new Category(11, ic_home_fish));
-        categoryList.add(new Category(12, ic_home_meats));
-        categoryList.add(new Category(13, ic_home_veggies));
-        categoryList.add(new Category(14, ic_home_fish));
+
+        categoryList.add(new Category(1, ic_home_fish,"fish"));
+        categoryList.add(new Category(2, ic_home_meats,"meat"));
+        categoryList.add(new Category(3, ic_home_fruits,"fruits"));
+        categoryList.add(new Category(4, ic_home_veggies,"veggie"));
+
+        productDTOList=getProductList();
 
 
         // adding data to model
@@ -192,6 +200,37 @@ public class MainActivity extends AppCompatActivity {
         setCategoryRecycler(categoryList);
        setRecentlyViewedRecycler(recentlyViewedList);
 
+    }
+
+    private List<ProductDTO> getProductList() {
+        Log.d(TAG,"insdie Get ProductList");
+        List<ProductDTO> productDTOList1=new ArrayList<>();
+        //collection("prod").document("product").collection(id).document(productDTO.getCategory()).collection(productDTO.getProductTypeId()).document(productDTO.getName()).set(productDTO)
+        firebaseFirestore=FirebaseFirestore.getInstance();
+        CollectionReference docRef = firebaseFirestore.collection("prod").document("product").collection("fruits");
+
+        docRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                Log.d(TAG,"success value reached");
+
+                Log.d(TAG,"doc list"+queryDocumentSnapshots.getDocuments().size());
+                List<DocumentSnapshot> documentSnapshotList=queryDocumentSnapshots.getDocuments();
+
+                for(DocumentSnapshot ds:documentSnapshotList)
+                {
+                    Log.d(TAG,"aaa= "+ds.getData().toString());
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG,"On failure of read exception msg:: "+e.getMessage());
+            }
+        });
+
+
+        return productDTOList1;
     }
 
     private void setDiscountedRecycler(List<DiscountedProducts> dataList) {
@@ -211,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 4);
         categoryRecyclerView.setLayoutManager(layoutManager);
-       categoryRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(5), false));
+      // categoryRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(5), true));
         categoryAdapter = new CategoryAdapter(this,categoryDataList);
         categoryRecyclerView.setAdapter(categoryAdapter);
 

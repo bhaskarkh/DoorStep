@@ -73,10 +73,10 @@ public class AddProductInDb extends AppCompatActivity {
     private void addInDb() {
         Log.d(TAG,"inside addInDb");
         Random random=new Random();
-        String id=String.valueOf(random.nextInt());
+        String id=String.valueOf(random.nextInt(99999));
         Boolean isReq=true;
         ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, "ImageUrl",SquantityType, isReq,"supplierName", "supplierId") ;
-        firebaseFirestore.collection("prod").document("product").collection(id).document(productDTO.getCategory()).collection(productDTO.getProductTypeId()).document(productDTO.getName()).set(productDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+        firebaseFirestore.collection("prod").document("product").collection(productDTO.getCategory()).document(productDTO.getName()).set(productDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG,"onSuccess firebase added");

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,6 +42,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, final int position) {
 
         holder.categoryImage.setImageResource(categoryList.get(position).getImageurl());
+        holder.textView.setText(categoryList.get(position).getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,11 +65,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public  static class CategoryViewHolder extends RecyclerView.ViewHolder{
 
         ImageView categoryImage;
+        TextView textView;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
 
             categoryImage = itemView.findViewById(R.id.categoryImage);
+            textView=itemView.findViewById(R.id.cat_text);
 
         }
     }
