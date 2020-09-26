@@ -11,12 +11,14 @@ public class ProductDTO {
     private boolean isDelevieryPersonRequired; //like for tailor shopkeeper itself is a deleviery person
     private String supplierName;
     private String supplierId;
+    private int amountAvailable;
+    private double price;
 
 
     public ProductDTO()
     {}
 
-    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId) {
+    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId, int amountAvailable, double price) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -27,7 +29,11 @@ public class ProductDTO {
         this.isDelevieryPersonRequired = isDelevieryPersonRequired;
         this.supplierName = supplierName;
         this.supplierId = supplierId;
+        this.amountAvailable = amountAvailable;
+        this.price = price;
     }
+
+
 
     public String getId() {
         return id;
@@ -109,6 +115,22 @@ public class ProductDTO {
         this.supplierId = supplierId;
     }
 
+    public int getAmountAvailable() {
+        return amountAvailable;
+    }
+
+    public void setAmountAvailable(int amountAvailable) {
+        this.amountAvailable = amountAvailable;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
         return "ProductDTO{" +
@@ -122,6 +144,30 @@ public class ProductDTO {
                 ", isDelevieryPersonRequired=" + isDelevieryPersonRequired +
                 ", supplierName='" + supplierName + '\'' +
                 ", supplierId='" + supplierId + '\'' +
+                ", amountAvailable=" + amountAvailable +
+                ", price=" + price +
                 '}';
     }
+
+    public boolean equals(Object o)
+    {
+        if(o!=null && o instanceof ProductDTO)
+        {
+            String cat=((ProductDTO)o).getCategory();
+            if (cat!=null && cat.equals(this.category))
+            {
+                return true;
+            }
+
+        }
+
+        return false;
+    }
+    public int hashCode()
+    {
+        return this.category.hashCode();
+    }
+
+
+
 }

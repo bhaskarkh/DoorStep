@@ -115,8 +115,8 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:background="@drawable/border"
                 android:padding="5dp"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +152,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/categoryRecycler"
-
+                android:background="@drawable/border"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -242,6 +242,17 @@
 
 
             </androidx.cardview.widget.CardView>
+
+            <ProgressBar
+                android:id="@+id/discount_list_progressbar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/discountedRecycler"
+                app:layout_constraintEnd_toEndOf="@+id/discountedRecycler"
+                app:layout_constraintStart_toStartOf="@+id/discountedRecycler"
+                app:layout_constraintTop_toTopOf="@+id/discountedRecycler" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

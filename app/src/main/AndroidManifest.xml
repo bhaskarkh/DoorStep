@@ -25,7 +25,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Other screen activity -->
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation|screenSize"/>
         <activity android:name=".ProductDetails" />
         <activity android:name=".AllCategory" />
         <activity android:name=".SingleCategory" />

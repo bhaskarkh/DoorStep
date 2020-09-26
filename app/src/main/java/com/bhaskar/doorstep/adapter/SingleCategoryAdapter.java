@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bhaskar.doorstep.MainActivity;
 import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
+import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
 import com.bumptech.glide.Glide;
 
@@ -24,12 +25,12 @@ import java.util.List;
 public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAdapter.SingleCategoryViewHolder> {
 
     Context context;
-    List<RecentlyViewed> recentlyViewedList;
+    List<ProductDTO> productDTOList;
 
-    public SingleCategoryAdapter(Context context, List<RecentlyViewed> recentlyViewedList) {
+    public SingleCategoryAdapter(Context context, List<ProductDTO> productDTOList) {
         this.context = context;
-        this.recentlyViewedList = recentlyViewedList;
-        Log.d("SingleCategoryAdapter","size= "+recentlyViewedList.size());
+        this.productDTOList = productDTOList;
+        Log.d("SingleCategoryAdapter","size= "+productDTOList.size());
     }
 
     @NonNull
@@ -44,21 +45,21 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
     public void onBindViewHolder(@NonNull SingleCategoryViewHolder holder, final int position) {
 
 
-        holder.description.setText(recentlyViewedList.get(position).getName());
-        Glide.with(context).load(recentlyViewedList.get(position).getBigimageurl()).into(holder.category_image);
-
+        holder.description.setText(productDTOList.get(position).getName());
+      //  Glide.with(context).load(productDTOList.get(position).getImage()).into(holder.category_image);
+        Glide.with(context).load(R.drawable.b4).into(holder.category_image);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent i=new Intent(context, ProductDetails.class);
-                i.putExtra("name", recentlyViewedList.get(position).getName());
-                i.putExtra("image", recentlyViewedList.get(position).getBigimageurl());
-                i.putExtra("price",recentlyViewedList.get(position).getPrice());
-                i.putExtra("desc",recentlyViewedList.get(position).getDescription());
-                i.putExtra("qty",recentlyViewedList.get(position).getQuantity());
-                i.putExtra("unit",recentlyViewedList.get(position).getUnit());
+                i.putExtra("name", productDTOList.get(position).getName());
+                i.putExtra("image", productDTOList.get(position).getImage());
+                i.putExtra("price",productDTOList.get(position).getPrice());
+                i.putExtra("desc",productDTOList.get(position).getDescription());
+                i.putExtra("qty",productDTOList.get(position).getAmountAvailable());
+                i.putExtra("unit",productDTOList.get(position).getQuantityType());
 
                 context.startActivity(i);
 
@@ -69,7 +70,7 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
 
     @Override
     public int getItemCount() {
-        return recentlyViewedList.size();
+        return productDTOList.size();
     }
 
 

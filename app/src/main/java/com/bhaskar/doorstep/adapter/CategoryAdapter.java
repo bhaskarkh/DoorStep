@@ -19,6 +19,8 @@ import com.bhaskar.doorstep.model.Category;
 
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     Context context;
@@ -42,19 +44,33 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, final int position) {
 
         holder.categoryImage.setImageResource(categoryList.get(position).getImageurl());
-        holder.textView.setText(categoryList.get(position).getName());
+
+
+        String modifiedTextValue=checkTextSizeAndModifyText(categoryList.get(position).getName());
+        holder.textView.setText(modifiedTextValue);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(context, SingleCategory.class);
                 Log.d("AllCategoryAdapter","Button Clicked");
-                i.putExtra("name", categoryList.get(position).getId());
+                i.putExtra("cat_name", categoryList.get(position).getName());
                 i.putExtra("imageUrl", categoryList.get(position).getImageurl());
                 context.startActivity(i);
             }
         });
 
 
+    }
+
+    private String checkTextSizeAndModifyText(String name) {
+        Log.d(TAG,"text length= "+name.length());
+        if(name.length()>11)
+        {
+            name=name.substring(0,9)+"...";
+        }
+
+        return name;
     }
 
     @Override

@@ -78,7 +78,7 @@ public class AddProductInDb extends AppCompatActivity {
         Random random=new Random();
         String id=String.valueOf(random.nextInt(99999));
         Boolean isReq=true;
-        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, "ImageUrl",SquantityType, isReq,"supplierName", "supplierId") ;
+        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, "ImageUrl",SquantityType, isReq,"supplierName", "supplierId",1,100) ;
 
 
         firebaseDatabase.getReference().child("test").child("product").child(productDTO.getCategory()).child(productDTO.getName()).setValue(productDTO).addOnSuccessListener(new OnSuccessListener<Void>() {

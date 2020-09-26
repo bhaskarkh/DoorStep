@@ -4,17 +4,27 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
+import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +43,9 @@ public class SingleCategory extends AppCompatActivity {
     SingleCategoryAdapter singleCategoryAdapter;
     List<RecentlyViewed> singleCategoryItemsList;
     ImageView singleCategoryBack;
+    FirebaseDatabase firebaseDatabase;
+    TextView singleCategoryTitle;
+     final String TAG="SingleCategory";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +54,8 @@ public class SingleCategory extends AppCompatActivity {
 
         singleCategoryBack=findViewById(R.id.singleCategoryBack);
         singleCategoryRecycler=findViewById(R.id.single_category);
+        singleCategoryTitle=findViewById(R.id.singleCategoryTitle);
+        firebaseDatabase=FirebaseDatabase.getInstance();
         singleCategoryRecycler.setNestedScrollingEnabled(false);
         singleCategoryBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,39 +65,68 @@ public class SingleCategory extends AppCompatActivity {
                 finish();
             }
         });
+        String categoryName=getIntent().getStringExtra("cat_name");
+             if(categoryName!=null)
+             {
+                 singleCategoryTitle.setText(categoryName);
+
+                 getCategoryItemList(categoryName);
+             }
+             else {
+                 Toast.makeText(SingleCategory.this, "Some error occured try again", Toast.LENGTH_LONG).show();
+             }
+
+
         // adding data to model
         //(String name, String description, String price, int imageUrl, int bigimageurl)
-        singleCategoryItemsList = new ArrayList<>();
+       /* singleCategoryItemsList = new ArrayList<>();
         singleCategoryItemsList.add(new RecentlyViewed("Watermelon", "Watermelon has high water content and also provides some fiber.", "₹ 80", "1", "KG", card4, b4));
-        singleCategoryItemsList.add(new RecentlyViewed("Papaya", "Papayas are spherical or pear-shaped fruits that can be as long as 20 inches.", "₹ 85", "1", "KG", card3, b3));
-        singleCategoryItemsList.add(new RecentlyViewed("Strawberry", "The strawberry is a highly nutritious fruit, loaded with vitamin C.", "₹ 30", "1", "KG", card2, b1));
-        singleCategoryItemsList.add(new RecentlyViewed("Kiwi", "Full of nutrients like vitamin C, vitamin K, vitamin E, folate, and potassium.", "₹ 30", "1", "PC", card1, b2));
-        singleCategoryItemsList.add(new RecentlyViewed("Watermelon", "Watermelon has high water content and also provides some fiber.", "₹ 80", "1", "KG", card4, b4));
-        singleCategoryItemsList.add(new RecentlyViewed("Papaya", "Papayas are spherical or pear-shaped fruits that can be as long as 20 inches.", "₹ 85", "1", "KG", card3, b3));
-        singleCategoryItemsList.add(new RecentlyViewed("Strawberry", "The strawberry is a highly nutritious fruit, loaded with vitamin C.", "₹ 30", "1", "KG", card2, b1));
-        singleCategoryItemsList.add(new RecentlyViewed("Kiwi", "Full of nutrients like vitamin C, vitamin K, vitamin E, folate, and potassium.", "₹ 30", "1", "PC", card1, b2));
-        singleCategoryItemsList.add(new RecentlyViewed("Watermelon", "Watermelon has high water content and also provides some fiber.", "₹ 80", "1", "KG", card4, b4));
-        singleCategoryItemsList.add(new RecentlyViewed("Papaya", "Papayas are spherical or pear-shaped fruits that can be as long as 20 inches.", "₹ 85", "1", "KG", card3, b3));
-        singleCategoryItemsList.add(new RecentlyViewed("Strawberry", "The strawberry is a highly nutritious fruit, loaded with vitamin C.", "₹ 30", "1", "KG", card2, b1));
-        singleCategoryItemsList.add(new RecentlyViewed("Kiwi", "Full of nutrients like vitamin C, vitamin K, vitamin E, folate, and potassium.", "₹ 30", "1", "PC", card1, b2));
-        singleCategoryItemsList.add(new RecentlyViewed("Watermelon", "Watermelon has high water content and also provides some fiber.", "₹ 80", "1", "KG", card4, b4));
-        singleCategoryItemsList.add(new RecentlyViewed("Papaya", "Papayas are spherical or pear-shaped fruits that can be as long as 20 inches.", "₹ 85", "1", "KG", card3, b3));
-        singleCategoryItemsList.add(new RecentlyViewed("Strawberry", "The strawberry is a highly nutritious fruit, loaded with vitamin C.", "₹ 30", "1", "KG", card2, b1));
-        singleCategoryItemsList.add(new RecentlyViewed("Kiwi", "Full of nutrients like vitamin C, vitamin K, vitamin E, folate, and potassium.", "₹ 30", "1", "PC", card1, b2));
 
 
 
 
-        setCategoryRecycler(singleCategoryItemsList);
+        setCategoryRecycler(singleCategoryItemsList);*/
 
     }
 
+    private void getCategoryItemList(final String categoryName) {
+       final List<ProductDTO> productDTOList=new ArrayList<>();
+        DatabaseReference databaseReference=firebaseDatabase.getReference().child("test").child("product");
 
-    private void setCategoryRecycler(List<RecentlyViewed> singleCategoryItemsList) {
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+                    Log.d(TAG,"db key= "+dataSnapshot.getKey()+" our category categoryName= "+categoryName);
+                    if(dataSnapshot.getKey().equals(categoryName)) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                            ProductDTO productDTO = dataSnapshot1.getValue(ProductDTO.class);
+                            productDTOList.add(productDTO);
+
+                        }
+                    }
+                }
+
+                setCategoryRecycler(productDTOList);
+
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
+    private void setCategoryRecycler(List<ProductDTO> productDTOList) {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
         singleCategoryRecycler.setLayoutManager(layoutManager);
         singleCategoryRecycler.setItemAnimator(new DefaultItemAnimator());
-        singleCategoryAdapter=new SingleCategoryAdapter(this,singleCategoryItemsList);
+        singleCategoryAdapter=new SingleCategoryAdapter(this,productDTOList);
         singleCategoryRecycler.setAdapter(singleCategoryAdapter);
     }
 

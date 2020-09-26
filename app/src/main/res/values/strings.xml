@@ -3,4 +3,11 @@
     <string name="title_activity_single_category">SingleCategory</string>
     <string name="hello_world">Hello Square World!</string>
     <string name="db_mode">test</string>
+    <string-array name="category_array">
+        <item>Electrical</item>
+        <item>Civil</item>
+        <item>Welding</item>
+        <item>IT solution</item>
+
+    </string-array>
 </resources>

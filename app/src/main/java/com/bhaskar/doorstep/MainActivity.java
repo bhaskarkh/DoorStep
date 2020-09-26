@@ -10,6 +10,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,7 @@ import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.bhaskar.doorstep.R.drawable.abc_cab_background_internal_bg;
@@ -93,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String TAG="MainActivity";
     List<String> sliderUrlList;
+    ProgressBar discount_list_progressbar;
 
 
     @Override
@@ -113,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
         profile_pic=findViewById(R.id.profile_pic);
         main_cart=findViewById(R.id.main_cart);
         sliderView=findViewById(R.id.imageSlider);
+        discount_list_progressbar=findViewById(R.id.discount_list_progressbar);
+
         fAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
         //slider
@@ -183,14 +188,8 @@ public class MainActivity extends AppCompatActivity {
         //jcdj
 
 
-        categoryList = new ArrayList<>();
 
-        categoryList.add(new Category(1, ic_home_fish,"fish"));
-        categoryList.add(new Category(2, ic_home_meats,"meat"));
-        categoryList.add(new Category(3, ic_home_fruits,"fruits"));
-        categoryList.add(new Category(4, ic_home_veggies,"veggie"));
 
-        productDTOList=getProductList();
 
 
         // adding data to model
@@ -200,10 +199,39 @@ public class MainActivity extends AppCompatActivity {
        recentlyViewedList.add(new RecentlyViewed("Strawberry", "The strawberry is a highly nutritious fruit, loaded with vitamin C.", "₹ 30", "1", "KG", card2, b1));
        recentlyViewedList.add(new RecentlyViewed("Kiwi", "Full of nutrients like vitamin C, vitamin K, vitamin E, folate, and potassium.", "₹ 30", "1", "PC", card1, b2));
 
+      //  getProductList();
+        getCategoryList();
         setDiscountedRecycler(discountedProductsList);
-        setCategoryRecycler(categoryList);
+
        setRecentlyViewedRecycler(recentlyViewedList);
 
+    }
+
+    private void getCategoryList() {
+        categoryList = new ArrayList<>();
+        String[] category_array=MainActivity.this.getResources().getStringArray(R.array.category_array);
+       int i=1;
+        for(String categoryName:category_array)
+        {
+            String catxmlName=getXmlName(categoryName);
+            int imageName=MainActivity.this.getResources().getIdentifier(catxmlName,"drawable",this.getPackageName());
+            categoryList.add(new Category(i,imageName,categoryName));
+            i++;
+
+
+        }
+        Log.d(TAG,"getCategoryList size of List= "+categoryList.size());
+
+
+        setCategoryRecycler(categoryList);
+    }
+
+    private String getXmlName(String categoryName) {
+        Log.d(TAG,"Inside getXmlName catName= "+categoryName);
+        categoryName=categoryName.toLowerCase();
+        categoryName=categoryName.replace(" ","_");
+        Log.d(TAG,"Inside getXmlName Converted catName= "+categoryName);
+        return categoryName;
     }
 
     private List<String> getSliderUrlList() {
@@ -213,7 +241,8 @@ public class MainActivity extends AppCompatActivity {
         return sList;
     }
 
-    private List<ProductDTO> getProductList() {
+   /* private void getProductList() {
+        categoryProgressbar.setVisibility(View.VISIBLE);
         Log.d(TAG,"insdie Get ProductList");
         final List<ProductDTO> productDTOList1=new ArrayList<>();
 
@@ -236,7 +265,9 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }
-                Log.d(TAG,"inside productList size= "+productDTOList1.size());
+
+                loadCategoryDataInAdapter(productDTOList1);
+
             }
 
             @Override
@@ -245,37 +276,40 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //collection("prod").document("product").collection(id).document(productDTO.getCategory()).collection(productDTO.getProductTypeId()).document(productDTO.getName()).set(productDTO)
-        //firebaseFirestore=FirebaseFirestore.getInstance();
-        //CollectionReference docRef = firebaseFirestore.collection("prod");
+       Log.d(TAG,"productList size= "+productDTOList1.size());
 
 
 
- /*   docRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                Log.d(TAG,"success value reached");
+    }
+*/
+  /*  private void loadCategoryDataInAdapter(List<ProductDTO> productDTOList1) {
 
-                Log.d(TAG,"doc list"+queryDocumentSnapshots.getDocuments().size());
-                List<DocumentSnapshot> documentSnapshotList=queryDocumentSnapshots.getDocuments();
+        Log.d(TAG,"inside loadCategoryDataInAdapter= "+productDTOList1.size());
+        categoryList = new ArrayList<>();
+        categoryList=getUniqueCategoryName(productDTOList1);
+       Log.d(TAG,"inside categoryList size= "+categoryList.size());
 
-                for(DocumentSnapshot ds:documentSnapshotList)
-                {
-                    Log.d(TAG,"aaa= "+ds.getData().toString());
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG,"On failure of read exception msg:: "+e.getMessage());
-            }
-        });*/
- Log.d(TAG,"productList size= "+productDTOList1.size());
-
-
-        return productDTOList1;
+        setCategoryRecycler(categoryList);
+        categoryProgressbar.setVisibility(View.GONE);
     }
 
+    private List<Category> getUniqueCategoryName(List<ProductDTO> productDTOList1) {
+        Log.d(TAG,"inside getUniqueCategoryName");
+        List<Category> categoryList=new ArrayList<>();
+        HashSet<ProductDTO> uniqueCatProductList=new HashSet<>();
+        for (ProductDTO productDTO:productDTOList1)
+        {
+            uniqueCatProductList.add(productDTO);
+        }
+        for (ProductDTO productDTO:uniqueCatProductList)
+        {
+            categoryList.add(new Category(Integer.getInteger(productDTO.getId()),ic_home_fruits,productDTO.getCategory()));
+        }
+
+        Log.d(TAG,"inside getUniqueCategoryName categoryList size= "+categoryList.size());
+        return categoryList;
+    }
+*/
     private void setDiscountedRecycler(List<DiscountedProducts> dataList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         discountRecyclerView.setLayoutManager(layoutManager);
@@ -285,13 +319,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setCategoryRecycler(List<Category> categoryDataList) {
-        /*RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        categoryRecyclerView.setLayoutManager(layoutManager);
-        categoryAdapter = new CategoryAdapter(this,categoryDataList);
-        categoryRecyclerView.setAdapter(categoryAdapter);*/
-
-
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 4);
+     RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 4);
         categoryRecyclerView.setLayoutManager(layoutManager);
       // categoryRecyclerView.addItemDecoration(new GridSpacingItemDecoration(1, dpToPx(5), true));
         categoryAdapter = new CategoryAdapter(this,categoryDataList);
