@@ -3,6 +3,7 @@ package com.bhaskar.doorstep.model;
 public class SliderItem {
     private String description;
     private String imageUrl;
+    
 
     public String getDescription() {
         return description;

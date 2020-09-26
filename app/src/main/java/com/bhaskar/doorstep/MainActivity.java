@@ -39,12 +39,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
@@ -88,9 +88,11 @@ public class MainActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     GoogleSignInDTO googleSignInDTO;
     FirebaseAuth fAuth;
+    FirebaseDatabase firebaseDatabase;
     SliderView sliderView;
-    FirebaseFirestore firebaseFirestore;
+
     private String TAG="MainActivity";
+    List<String> sliderUrlList;
 
 
     @Override
@@ -112,8 +114,9 @@ public class MainActivity extends AppCompatActivity {
         main_cart=findViewById(R.id.main_cart);
         sliderView=findViewById(R.id.imageSlider);
         fAuth=FirebaseAuth.getInstance();
-        firebaseFirestore=FirebaseFirestore.getInstance();
+        firebaseDatabase=FirebaseDatabase.getInstance();
         //slider
+        Log.d(TAG,"fuid in main= "+fAuth.getCurrentUser().getUid());
         sadapter= new SliderAdapterExample(this);
 
         sliderView.setSliderAdapter(sadapter);
@@ -123,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
         sliderView.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
         sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
         sliderView.startAutoCycle();
+
         renewItems();
         //slider
 
@@ -202,14 +206,52 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private List<String> getSliderUrlList() {
+        List<String> sList=new ArrayList<>();
+
+
+        return sList;
+    }
+
     private List<ProductDTO> getProductList() {
         Log.d(TAG,"insdie Get ProductList");
-        List<ProductDTO> productDTOList1=new ArrayList<>();
-        //collection("prod").document("product").collection(id).document(productDTO.getCategory()).collection(productDTO.getProductTypeId()).document(productDTO.getName()).set(productDTO)
-        firebaseFirestore=FirebaseFirestore.getInstance();
-        CollectionReference docRef = firebaseFirestore.collection("prod").document("product").collection("fruits");
+        final List<ProductDTO> productDTOList1=new ArrayList<>();
 
-        docRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        DatabaseReference databaseReference=firebaseDatabase.getReference().child("test").child("product");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+                    Log.d(TAG,"key= "+dataSnapshot.getKey());
+                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                    {
+                        Log.d(TAG,"2nd key= "+dataSnapshot1.getKey());
+                        Log.d(TAG,"2nd key value= "+dataSnapshot1.getValue());
+                        ProductDTO productDTO=dataSnapshot1.getValue(ProductDTO.class);
+                        productDTOList1.add(productDTO);
+
+
+
+                    }
+                }
+                Log.d(TAG,"inside productList size= "+productDTOList1.size());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //collection("prod").document("product").collection(id).document(productDTO.getCategory()).collection(productDTO.getProductTypeId()).document(productDTO.getName()).set(productDTO)
+        //firebaseFirestore=FirebaseFirestore.getInstance();
+        //CollectionReference docRef = firebaseFirestore.collection("prod");
+
+
+
+ /*   docRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 Log.d(TAG,"success value reached");
@@ -227,7 +269,8 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {
                 Log.d(TAG,"On failure of read exception msg:: "+e.getMessage());
             }
-        });
+        });*/
+ Log.d(TAG,"productList size= "+productDTOList1.size());
 
 
         return productDTOList1;
@@ -341,7 +384,9 @@ public class MainActivity extends AppCompatActivity {
     //Image Slider method
 
     public void renewItems() {
+
         List<SliderItem> sliderItemList = new ArrayList<>();
+        sliderUrlList=getSliderUrlList();
         //dummy data
         for (int i = 0; i < 5; i++) {
             SliderItem sliderItem = new SliderItem();

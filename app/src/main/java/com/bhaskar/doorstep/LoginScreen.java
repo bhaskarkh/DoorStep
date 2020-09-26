@@ -30,11 +30,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,7 +47,9 @@ public class LoginScreen extends AppCompatActivity {
     private String TAG="LoginScreen";
     private FirebaseAuth mAuth;
     ProgressBar loginProgressBar;
-    FirebaseFirestore firebaseFirestore;
+    //FirebaseFirestore firebaseFirestore;
+    FirebaseDatabase database;
+    DatabaseReference databaseReference;
 
 
     @Override
@@ -58,7 +58,7 @@ public class LoginScreen extends AppCompatActivity {
         FirebaseUser user=mAuth.getCurrentUser();
         if(user!=null)
         {
-           Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+         Intent intent=new Intent(getApplicationContext(),MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -82,7 +82,11 @@ public class LoginScreen extends AppCompatActivity {
 
 
         mAuth=FirebaseAuth.getInstance();
-        firebaseFirestore=FirebaseFirestore.getInstance();
+
+        database=FirebaseDatabase.getInstance();
+        String db_mode=getString(R.string.db_mode);
+        Log.d(TAG,"db_mode= "+db_mode);
+        databaseReference=database.getReference().child(db_mode);
         createGoogleSignInRequest();
     }
 
@@ -134,9 +138,21 @@ public class LoginScreen extends AppCompatActivity {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            Log.d(TAG, "user= "+user.toString());
+
+                            Log.d(TAG, "user= "+user.getPhoneNumber());
                             loginProgressBar.setVisibility(View.GONE);
-                            RegisterUserInFireBase(user);
+                            Boolean isNewUser=task.getResult().getAdditionalUserInfo().isNewUser();
+                           Log.d(TAG,"isnewUser= "+isNewUser);
+                            if(isNewUser) {
+                                Log.d(TAG,"New User");
+                                RegisterUserInFireBase(user);
+                            }
+                            else
+                            {
+                                Log.d(TAG,"Old User");
+                                Intent intent=new Intent(LoginScreen.this, MainActivity.class);
+                                startActivity(intent);
+                            }
 
                           //  updateUI(user);
                         } else {
@@ -158,57 +174,9 @@ public class LoginScreen extends AppCompatActivity {
         final UserRegistrationDTO userRegistrationDTO=getUserDetailFromGoogle(fuser);
         if(userRegistrationDTO!=null)
         {
-            Log.d(TAG,"userRegistrationDTO= "+userRegistrationDTO.toString());
-
-            final CollectionReference collectionReference = firebaseFirestore.collection("prod").document("user").collection("user_registration");
-
-            collectionReference.document(fuser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if(task.isSuccessful())
-                    {
-                        if(task.getResult().exists())
-                        {
-                            Log.d(TAG,"Document is not Empty Old User");
-                            Intent intent=new Intent(LoginScreen.this, MainActivity.class);
-                            startActivity(intent);
-
-                        }
-                        else {
-                            Log.d(TAG,"Document is  Empty New User");
-                         Toast.makeText(LoginScreen.this, "User Registred Succesfully",
-                                    Toast.LENGTH_LONG).show();
-                            collectionReference.document(fuser.getUid()).set(userRegistrationDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG,"Document Added in firestore with id= "+fuser.getUid());
-                                    Intent intent=new Intent(LoginScreen.this, EnterMobileNumber.class);
-                                    intent.putExtra("fuid",fuser.getUid());
-                                    startActivity(intent);
-                                }
-                            })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-                                            Log.d(TAG,"onFailure firestore save"+e.getMessage());
-                                            //signout from google
-                                            FirebaseAuth.getInstance().signOut();
-                                            mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    Intent i = new Intent(LoginScreen.this, LoginScreen.class);
-                                                    startActivity(i);
-                                                }
-                                            });
-                                        }
-                                    });
-                        }
-                    }
-                }
-            });
-
-
+            databaseReference.child("user").child("user_registration").child(fuser.getUid()).setValue(userRegistrationDTO);
+            Intent intent=new Intent(LoginScreen.this, EnterMobileNumber.class);
+            startActivity(intent);
 
         }
 

@@ -29,6 +29,7 @@ public class EnterMobileNumber extends AppCompatActivity {
 
     String phone_number_text;
     String fuid;
+    FirebaseAuth firebaseAuth;
 
     private static final String TAG = "EnterMobileNumber";
     @Override
@@ -38,7 +39,9 @@ public class EnterMobileNumber extends AppCompatActivity {
         phone_number=findViewById(R.id.phone_number_text);
         phone_number.requestFocus();
         verify_btn=findViewById(R.id.verify_otp_btn);
-        fuid=getIntent().getStringExtra("fuid");
+        firebaseAuth=FirebaseAuth.getInstance();
+        fuid=firebaseAuth.getCurrentUser().getUid();
+        Log.d(TAG,"fuid in entermobile= "+fuid);
 
 
         verify_btn.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +68,7 @@ public class EnterMobileNumber extends AppCompatActivity {
             return;
         }
         else {
+
 
 
             Log.d(TAG,"Valid mobile number= "+phone_number_text);

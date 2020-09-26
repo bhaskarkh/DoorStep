@@ -108,4 +108,20 @@ public class ProductDTO {
     public void setSupplierId(String supplierId) {
         this.supplierId = supplierId;
     }
+
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", category='" + category + '\'' +
+                ", productTypeId='" + productTypeId + '\'' +
+                ", Description='" + Description + '\'' +
+                ", image='" + image + '\'' +
+                ", quantityType='" + quantityType + '\'' +
+                ", isDelevieryPersonRequired=" + isDelevieryPersonRequired +
+                ", supplierName='" + supplierName + '\'' +
+                ", supplierId='" + supplierId + '\'' +
+                '}';
+    }
 }

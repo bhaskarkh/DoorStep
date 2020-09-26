@@ -37,10 +37,10 @@ public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedPro
     public void onBindViewHolder(@NonNull DiscountedProductViewHolder holder, int position) {
 
         holder.discountImageView.setImageResource(discountedProductsList.get(position).getImageurl());
-        if((position%2)==0)
+       /* if((position%2)==0)
         {
             holder.constraintLayout.setBackgroundResource(R.drawable.card_bg2);
-        }
+        }*/
 
     }
 

@@ -16,7 +16,8 @@ import com.bhaskar.doorstep.model.ProductDTO;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.util.Random;
 
@@ -27,8 +28,9 @@ public class AddProductInDb extends AppCompatActivity {
     ImageView back_btn;
     Button add_product_btn;
     private String TAG="AddProductInDb";
-    FirebaseFirestore firebaseFirestore;
+   // FirebaseFirestore firebaseFirestore;
     FirebaseAuth firebaseAuth;
+    FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +46,9 @@ public class AddProductInDb extends AppCompatActivity {
         title=findViewById(R.id.add_product_title);
         back_btn=findViewById(R.id.add_product_back_btn);
         add_product_btn=findViewById(R.id.add_product_button);
-        firebaseFirestore=FirebaseFirestore.getInstance();
+      //  firebaseFirestore=FirebaseFirestore.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
+        firebaseDatabase=FirebaseDatabase.getInstance();
 
 
 
@@ -76,7 +79,9 @@ public class AddProductInDb extends AppCompatActivity {
         String id=String.valueOf(random.nextInt(99999));
         Boolean isReq=true;
         ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, "ImageUrl",SquantityType, isReq,"supplierName", "supplierId") ;
-        firebaseFirestore.collection("prod").document("product").collection(productDTO.getCategory()).document(productDTO.getName()).set(productDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+
+        firebaseDatabase.getReference().child("test").child("product").child(productDTO.getCategory()).child(productDTO.getName()).setValue(productDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.d(TAG,"onSuccess firebase added");
@@ -89,6 +94,20 @@ public class AddProductInDb extends AppCompatActivity {
                 Toast.makeText(AddProductInDb.this, "Failed ", Toast.LENGTH_SHORT).show();
             }
         });
+
+      /*  firebaseFirestore.collection("prod").document("product").collection(productDTO.getCategory()).document(productDTO.getName()).set(productDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG,"onSuccess firebase added");
+                Toast.makeText(AddProductInDb.this, "Succesfully added ", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG,"failure exception msg= "+e.getMessage());
+                Toast.makeText(AddProductInDb.this, "Failed ", Toast.LENGTH_SHORT).show();
+            }
+        });*/
 
 
 
