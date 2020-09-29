@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddProductInDb"></activity>
+        <activity android:name=".OrderSuccessOrFail"></activity>
+        <activity android:name=".AdminDashboard" />
+        <activity android:name=".AddProductInDb" />
         <activity
             android:name=".VerifyOtp"
             android:windowSoftInputMode="adjustResize" />
@@ -25,8 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Other screen activity -->
-        <activity android:name=".MainActivity"
-            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize" />
         <activity android:name=".ProductDetails" />
         <activity android:name=".AllCategory" />
         <activity android:name=".SingleCategory" />

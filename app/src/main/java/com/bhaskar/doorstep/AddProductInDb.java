@@ -78,7 +78,7 @@ public class AddProductInDb extends AppCompatActivity {
         Random random=new Random();
         String id=String.valueOf(random.nextInt(99999));
         Boolean isReq=true;
-        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, "ImageUrl",SquantityType, isReq,"supplierName", "supplierId",1,100) ;
+        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, "ImageUrl",SquantityType, isReq,"supplierName", "supplierId",1,100,150,true,1) ;
 
 
         firebaseDatabase.getReference().child("test").child("product").child(productDTO.getCategory()).child(productDTO.getName()).setValue(productDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -95,19 +95,6 @@ public class AddProductInDb extends AppCompatActivity {
             }
         });
 
-      /*  firebaseFirestore.collection("prod").document("product").collection(productDTO.getCategory()).document(productDTO.getName()).set(productDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG,"onSuccess firebase added");
-                Toast.makeText(AddProductInDb.this, "Succesfully added ", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG,"failure exception msg= "+e.getMessage());
-                Toast.makeText(AddProductInDb.this, "Failed ", Toast.LENGTH_SHORT).show();
-            }
-        });*/
 
 
 

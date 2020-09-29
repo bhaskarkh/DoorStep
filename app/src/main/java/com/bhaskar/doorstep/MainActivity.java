@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         main_cart=findViewById(R.id.main_cart);
         sliderView=findViewById(R.id.imageSlider);
         discount_list_progressbar=findViewById(R.id.discount_list_progressbar);
+        discount_list_progressbar.setVisibility(View.GONE);
 
         fAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();

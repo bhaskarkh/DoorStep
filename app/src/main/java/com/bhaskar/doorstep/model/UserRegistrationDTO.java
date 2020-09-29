@@ -3,6 +3,7 @@ package com.bhaskar.doorstep.model;
 import android.net.Uri;
 
 import java.util.Date;
+import java.util.List;
 
 public class UserRegistrationDTO {
     private String userName;
@@ -14,12 +15,13 @@ public class UserRegistrationDTO {
     private boolean isRmnVerified;
     private String  userRegisteredDate;
     private String userStatus;
+    private AddressDTO addressDTO;
 
 
     public UserRegistrationDTO() {
     }
 
-    public UserRegistrationDTO(String userName, String userEmail, String userId, String userPhoto, String role, String rmn, boolean isRmnVerified, String userRegisteredDate, String userStatus) {
+    public UserRegistrationDTO(String userName, String userEmail, String userId, String userPhoto, String role, String rmn, boolean isRmnVerified, String userRegisteredDate, String userStatus, AddressDTO addressList) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userId = userId;
@@ -29,6 +31,7 @@ public class UserRegistrationDTO {
         this.isRmnVerified = isRmnVerified;
         this.userRegisteredDate = userRegisteredDate;
         this.userStatus = userStatus;
+        this.addressDTO = addressList;
     }
 
     public String getUserName() {
@@ -103,18 +106,27 @@ public class UserRegistrationDTO {
         this.userStatus = userStatus;
     }
 
+    public AddressDTO getAddressList() {
+        return addressDTO;
+    }
+
+    public void setAddressList(AddressDTO addressList) {
+        this.addressDTO = addressList;
+    }
+
     @Override
     public String toString() {
         return "UserRegistrationDTO{" +
                 "userName='" + userName + '\'' +
                 ", userEmail='" + userEmail + '\'' +
                 ", userId='" + userId + '\'' +
-                ", userPhoto=" + userPhoto +
+                ", userPhoto='" + userPhoto + '\'' +
                 ", role='" + role + '\'' +
                 ", rmn='" + rmn + '\'' +
                 ", isRmnVerified=" + isRmnVerified +
                 ", userRegisteredDate='" + userRegisteredDate + '\'' +
                 ", userStatus='" + userStatus + '\'' +
+                ", addressDTO=" + addressDTO +
                 '}';
     }
 }

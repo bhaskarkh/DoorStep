@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhaskar.doorstep.model.UserRegistrationDTO;
+import com.bhaskar.doorstep.util.MySharedPreferences;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,6 +26,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 import com.muddzdev.styleabletoast.StyleableToast;
 /*import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;*/
@@ -157,7 +160,12 @@ public class VerifyOtp extends AppCompatActivity {
                             DatabaseReference databaseReferenceForMobileUpdate = firebaseDatabase.getReference().child("test").child("user").child("user_registration").child(firebaseAuth.getCurrentUser().getUid());
                             databaseReferenceForMobileUpdate.child("rmn").setValue(phoneFromPreviousActivity);
                             databaseReferenceForMobileUpdate.child("rmnVerified").setValue(true);
-
+                            //Update Data of Shared Reference
+                            MySharedPreferences mySharedPreferences=new MySharedPreferences(VerifyOtp.this);
+                            UserRegistrationDTO userRegistrationDTO=mySharedPreferences.getUserDetailsFromSharedPreference();
+                            userRegistrationDTO.setRmnVerified(true);
+                            userRegistrationDTO.setRmn(phoneFromPreviousActivity);
+                            mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);
                             Log.d(TAG,"after updateUserMobileNumber");
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

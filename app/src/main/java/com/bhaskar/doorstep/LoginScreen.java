@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import com.agrawalsuneet.dotsloader.loaders.AllianceLoader;
 import com.bhaskar.doorstep.model.GoogleSignInDTO;
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
+import com.bhaskar.doorstep.util.MySharedPreferences;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -32,6 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 
 import java.text.SimpleDateFormat;
@@ -145,11 +149,13 @@ public class LoginScreen extends AppCompatActivity {
                            Log.d(TAG,"isnewUser= "+isNewUser);
                             if(isNewUser) {
                                 Log.d(TAG,"New User");
+                                saveUserDetailsToSharedPreference(user,LoginScreen.this);
                                 RegisterUserInFireBase(user);
                             }
                             else
                             {
                                 Log.d(TAG,"Old User");
+                                saveUserDetailsToSharedPreference(user,LoginScreen.this);
                                 Intent intent=new Intent(LoginScreen.this, MainActivity.class);
                                 startActivity(intent);
                             }
@@ -167,6 +173,15 @@ public class LoginScreen extends AppCompatActivity {
                         // ...
                     }
                 });
+    }
+
+    private void saveUserDetailsToSharedPreference(FirebaseUser user, Context context) {
+        Log.d(TAG," inside Login saveUserDetailsToSharedPreference");
+      UserRegistrationDTO userRegistrationDTO=getUserDetailFromGoogle(user);
+      MySharedPreferences mySharedPreferences=new MySharedPreferences(context);
+      mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);
+
+
     }
 
     private void RegisterUserInFireBase(final FirebaseUser fuser) {
@@ -202,6 +217,7 @@ public class LoginScreen extends AppCompatActivity {
 
     public UserRegistrationDTO getUserDetailFromGoogle(FirebaseUser fuser)
     {
+        Log.d(TAG,"inside getUserDetailFromGoogle");
         UserRegistrationDTO userRegistrationDTO=new UserRegistrationDTO();
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(LoginScreen.this);
         if (acct != null) {

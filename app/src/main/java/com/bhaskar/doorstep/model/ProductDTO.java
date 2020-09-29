@@ -1,6 +1,9 @@
 package com.bhaskar.doorstep.model;
 
-public class ProductDTO {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ProductDTO implements Parcelable {
     private String id; //unique id for all product
     private String name;
     private String category;
@@ -12,13 +15,16 @@ public class ProductDTO {
     private String supplierName;
     private String supplierId;
     private int amountAvailable;
-    private double price;
+    private double myPrice;
+    private double mrpPrice;
+    private boolean showCost;
+    private int quantity;
 
 
     public ProductDTO()
     {}
 
-    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId, int amountAvailable, double price) {
+    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId, int amountAvailable, double myPrice, double mrpPrice, boolean showCost, int quantity) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -30,10 +36,42 @@ public class ProductDTO {
         this.supplierName = supplierName;
         this.supplierId = supplierId;
         this.amountAvailable = amountAvailable;
-        this.price = price;
+        this.myPrice = myPrice;
+        this.mrpPrice = mrpPrice;
+        this.showCost = showCost;
+        this.quantity = quantity;
     }
 
 
+    protected ProductDTO(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        category = in.readString();
+        productTypeId = in.readString();
+        Description = in.readString();
+        image = in.readString();
+        quantityType = in.readString();
+        isDelevieryPersonRequired = in.readByte() != 0;
+        supplierName = in.readString();
+        supplierId = in.readString();
+        amountAvailable = in.readInt();
+        myPrice = in.readDouble();
+        mrpPrice = in.readDouble();
+        showCost = in.readByte() != 0;
+        quantity = in.readInt();
+    }
+
+    public static final Creator<ProductDTO> CREATOR = new Creator<ProductDTO>() {
+        @Override
+        public ProductDTO createFromParcel(Parcel in) {
+            return new ProductDTO(in);
+        }
+
+        @Override
+        public ProductDTO[] newArray(int size) {
+            return new ProductDTO[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -124,11 +162,43 @@ public class ProductDTO {
     }
 
     public double getPrice() {
-        return price;
+        return myPrice;
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.myPrice = price;
+    }
+
+    public boolean isShowCost() {
+        return showCost;
+    }
+
+    public void setShowCost(boolean showCost) {
+        this.showCost = showCost;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getMyPrice() {
+        return myPrice;
+    }
+
+    public void setMyPrice(double myPrice) {
+        this.myPrice = myPrice;
+    }
+
+    public double getMrpPrice() {
+        return mrpPrice;
+    }
+
+    public void setMrpPrice(double mrpPrice) {
+        this.mrpPrice = mrpPrice;
     }
 
     @Override
@@ -145,10 +215,14 @@ public class ProductDTO {
                 ", supplierName='" + supplierName + '\'' +
                 ", supplierId='" + supplierId + '\'' +
                 ", amountAvailable=" + amountAvailable +
-                ", price=" + price +
+                ", myPrice=" + myPrice +
+                ", mrpPrice=" + mrpPrice +
+                ", showCost=" + showCost +
+                ", quantity=" + quantity +
                 '}';
     }
 
+    @Override
     public boolean equals(Object o)
     {
         if(o!=null && o instanceof ProductDTO)
@@ -163,11 +237,34 @@ public class ProductDTO {
 
         return false;
     }
+    @Override
     public int hashCode()
     {
         return this.category.hashCode();
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(category);
+        dest.writeString(productTypeId);
+        dest.writeString(Description);
+        dest.writeString(image);
+        dest.writeString(quantityType);
+        dest.writeByte((byte) (isDelevieryPersonRequired ? 1 : 0));
+        dest.writeString(supplierName);
+        dest.writeString(supplierId);
+        dest.writeInt(amountAvailable);
+        dest.writeDouble(myPrice);
+        dest.writeDouble(mrpPrice);
+        dest.writeByte((byte) (showCost ? 1 : 0));
+        dest.writeInt(quantity);
+    }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,7 @@ public class SingleCategory extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     TextView singleCategoryTitle;
      final String TAG="SingleCategory";
+     ProgressBar single_category_progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class SingleCategory extends AppCompatActivity {
         singleCategoryBack=findViewById(R.id.singleCategoryBack);
         singleCategoryRecycler=findViewById(R.id.single_category);
         singleCategoryTitle=findViewById(R.id.singleCategoryTitle);
+        single_category_progressBar=findViewById(R.id.single_category_progressBar);
         firebaseDatabase=FirebaseDatabase.getInstance();
         singleCategoryRecycler.setNestedScrollingEnabled(false);
         singleCategoryBack.setOnClickListener(new View.OnClickListener() {
@@ -75,18 +78,7 @@ public class SingleCategory extends AppCompatActivity {
              else {
                  Toast.makeText(SingleCategory.this, "Some error occured try again", Toast.LENGTH_LONG).show();
              }
-
-
-        // adding data to model
-        //(String name, String description, String price, int imageUrl, int bigimageurl)
-       /* singleCategoryItemsList = new ArrayList<>();
-        singleCategoryItemsList.add(new RecentlyViewed("Watermelon", "Watermelon has high water content and also provides some fiber.", "₹ 80", "1", "KG", card4, b4));
-
-
-
-
-        setCategoryRecycler(singleCategoryItemsList);*/
-
+        single_category_progressBar.setVisibility(View.VISIBLE);
     }
 
     private void getCategoryItemList(final String categoryName) {
@@ -123,11 +115,13 @@ public class SingleCategory extends AppCompatActivity {
 
 
     private void setCategoryRecycler(List<ProductDTO> productDTOList) {
+        single_category_progressBar.setVisibility(View.GONE);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
         singleCategoryRecycler.setLayoutManager(layoutManager);
         singleCategoryRecycler.setItemAnimator(new DefaultItemAnimator());
         singleCategoryAdapter=new SingleCategoryAdapter(this,productDTOList);
         singleCategoryRecycler.setAdapter(singleCategoryAdapter);
+
     }
 
     // now we need some item decoration class for manage spacing
