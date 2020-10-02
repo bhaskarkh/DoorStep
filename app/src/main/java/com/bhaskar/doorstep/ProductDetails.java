@@ -13,10 +13,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.util.MySharedPreferences;
+import com.bhaskar.doorstep.allinterface.OnOrderSubmissionListener;
 import com.bhaskar.doorstep.util.OrderDetailsServices;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ProductDetails extends AppCompatActivity {
+public class ProductDetails extends AppCompatActivity implements OnOrderSubmissionListener {
 
     ImageView img, back;
     TextView proName, proPrice, proDesc, proQty, proUnit;
@@ -29,6 +30,7 @@ public class ProductDetails extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     ProgressBar place_order_progressbar;
     final String TAG="ProductDetails";
+    OnOrderSubmissionListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +99,7 @@ public class ProductDetails extends AppCompatActivity {
 
         OrderDetailsServices orderDetailsServices =new OrderDetailsServices(ProductDetails.this);
         MySharedPreferences mySharedPreferences=new MySharedPreferences(ProductDetails.this);
+        orderDetailsServices.setListener(this);
         orderDetailsServices.placeOrder(selectedProduct,mySharedPreferences.getUserDetailsFromSharedPreference(),firebaseDatabase);
         Log.d(TAG,"below place order Main");
 
@@ -104,4 +107,16 @@ public class ProductDetails extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onOrderSubmissionsuccess() {
+        Log.d(TAG,"onSubmission Success Called");
+        place_order_progressbar.setVisibility(View.GONE);
+
+    }
+
+    @Override
+    public void onOrderSubmissionFailure() {
+        Log.d(TAG,"onSubmission Failure Called");
+        place_order_progressbar.setVisibility(View.GONE);
+    }
 }

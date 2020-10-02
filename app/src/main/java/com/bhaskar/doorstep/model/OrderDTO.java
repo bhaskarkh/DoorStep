@@ -4,9 +4,10 @@ public class OrderDTO {
     private String orderId;
     private String orderStatus;
     private String orderDateTime;
-    private String expectedStartDateOfDeleviery;
-    private String expectedLastDateOfDeleviery;
+    private String expectedStartDateOfDelivery;
+    private String expectedLastDateOfDelivery;
     private String completeDateTime;
+    private String orderConfirmDate;
     private ShippingDTO shippingDTO;
     private UserRegistrationDTO customerInfoDTO;
     private ProductDTO productDTO;
@@ -14,13 +15,14 @@ public class OrderDTO {
     public OrderDTO()
     {}
 
-    public OrderDTO(String orderId, String orderStatus, String orderDateTime, String expectedStartDateOfDeleviery, String expectedLastDateOfDeleviery, String completeDateTime, ShippingDTO shippingDTO, UserRegistrationDTO customerInfoDTO, ProductDTO productDTO) {
+    public OrderDTO(String orderId, String orderStatus, String orderDateTime, String expectedStartDateOfDelivery, String expectedLastDateOfDelivery, String completeDateTime, String orderConfirmDate, ShippingDTO shippingDTO, UserRegistrationDTO customerInfoDTO, ProductDTO productDTO) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
         this.orderDateTime = orderDateTime;
-        this.expectedStartDateOfDeleviery = expectedStartDateOfDeleviery;
-        this.expectedLastDateOfDeleviery = expectedLastDateOfDeleviery;
+        this.expectedStartDateOfDelivery = expectedStartDateOfDelivery;
+        this.expectedLastDateOfDelivery = expectedLastDateOfDelivery;
         this.completeDateTime = completeDateTime;
+        this.orderConfirmDate = orderConfirmDate;
         this.shippingDTO = shippingDTO;
         this.customerInfoDTO = customerInfoDTO;
         this.productDTO = productDTO;
@@ -50,20 +52,20 @@ public class OrderDTO {
         this.orderDateTime = orderDateTime;
     }
 
-    public String getExpectedStartDateOfDeleviery() {
-        return expectedStartDateOfDeleviery;
+    public String getExpectedStartDateOfDelivery() {
+        return expectedStartDateOfDelivery;
     }
 
-    public void setExpectedStartDateOfDeleviery(String expectedStartDateOfDeleviery) {
-        this.expectedStartDateOfDeleviery = expectedStartDateOfDeleviery;
+    public void setExpectedStartDateOfDelivery(String expectedStartDateOfDelivery) {
+        this.expectedStartDateOfDelivery = expectedStartDateOfDelivery;
     }
 
-    public String getExpectedLastDateOfDeleviery() {
-        return expectedLastDateOfDeleviery;
+    public String getExpectedLastDateOfDelivery() {
+        return expectedLastDateOfDelivery;
     }
 
-    public void setExpectedLastDateOfDeleviery(String expectedLastDateOfDeleviery) {
-        this.expectedLastDateOfDeleviery = expectedLastDateOfDeleviery;
+    public void setExpectedLastDateOfDelivery(String expectedLastDateOfDelivery) {
+        this.expectedLastDateOfDelivery = expectedLastDateOfDelivery;
     }
 
     public String getCompleteDateTime() {
@@ -98,15 +100,24 @@ public class OrderDTO {
         this.productDTO = productDTO;
     }
 
+    public String getOrderConfirmDate() {
+        return orderConfirmDate;
+    }
+
+    public void setOrderConfirmDate(String orderConfirmDate) {
+        this.orderConfirmDate = orderConfirmDate;
+    }
+
     @Override
     public String toString() {
         return "OrderDTO{" +
                 "orderId='" + orderId + '\'' +
                 ", orderStatus='" + orderStatus + '\'' +
                 ", orderDateTime='" + orderDateTime + '\'' +
-                ", expectedStartDateOfDeleviery='" + expectedStartDateOfDeleviery + '\'' +
-                ", expectedLastDateOfDeleviery='" + expectedLastDateOfDeleviery + '\'' +
+                ", expectedStartDateOfDelivery='" + expectedStartDateOfDelivery + '\'' +
+                ", expectedLastDateOfDelivery='" + expectedLastDateOfDelivery + '\'' +
                 ", completeDateTime='" + completeDateTime + '\'' +
+                ", orderConfirmDate='" + orderConfirmDate + '\'' +
                 ", shippingDTO=" + shippingDTO +
                 ", customerInfoDTO=" + customerInfoDTO +
                 ", productDTO=" + productDTO +
