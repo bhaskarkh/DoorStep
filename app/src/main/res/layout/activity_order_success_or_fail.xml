@@ -109,7 +109,7 @@
                 android:layout_marginRight="24dp"
                 android:layout_marginBottom="68dp"
                 android:text="@string/go_to_homepage"
-                android:background="#623CEB"
+                android:background="@drawable/voilet_bg_round_corner"
                 android:textAllCaps="false"
                 android:textColor="#fff"
                 app:layout_constraintBottom_toBottomOf="parent"

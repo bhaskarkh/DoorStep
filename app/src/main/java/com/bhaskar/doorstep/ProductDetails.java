@@ -38,11 +38,11 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
         setContentView(R.layout.activity_product_details);
         proName = findViewById(R.id.productName);
         proDesc = findViewById(R.id.prodDesc);
-        proPrice = findViewById(R.id.prodPrice);
+        proPrice = findViewById(R.id.prodPrice_new);
         img = findViewById(R.id.big_image);
         back = findViewById(R.id.back2);
-        proQty = findViewById(R.id.qty);
-        proUnit = findViewById(R.id.unit);
+        /*proQty = findViewById(R.id.qty);
+        proUnit = findViewById(R.id.unit);*/
         buy_btn=findViewById(R.id.buy_btn);
         place_order_progressbar=findViewById(R.id.place_order_progressbar);
         firebaseDatabase=FirebaseDatabase.getInstance();
@@ -59,18 +59,18 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
          name = selectedProduct.getName();
          price = String.valueOf(selectedProduct.getPrice());
          desc = selectedProduct.getDescription();
-         qty = String.valueOf(selectedProduct.getQuantity());
-         unit = selectedProduct.getQuantityType();
+        /* qty = String.valueOf(selectedProduct.getQuantity());
+         unit = selectedProduct.getQuantityType();*/
 
 
          proName.setText(name);
          proPrice.setText(price);
          proDesc.setText(desc);
-         proQty.setText(qty);
-         proUnit.setText(unit);
+        /* proQty.setText(qty);
+         proUnit.setText(unit);*/
 
 
-        img.setImageResource(R.drawable.b1);
+        img.setImageResource(R.drawable.pd);
 
 
         back.setOnClickListener(new View.OnClickListener() {
