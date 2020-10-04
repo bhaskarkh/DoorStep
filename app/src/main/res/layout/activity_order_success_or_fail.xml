@@ -90,10 +90,9 @@
                 android:gravity="center_horizontal"
                 android:padding="10dp"
                 android:textColor="@color/gray"
-                android:text="@string/order_processing_text"
                 android:textAlignment="center"
                 android:textSize="15sp"
-
+                android:textColorLink="@drawable/my_selector_for_your_order_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -117,18 +116,7 @@
                 app:layout_constraintHorizontal_bias="0.51"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/your_order_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/your_order"
-                android:textColor="#623CEB"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_justified_paragraph"
-                app:layout_constraintEnd_toEndOf="@+id/tv_justified_paragraph"
-                app:layout_constraintHorizontal_bias="0.85"
-                app:layout_constraintStart_toStartOf="@+id/tv_justified_paragraph"
-                app:layout_constraintTop_toTopOf="@+id/tv_justified_paragraph"
-                app:layout_constraintVertical_bias="0.8" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

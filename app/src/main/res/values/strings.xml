@@ -5,7 +5,7 @@
     <string name="db_mode">test</string>
     <string name="order_placed">Order Placed</string>
     <string name="thank_you_for_your_order">Thank you for your order</string>
-    <string name="order_processing_text">we are currently processing your order.You can find updated to your order under</string>
+    <string name="order_processing_text">we are currently processing your order.You can find updated to your order under Your Order</string>
     <string name="go_to_homepage">Go to homepage</string>
     <string name="your_order">Your Order</string>
     <string name="back_btn">back btn</string>

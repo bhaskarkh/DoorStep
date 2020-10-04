@@ -9,22 +9,30 @@ import androidx.annotation.NonNull;
 
 import com.bhaskar.doorstep.OrderSuccessOrFail;
 import com.bhaskar.doorstep.allinterface.OnOrderSubmissionListener;
+import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
 import com.bhaskar.doorstep.model.OrderDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.ShippingDTO;
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 public class OrderDetailsServices {
     Context context;
     final String TAG = "OrderDetailsServices";
     OnOrderSubmissionListener listener;
+    OrderStatusInterface orderStatusInterface;
 
 
     public OrderDetailsServices(Context context) {
@@ -41,6 +49,10 @@ public class OrderDetailsServices {
 
     public void setListener(OnOrderSubmissionListener listener) {
         this.listener = listener;
+    }
+
+    public void setOrderStatusInterface(OrderStatusInterface orderStatusInterface) {
+        this.orderStatusInterface = orderStatusInterface;
     }
 
     public void placeOrder(ProductDTO selectedProduct, UserRegistrationDTO userDetailsFromSharedPreference, FirebaseDatabase firebaseDatabase) {
@@ -116,6 +128,43 @@ public class OrderDetailsServices {
 
         Log.d(TAG, "generated CurrentDateTime =" + currentDateTime);
         return currentDateTime;
+    }
+
+    public void getOrderListByUserId(final String fuid, FirebaseDatabase firebaseDatabase)
+    {
+        final List<OrderDTO> orderDTOList=new ArrayList<>();
+        DatabaseReference ref = firebaseDatabase.getReference().child("test").child("order");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+                    OrderDTO orderDTO=dataSnapshot.getValue(OrderDTO.class);
+                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
+                    {
+                        if(dataSnapshot1.getKey().equalsIgnoreCase("customerInfoDTO"))
+                        {
+                            UserRegistrationDTO userDTO=dataSnapshot1.getValue(UserRegistrationDTO.class);
+                            if(userDTO.getUserId().equalsIgnoreCase(fuid))
+                            {
+                                orderDTOList.add(orderDTO);
+                            }
+
+                        }
+
+                    }
+
+
+                }
+              orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
 
