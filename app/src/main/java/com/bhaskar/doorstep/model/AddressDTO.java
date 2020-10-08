@@ -2,23 +2,27 @@ package com.bhaskar.doorstep.model;
 
 public class AddressDTO {
     private String name;
-    private String address;
+    private String house_no;
+    private String area_colony;
+    private String landmark;
     private String city;
     private String state;
     private int pincode;
-    private String delevieryMobile;
+    private String deliveryMobileNo;
     private String typeOfAddress;
 
     AddressDTO()
     {}
 
-    public AddressDTO(String name, String address, String city, String state, int pincode, String delevieryMobile, String typeOfAddress) {
+    public AddressDTO(String name, String house_no, String area_colony, String landmark, String city, String state, int pincode, String deliveryMobileNo, String typeOfAddress) {
         this.name = name;
-        this.address = address;
+        this.house_no = house_no;
+        this.area_colony = area_colony;
+        this.landmark = landmark;
         this.city = city;
         this.state = state;
         this.pincode = pincode;
-        this.delevieryMobile = delevieryMobile;
+        this.deliveryMobileNo = deliveryMobileNo;
         this.typeOfAddress = typeOfAddress;
     }
 
@@ -30,13 +34,6 @@ public class AddressDTO {
         this.name = name;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     public String getCity() {
         return city;
@@ -63,11 +60,11 @@ public class AddressDTO {
     }
 
     public String getDelevieryMobile() {
-        return delevieryMobile;
+        return deliveryMobileNo;
     }
 
     public void setDelevieryMobile(String delevieryMobile) {
-        this.delevieryMobile = delevieryMobile;
+        this.deliveryMobileNo = delevieryMobile;
     }
 
     public String getTypeOfAddress() {
@@ -78,15 +75,41 @@ public class AddressDTO {
         this.typeOfAddress = typeOfAddress;
     }
 
+    public String getHouse_no() {
+        return house_no;
+    }
+
+    public void setHouse_no(String house_no) {
+        this.house_no = house_no;
+    }
+
+    public String getArea_colony() {
+        return area_colony;
+    }
+
+    public void setArea_colony(String area_colony) {
+        this.area_colony = area_colony;
+    }
+
+    public String getLandmark() {
+        return landmark;
+    }
+
+    public void setLandmark(String landmark) {
+        this.landmark = landmark;
+    }
+
     @Override
     public String toString() {
         return "AddressDTO{" +
                 "name='" + name + '\'' +
-                ", address='" + address + '\'' +
+                ", house_no='" + house_no + '\'' +
+                ", area_colony='" + area_colony + '\'' +
+                ", landmark='" + landmark + '\'' +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", pincode=" + pincode +
-                ", delevieryMobile='" + delevieryMobile + '\'' +
+                ", delevieryMobile='" + deliveryMobileNo + '\'' +
                 ", typeOfAddress='" + typeOfAddress + '\'' +
                 '}';
     }

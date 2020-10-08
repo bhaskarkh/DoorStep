@@ -9,6 +9,12 @@
     <color name="ligt_gray">#F5F5F5</color>
     <color name="gray">#9E9E9E</color>
     <color name="black">#212121</color>
+    <color name="voilet">#623CEB</color>
+    <color name="blue">#2196F3</color>
+    <color name="colorTextPrimary">#212121</color>
+    <color name="colorTextSecondary">#757575</color>
+    <color name="colorIncompleted">#536DFE</color>
+    <color name="colorCompleted">#757575</color>
 
 
 

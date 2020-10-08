@@ -17,4 +17,8 @@
         <item>IT solution</item>
 
     </string-array>
+    <string name="Rs">\u20B9</string>
+    <string name="Rs100">\u20B9100</string>
+    <string name="order_confirmed">Order Confirmed</string>
+    <string name="out_for_delivery">Your order is out for delivery</string>
 </resources>

@@ -71,6 +71,9 @@ public class OrderDetailsServices {
         Log.d(TAG, "userDetailsFromSharedPreference= " + userDetailsFromSharedPreference.toString());
         orderDTO.setCustomerInfoDTO(userDetailsFromSharedPreference);
         orderDTO.setProductDTO(selectedProduct);
+        orderDTO.setOrderConfirmed(false);
+        orderDTO.setOrderCanceled(false);
+        orderDTO.setOrderCancelDate("NA");
 
         firebaseDatabase.getReference().child("test").child("order").child(orderId).setValue(orderDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

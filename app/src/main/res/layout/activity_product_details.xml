@@ -9,6 +9,7 @@
    tools:context=".ProductDetails">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -63,26 +64,6 @@
                 app:srcCompat="@drawable/pd" />
 
 
-            <Button
-                android:id="@+id/buy_btn"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginRight="24dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/voilet_bg_round_corner"
-                android:fontFamily="@font/open_sans_semibold"
-                android:text="Buy Now"
-                android:textAllCaps="false"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.51"
-                app:layout_constraintStart_toStartOf="parent" />
-
             <ProgressBar
                 android:id="@+id/place_order_progressbar"
                 style="?android:attr/progressBarStyle"
@@ -110,8 +91,7 @@
                 <RelativeLayout
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.65"
-                    >
+                    android:layout_weight="0.65">
 
                     <com.codesgood.views.JustifiedTextView
                         android:id="@+id/productName"
@@ -125,7 +105,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="5dp"
 
-                         android:text="raj mistri"
+                        android:text="raj mistri"
                         android:textColor="#000"
                         android:textSize="20sp" />
 
@@ -135,8 +115,7 @@
                 <RelativeLayout
                     android:layout_width="0dip"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.35"
-                    >
+                    android:layout_weight="0.35">
 
 
                     <RelativeLayout
@@ -151,8 +130,7 @@
                         android:layout_marginLeft="0dp"
                         android:layout_marginTop="0dp"
                         android:layout_marginEnd="0dp"
-                        android:layout_marginRight="0dp"
-                        >
+                        android:layout_marginRight="0dp">
 
                         <TextView
                             android:id="@+id/pd_off_percent"
@@ -196,8 +174,8 @@
                             android:layout_marginTop="0dp"
                             android:text="Rs1000"
                             android:textColor="#050505"
-                            android:textStyle="bold"
-                            android:textSize="20dp"/>
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
 
 
                     </RelativeLayout>
@@ -214,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="52dp"
+                android:layout_marginTop="16dp"
                 android:text="Product Details"
                 android:textSize="20dp"
                 android:textStyle="bold"
@@ -250,7 +228,113 @@
                 app:layout_constraintVertical_bias="0.07999998"
                 app:srcCompat="@drawable/ic_dot" />
 
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/prodDesc" />
+
+            <View
+                android:id="@+id/divider6"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="80dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView20"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Deliver to"
+                android:textColor="@color/colorTextPrimary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider5" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:text="Kumar...,"
+                android:textColor="@color/colorTextPrimary"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/textView16"
+                app:layout_constraintTop_toTopOf="@+id/textView16" />
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:text="825330"
+                android:textColor="@color/colorTextPrimary"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/textView17"
+                app:layout_constraintTop_toTopOf="@+id/textView17" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:text="Topa colliery,A-type lane 4"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/gray_border"
+                android:text="change"
+                android:textColor="@color/blue"
+                android:textSize="8sp"
+                app:layout_constraintBottom_toTopOf="@+id/divider6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider5"
+                app:layout_constraintVertical_bias="0.48000002" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/buy_btn"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/voilet_bg_round_corner"
+        android:fontFamily="@font/open_sans_semibold"
+        android:text="Buy Now"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

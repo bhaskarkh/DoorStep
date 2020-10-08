@@ -15,6 +15,7 @@ import com.bhaskar.doorstep.adapter.OrderHistoryAdapter;
 import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
 import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
 import com.bhaskar.doorstep.model.OrderDTO;
+import com.bhaskar.doorstep.util.Home;
 import com.bhaskar.doorstep.util.OrderDetailsServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +32,7 @@ public class YourOrder extends AppCompatActivity  implements OrderStatusInterfac
     FirebaseAuth firebaseAuth;
     public String TAG="YourOrder";
     ProgressBar progressBar;
+    Home hm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class YourOrder extends AppCompatActivity  implements OrderStatusInterfac
         firebaseDatabase=FirebaseDatabase.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         progressBar.setVisibility(View.VISIBLE);
+        hm=new Home(this);
         getAllOrderOfUser();
 
     }

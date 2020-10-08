@@ -78,7 +78,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/success_tick_img"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <com.codesgood.views.JustifiedTextView
+            <TextView
                 android:id="@+id/tv_justified_paragraph"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -92,7 +92,6 @@
                 android:textColor="@color/gray"
                 android:textAlignment="center"
                 android:textSize="15sp"
-                android:textColorLink="@drawable/my_selector_for_your_order_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"

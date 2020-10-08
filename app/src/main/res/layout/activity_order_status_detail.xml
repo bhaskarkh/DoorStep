@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProductDetails">
+    <ImageView
+        android:id="@+id/order_std_back_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.074"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.031"
+
+        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+
+    <TextView
+        android:id="@+id/order_std_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.41"
+        app:layout_constraintStart_toEndOf="@+id/order_std_back_btn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollViewOrderDetails"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/order_std_title"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+            <TextView
+                android:id="@+id/order_std_arrival_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="Arriving on 27 september"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
+                app:layout_constraintEnd_toStartOf="@+id/order_std_prodImage"
+                app:layout_constraintHorizontal_bias="0.137"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.418" />
+
+            <ImageView
+                android:id="@+id/order_std_prodImage"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.954"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0"
+                app:srcCompat="@drawable/ic_home_fish" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.103" />
+
+            <ImageView
+                android:id="@+id/placed_circle"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_placed_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/order_placed_image"
+                app:srcCompat="@drawable/oval_shape_green" />
+
+            <ImageView
+                android:id="@+id/order_placed_image"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="40dp"
+                app:layout_constraintStart_toEndOf="@+id/placed_circle"
+                app:layout_constraintTop_toBottomOf="@+id/divider"
+                app:srcCompat="@drawable/ic_order_st_processing" />
+
+            <TextView
+                android:id="@+id/order_std_placed_txt1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp"
+                android:text="Order Placed"
+                android:textColor="@color/colorTextPrimary"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/view_supporter_placed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/order_placed_image" />
+
+            <View
+                android:id="@+id/view_supporter_placed"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_placed_image"
+                app:layout_constraintEnd_toEndOf="@+id/order_placed_image"
+                app:layout_constraintStart_toStartOf="@+id/order_placed_image"
+                app:layout_constraintTop_toTopOf="@+id/order_placed_image" />
+
+            <TextView
+                android:id="@+id/order_std_placed_txt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="we have received your order"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/order_std_placed_txt1"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/order_std_placed_txt1"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_placed_txt1" />
+
+            <ImageView
+                android:id="@+id/order_confirmed_image"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintStart_toEndOf="@+id/confirmed_circle"
+                app:layout_constraintTop_toBottomOf="@+id/order_placed_image"
+                app:srcCompat="@drawable/ic_order_confirmed" />
+
+            <ImageView
+                android:id="@+id/confirmed_circle"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_confirmed_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/order_confirmed_image"
+                app:srcCompat="@drawable/oval_shape_green" />
+
+            <View
+                android:id="@+id/view_supporter_confirmed"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_confirmed_image"
+                app:layout_constraintEnd_toEndOf="@+id/order_confirmed_image"
+                app:layout_constraintStart_toStartOf="@+id/order_confirmed_image"
+                app:layout_constraintTop_toTopOf="@+id/order_confirmed_image" />
+
+            <TextView
+                android:id="@+id/order_std_confirmed_txt1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/order_confirmed"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/colorTextPrimary"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/view_supporter_confirmed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/order_confirmed_image" />
+
+            <TextView
+                android:id="@+id/order_std_confirmed_txt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Your order has been confirmed"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/order_std_confirmed_txt1"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/order_std_confirmed_txt1"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_confirmed_txt1" />
+
+            <TextView
+                android:id="@+id/order_std_placed_txt3_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="26 November 2020"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/order_std_placed_txt2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/order_std_placed_txt2"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_placed_txt2" />
+
+            <TextView
+                android:id="@+id/order_std_confirmed_txt3_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="27 November 2020"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/order_std_confirmed_txt2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/order_std_confirmed_txt2"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_confirmed_txt2" />
+
+            <View
+                android:id="@+id/placed_to_confirmed_line"
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:background="@color/green"
+                app:layout_constraintBottom_toTopOf="@id/confirmed_circle"
+                app:layout_constraintEnd_toEndOf="@id/placed_circle"
+                app:layout_constraintStart_toStartOf="@id/placed_circle"
+                app:layout_constraintTop_toBottomOf="@+id/placed_circle" />
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Order ID: "
+                android:textSize="13sp"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
+                app:layout_constraintStart_toStartOf="@+id/order_std_arrival_date"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_arrival_date"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="TX11232020122325698"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/divider"
+                app:layout_constraintEnd_toStartOf="@+id/order_std_prodImage"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView22"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_arrival_date"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ImageView
+                android:id="@+id/order_delivering_image"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintStart_toEndOf="@+id/delivering_circle"
+                app:layout_constraintTop_toBottomOf="@+id/order_confirmed_image"
+                app:srcCompat="@drawable/ic_order_confirmed" />
+
+            <ImageView
+                android:id="@+id/delivering_circle"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_delivering_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/order_delivering_image"
+                app:layout_constraintVertical_bias="0.515"
+                app:srcCompat="@drawable/oval_shape_green" />
+
+            <TextView
+                android:id="@+id/order_std_delivering_txt1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/colorTextPrimary"
+                android:textStyle="bold"
+                android:text="Delivering Order"
+                app:layout_constraintBottom_toTopOf="@+id/view_supporter_delivering"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/order_delivering_image" />
+
+            <View
+                android:id="@+id/view_supporter_delivering"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_delivering_image"
+                app:layout_constraintEnd_toEndOf="@+id/order_delivering_image"
+                app:layout_constraintStart_toStartOf="@+id/order_delivering_image"
+                app:layout_constraintTop_toTopOf="@+id/order_delivering_image" />
+
+            <TextView
+                android:id="@+id/order_std_delivering_txt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/out_for_delivery"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/order_std_delivering_txt1"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/order_std_delivering_txt1"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_delivering_txt1" />
+
+            <TextView
+                android:id="@+id/order_std_delivering_txt3_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="27 December 2020"
+                app:layout_constraintEnd_toEndOf="@+id/order_std_delivering_txt2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/order_std_delivering_txt2"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_delivering_txt2" />
+
+            <View
+                android:id="@+id/confirmed_to_delivering"
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:background="@color/green"
+                app:layout_constraintBottom_toTopOf="@+id/delivering_circle"
+                app:layout_constraintEnd_toEndOf="@+id/confirmed_circle"
+                app:layout_constraintStart_toStartOf="@+id/confirmed_circle"
+                app:layout_constraintTop_toBottomOf="@+id/confirmed_circle" />
+
+            <ImageView
+                android:id="@+id/order_completed_image"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="28dp"
+                app:layout_constraintStart_toEndOf="@+id/completed_circle"
+                app:layout_constraintTop_toBottomOf="@+id/order_delivering_image"
+                app:srcCompat="@drawable/ic_order_confirmed" />
+
+            <ImageView
+                android:id="@+id/completed_circle"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginLeft="30dp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_completed_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/order_completed_image"
+                app:layout_constraintVertical_bias="0.49"
+                app:srcCompat="@drawable/oval_shape_green" />
+
+            <TextView
+                android:id="@+id/order_std_completed_txt1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="8dp"
+                android:text="Order Completed"
+                android:textColor="@color/colorTextPrimary"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/view_supporter_completed"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/order_completed_image" />
+
+            <View
+                android:id="@+id/view_supporter_completed"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                app:layout_constraintBottom_toBottomOf="@+id/order_completed_image"
+                app:layout_constraintEnd_toEndOf="@+id/order_completed_image"
+                app:layout_constraintStart_toStartOf="@+id/order_completed_image"
+                app:layout_constraintTop_toTopOf="@+id/order_completed_image" />
+
+            <TextView
+                android:id="@+id/order_std_completed_txt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your order delivered successfully"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/order_std_completed_txt1"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/order_std_completed_txt1"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_completed_txt1" />
+
+            <TextView
+                android:id="@+id/order_std_completed_txt3_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="29 January 2020"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@+id/order_std_completed_txt2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/order_std_completed_txt2"
+                app:layout_constraintTop_toBottomOf="@+id/order_std_completed_txt2" />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="2dp"
+                android:layout_height="0dp"
+                android:background="@color/green"
+                app:layout_constraintBottom_toTopOf="@+id/completed_circle"
+                app:layout_constraintEnd_toEndOf="@+id/delivering_circle"
+                app:layout_constraintStart_toStartOf="@+id/delivering_circle"
+                app:layout_constraintTop_toBottomOf="@+id/delivering_circle" />
+
+            <View
+                android:id="@+id/view_supporter_cancelled"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                tools:layout_editor_absoluteX="112dp"
+                tools:layout_editor_absoluteY="552dp" />
+
+            <View
+                android:id="@+id/divider2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/order_completed_image" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginTop="16dp"
+                android:text="Shipping Details"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.02"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+            <View
+                android:id="@+id/divider3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView19" />
+
+            <TextView
+                android:id="@+id/textView21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="28dp"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="12dp"
+                android:text="Kumar Bhaskar"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider3" />
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Topa colliery"
+                app:layout_constraintEnd_toEndOf="@+id/textView21"
+                app:layout_constraintHorizontal_bias="0.037"
+                app:layout_constraintStart_toStartOf="@+id/textView21"
+                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

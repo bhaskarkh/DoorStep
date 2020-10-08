@@ -25,7 +25,7 @@ public class OrderSuccessOrFail extends AppCompatActivity {
     ImageView order_success_back_btn;
     Button order_success_home_btn;
     Home hm;
-    JustifiedTextView justifiedTextView;
+    TextView justifiedTextView;
     private String TAG="OrderSuccessOrFail";
 
     @Override
@@ -64,7 +64,7 @@ public class OrderSuccessOrFail extends AppCompatActivity {
         SpannableString ss = new SpannableString(thankyou_msg);
         MyClickableSpan myClickableSpan=new MyClickableSpan(this);
 
-        ss.setSpan(myClickableSpan, 81, thankyou_msg.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        ss.setSpan(myClickableSpan, thankyou_msg.length()-10, thankyou_msg.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         Log.d(TAG,"ss= "+ss);
         justifiedTextView.setText(ss);
         justifiedTextView.setMovementMethod(LinkMovementMethod.getInstance());

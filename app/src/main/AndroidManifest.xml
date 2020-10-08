@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".YourOrder"></activity>
+        <activity android:name=".OrderStatusDetail"></activity>
+        <activity android:name=".YourOrder" />
         <activity android:name=".OrderSuccessOrFail" />
         <activity android:name=".AdminDashboard" />
         <activity android:name=".AddProductInDb" />

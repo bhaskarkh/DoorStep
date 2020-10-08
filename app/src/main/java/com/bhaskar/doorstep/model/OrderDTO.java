@@ -11,11 +11,15 @@ public class OrderDTO {
     private ShippingDTO shippingDTO;
     private UserRegistrationDTO customerInfoDTO;
     private ProductDTO productDTO;
+    private boolean isOrderConfirmed;
+    private String orderCancelDate;
+    private boolean isOrderCanceled;
+
 
     public OrderDTO()
     {}
 
-    public OrderDTO(String orderId, String orderStatus, String orderDateTime, String expectedStartDateOfDelivery, String expectedLastDateOfDelivery, String completeDateTime, String orderConfirmDate, ShippingDTO shippingDTO, UserRegistrationDTO customerInfoDTO, ProductDTO productDTO) {
+    public OrderDTO(String orderId, String orderStatus, String orderDateTime, String expectedStartDateOfDelivery, String expectedLastDateOfDelivery, String completeDateTime, String orderConfirmDate, ShippingDTO shippingDTO, UserRegistrationDTO customerInfoDTO, ProductDTO productDTO, boolean isOrderConfirmed, String orderCancelDate, boolean isOrderCanceled) {
         this.orderId = orderId;
         this.orderStatus = orderStatus;
         this.orderDateTime = orderDateTime;
@@ -26,6 +30,52 @@ public class OrderDTO {
         this.shippingDTO = shippingDTO;
         this.customerInfoDTO = customerInfoDTO;
         this.productDTO = productDTO;
+        this.isOrderConfirmed = isOrderConfirmed;
+        this.orderCancelDate = orderCancelDate;
+        this.isOrderCanceled = isOrderCanceled;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDTO{" +
+                "orderId='" + orderId + '\'' +
+                ", orderStatus='" + orderStatus + '\'' +
+                ", orderDateTime='" + orderDateTime + '\'' +
+                ", expectedStartDateOfDelivery='" + expectedStartDateOfDelivery + '\'' +
+                ", expectedLastDateOfDelivery='" + expectedLastDateOfDelivery + '\'' +
+                ", completeDateTime='" + completeDateTime + '\'' +
+                ", orderConfirmDate='" + orderConfirmDate + '\'' +
+                ", shippingDTO=" + shippingDTO +
+                ", customerInfoDTO=" + customerInfoDTO +
+                ", productDTO=" + productDTO +
+                ", isOrderConfirmed=" + isOrderConfirmed +
+                ", orderCancelDate='" + orderCancelDate + '\'' +
+                ", isOrderCanceled=" + isOrderCanceled +
+                '}';
+    }
+
+    public boolean isOrderConfirmed() {
+        return isOrderConfirmed;
+    }
+
+    public void setOrderConfirmed(boolean orderConfirmed) {
+        isOrderConfirmed = orderConfirmed;
+    }
+
+    public String getOrderCancelDate() {
+        return orderCancelDate;
+    }
+
+    public void setOrderCancelDate(String orderCancelDate) {
+        this.orderCancelDate = orderCancelDate;
+    }
+
+    public boolean isOrderCanceled() {
+        return isOrderCanceled;
+    }
+
+    public void setOrderCanceled(boolean orderCanceled) {
+        isOrderCanceled = orderCanceled;
     }
 
     public String getOrderId() {
@@ -108,19 +158,4 @@ public class OrderDTO {
         this.orderConfirmDate = orderConfirmDate;
     }
 
-    @Override
-    public String toString() {
-        return "OrderDTO{" +
-                "orderId='" + orderId + '\'' +
-                ", orderStatus='" + orderStatus + '\'' +
-                ", orderDateTime='" + orderDateTime + '\'' +
-                ", expectedStartDateOfDelivery='" + expectedStartDateOfDelivery + '\'' +
-                ", expectedLastDateOfDelivery='" + expectedLastDateOfDelivery + '\'' +
-                ", completeDateTime='" + completeDateTime + '\'' +
-                ", orderConfirmDate='" + orderConfirmDate + '\'' +
-                ", shippingDTO=" + shippingDTO +
-                ", customerInfoDTO=" + customerInfoDTO +
-                ", productDTO=" + productDTO +
-                '}';
-    }
 }
