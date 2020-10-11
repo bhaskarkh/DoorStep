@@ -2,11 +2,20 @@ package com.bhaskar.doorstep.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 
 import com.bhaskar.doorstep.MainActivity;
 import com.bhaskar.doorstep.R;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Home {
     Context context;
@@ -30,6 +39,34 @@ public class Home {
         context.startActivity(intent);
 
     }
+    public String getSource(Intent intent)
+    {
+        String src="No source found";
+        if(intent!=null)
+        {
+           src=intent.getStringExtra("source");
+           if(src==null)
+           {
+               src="No source found";
+           }
+        }
+      return src;
+    }
+    public String getMethod(Intent intent)
+    {
+        String src="No method found";
+        if(intent!=null)
+        {
+            src=intent.getStringExtra("method");
+            if(src==null)
+            {
+                src="No method found";
+            }
+        }
+        return src;
+    }
+
+
 
     public String getFirstUpperCase(String str)
     {
@@ -80,8 +117,13 @@ public class Home {
 
     public void limitCharacterInView(TextView textView,int max_char,String value)
     {
-        String stringToShow=value.substring(0,max_char)+"...";
-        textView.setText(stringToShow);
+        if(value.length()>(max_char+3)) {
+            String stringToShow = value.substring(0, max_char) + "...";
+            textView.setText(stringToShow);
+        }
+        else {
+            textView.setText(value);
+        }
 
     }
     public String appendRuppeSymbol(String anount)
@@ -91,5 +133,43 @@ public class Home {
         stringBuilder.append(anount);
         return  stringBuilder.toString();
     }
+
+    public boolean checkEmptyStringAndSetErrorMsgOfTextInputLayout(Map<TextInputLayout,String> map){
+        AtomicBoolean EmptyString= new AtomicBoolean(true);
+        for (Map.Entry<TextInputLayout, String> entry : map.entrySet()) {
+            TextInputLayout key = entry.getKey();
+            String value = entry.getValue();
+            if (key.getEditText().getText().toString().isEmpty()) {
+                Log.d(TAG, "checkEmptyStringAndSetErrorMsg: key= "+key.getEditText().getText().toString()+" value= "+value);
+                EmptyString.set(false);
+                key.setError(value);
+                break;
+            }
+
+        }
+
+        return EmptyString.get();
+    }
+
+
+    public boolean checkEmptyStringAndSetErrorMsgOfEditText(Map<EditText,String> map)
+    {
+        AtomicBoolean EmptyString= new AtomicBoolean(true);
+
+        for (Map.Entry<EditText, String> entry : map.entrySet()) {
+            EditText key = entry.getKey();
+            String value = entry.getValue();
+            if (key.getText().toString().isEmpty()) {
+                Log.d(TAG, "checkEmptyStringAndSetErrorMsg: key= "+key.getText().toString()+" value= "+value);
+                EmptyString.set(false);
+                key.setError(value);
+                break;
+            }
+
+        }
+
+        return EmptyString.get();
+    }
+
 
 }

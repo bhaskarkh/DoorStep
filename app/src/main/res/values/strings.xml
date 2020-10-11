@@ -21,4 +21,16 @@
     <string name="Rs100">\u20B9100</string>
     <string name="order_confirmed">Order Confirmed</string>
     <string name="out_for_delivery">Your order is out for delivery</string>
+    <string name="pincode">pincode *</string>
+    <string name="house_no_building_name">House No,Building name *</string>
+    <string name="road_name_area_colony">Road Name,Area,Colony *</string>
+    <string name="city">City*</string>
+    <string name="state">State*</string>
+    <string name="name">name*</string>
+    <string name="mobile_number">Mobile Number*</string>
+    <string name="save">SAVE</string>
+    <string name="tap_to_auto_fill_the_address_fields">Tap to auto fill the address fields.</string>
+    <string name="use_my_current_location">Use my current location</string>
+    <string name="gps_image">gps_image</string>
+    <string name="set_as_default_address">Set as default address</string>
 </resources>

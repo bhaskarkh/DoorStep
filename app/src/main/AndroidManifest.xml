@@ -3,6 +3,8 @@
     package="com.bhaskar.doorstep">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OrderStatusDetail"></activity>
+        <activity android:name=".AddressList"></activity>
+        <activity android:name=".ChangeAddress" />
+        <activity android:name=".OrderStatusDetail" />
         <activity android:name=".YourOrder" />
         <activity android:name=".OrderSuccessOrFail" />
         <activity android:name=".AdminDashboard" />

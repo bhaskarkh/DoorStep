@@ -203,29 +203,29 @@
 
             <com.codesgood.views.JustifiedTextView
                 android:id="@+id/prodDesc"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginLeft="48dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:text="@string/order_processing_text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/imageView"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_width="6dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/prodDesc"
-                app:layout_constraintEnd_toStartOf="@+id/prodDesc"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/prodDesc"
-                app:layout_constraintVertical_bias="0.07999998"
+                app:layout_constraintVertical_bias="0.100000024"
                 app:srcCompat="@drawable/ic_dot" />
 
             <View
@@ -250,11 +250,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20"
+                app:layout_constraintTop_toBottomOf="@+id/prod_address_full_address"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/prod_deliver_to_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -266,7 +266,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/divider5" />
 
             <TextView
-                android:id="@+id/textView17"
+                android:id="@+id/prod_address_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -274,11 +274,11 @@
                 android:text="Kumar...,"
                 android:textColor="@color/colorTextPrimary"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/textView16"
-                app:layout_constraintTop_toTopOf="@+id/textView16" />
+                app:layout_constraintStart_toEndOf="@+id/prod_deliver_to_text"
+                app:layout_constraintTop_toTopOf="@+id/prod_deliver_to_text" />
 
             <TextView
-                android:id="@+id/textView18"
+                android:id="@+id/prod_address_pincode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
@@ -286,11 +286,11 @@
                 android:text="825330"
                 android:textColor="@color/colorTextPrimary"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/textView17"
-                app:layout_constraintTop_toTopOf="@+id/textView17" />
+                app:layout_constraintStart_toEndOf="@+id/prod_address_user_name"
+                app:layout_constraintTop_toTopOf="@+id/prod_address_user_name" />
 
             <TextView
-                android:id="@+id/textView20"
+                android:id="@+id/prod_address_full_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -298,10 +298,10 @@
                 android:text="Topa colliery,A-type lane 4"
                 android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
+                app:layout_constraintTop_toBottomOf="@+id/prod_deliver_to_text" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/change_address_button"
                 android:layout_width="50dp"
                 android:layout_height="25dp"
                 android:layout_marginEnd="24dp"

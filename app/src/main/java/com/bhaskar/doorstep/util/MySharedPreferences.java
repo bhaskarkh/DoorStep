@@ -13,7 +13,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MySharedPreferences {
     Context context;
-    String TAG="MySharedPreferences";
+    private static final String TAG = "MySharedPreferences";
 
     public MySharedPreferences(Context context) {
         this.context = context;
@@ -42,7 +42,8 @@ public class MySharedPreferences {
 
     }
     public UserRegistrationDTO getUserDetailsFromSharedPreference()
-    { SharedPreferences mPrefs = this.context.getSharedPreferences("userDTOsharedPrefernce",MODE_PRIVATE);
+    {
+        SharedPreferences mPrefs = this.context.getSharedPreferences("userDTOsharedPrefernce",MODE_PRIVATE);
         UserRegistrationDTO userRegistrationDTO=new UserRegistrationDTO();
         Gson gson = new Gson();
         String json = mPrefs.getString("userRegistrationDTO", "empty");

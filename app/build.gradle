@@ -30,6 +30,10 @@ android {
         // for view binding:
         // viewBinding = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -53,6 +57,7 @@ dependencies {
     implementation 'com.muddzdev:styleabletoast:2.2.3' //for toast Styling
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.codesgood:justifiedtextview:1.1.0' //for justified Text
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
 
 
 }

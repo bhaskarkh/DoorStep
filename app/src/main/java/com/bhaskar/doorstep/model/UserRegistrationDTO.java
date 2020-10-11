@@ -15,13 +15,13 @@ public class UserRegistrationDTO {
     private boolean isRmnVerified;
     private String  userRegisteredDate;
     private String userStatus;
-    private AddressDTO addressDTO;
+    private List<AddressDTO> addressDTOList;
 
 
     public UserRegistrationDTO() {
     }
 
-    public UserRegistrationDTO(String userName, String userEmail, String userId, String userPhoto, String role, String rmn, boolean isRmnVerified, String userRegisteredDate, String userStatus, AddressDTO addressList) {
+    public UserRegistrationDTO(String userName, String userEmail, String userId, String userPhoto, String role, String rmn, boolean isRmnVerified, String userRegisteredDate, String userStatus, List<AddressDTO> addressDTOList) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userId = userId;
@@ -31,7 +31,7 @@ public class UserRegistrationDTO {
         this.isRmnVerified = isRmnVerified;
         this.userRegisteredDate = userRegisteredDate;
         this.userStatus = userStatus;
-        this.addressDTO = addressList;
+        this.addressDTOList = addressDTOList;
     }
 
     public String getUserName() {
@@ -106,13 +106,14 @@ public class UserRegistrationDTO {
         this.userStatus = userStatus;
     }
 
-    public AddressDTO getAddressList() {
-        return addressDTO;
+    public List<AddressDTO> getAddressDTOList() {
+        return addressDTOList;
     }
 
-    public void setAddressList(AddressDTO addressList) {
-        this.addressDTO = addressList;
+    public void setAddressDTOList(List<AddressDTO> addressDTOList) {
+        this.addressDTOList = addressDTOList;
     }
+
 
     @Override
     public String toString() {
@@ -126,7 +127,7 @@ public class UserRegistrationDTO {
                 ", isRmnVerified=" + isRmnVerified +
                 ", userRegisteredDate='" + userRegisteredDate + '\'' +
                 ", userStatus='" + userStatus + '\'' +
-                ", addressDTO=" + addressDTO +
+                ", addressDTOList=" + addressDTOList +
                 '}';
     }
 }
