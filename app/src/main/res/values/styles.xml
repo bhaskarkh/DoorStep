@@ -12,6 +12,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
     <style name="mytoast">
         <item name="stTextBold">true</item>
         <item name="stTextColor">#fff</item>

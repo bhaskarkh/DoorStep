@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
     //FirebaseFirestore firebaseFirestore;
     FirebaseDatabase database;
     DatabaseReference databaseReference;
+    Button byPassLoginBtn;
 
 
     @Override
@@ -76,6 +78,7 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
         setContentView(R.layout.activity_login_screen);
         signInButton = findViewById(R.id.google_sign_in_button);
         loginProgressBar=findViewById(R.id.login_progress_bar);
+        byPassLoginBtn=findViewById(R.id.byPassLoginBtn);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
 
 
@@ -139,8 +142,9 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            afterSuccessfulLogin(task);
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
+                          /*  Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
 
@@ -160,7 +164,7 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
                                 saveUserDetailsToSharedPreferenceFromFireBase(user,LoginScreen.this);
                                 Intent intent=new Intent(LoginScreen.this, MainActivity.class);
                                 startActivity(intent);
-                            }
+                            }*/
 
                           //  updateUI(user);
                         } else {
@@ -175,6 +179,34 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
                         // ...
                     }
                 });
+    }
+
+
+    public void afterSuccessfulLogin(Task<AuthResult> task)
+    {
+        // Sign in success, update UI with the signed-in user's information
+        Log.d(TAG, "signInWithCredential:success");
+        FirebaseUser user = mAuth.getCurrentUser();
+
+
+        Log.d(TAG, "user= "+user.getPhoneNumber());
+        loginProgressBar.setVisibility(View.GONE);
+        Boolean isNewUser=task.getResult().getAdditionalUserInfo().isNewUser();
+        Log.d(TAG,"isnewUser= "+isNewUser);
+        if(isNewUser) {
+            Log.d(TAG,"New User");
+            RegisterUserInFireBase(user);
+            saveUserDetailsToSharedPreference(user,LoginScreen.this);
+
+        }
+        else
+        {
+            Log.d(TAG,"Old User");
+            saveUserDetailsToSharedPreferenceFromFireBase(user,LoginScreen.this);
+            Intent intent=new Intent(LoginScreen.this, MainActivity.class);
+            startActivity(intent);
+        }
+
     }
 
     private void saveUserDetailsToSharedPreference(FirebaseUser user, Context context) {
@@ -192,11 +224,6 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
         UsersMethod usersMethod=new UsersMethod(this);
         usersMethod.setUserRegistrationDetailsInterface(this);
         usersMethod.getUserRegistrationFromFireBase();
-      /*  UserRegistrationDTO userRegistrationDTO=getUserDetailFromGoogle(user);
-
-        MySharedPreferences mySharedPreferences=new MySharedPreferences(context);
-
-        mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);*/
 
 
     }
@@ -215,23 +242,7 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
 
     }
 
-    private void LoadProgressBar(AllianceLoader aa)
-{
 
-    AllianceLoader   allianceLoader1  = new AllianceLoader(
-            this,
-            40,
-            6,
-            true,
-            10,
-            ContextCompat.getColor(this, R.color.red),
-            ContextCompat.getColor(this, R.color.amber),
-            ContextCompat.getColor(this, R.color.green));
-
-    allianceLoader1.setAnimDuration(500);
-
-    aa.addView(allianceLoader1);
-}
 
     public UserRegistrationDTO getUserDetailFromGoogle(FirebaseUser fuser)
     {
@@ -273,5 +284,29 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
         MySharedPreferences mySharedPreferences=new MySharedPreferences(this);
 
         mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);
+    }
+
+    public void SignUnUsingEmailandPass(String email,String password)
+    {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginScreen.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+
+                        }
+
+                        // ...
+                    }
+                });
     }
 }

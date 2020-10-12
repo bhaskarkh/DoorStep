@@ -67,25 +67,13 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
 
         Intent i = getIntent();
         selectedProduct=i.getParcelableExtra("selected_product");
-          /*  i.putExtra("name", productDTOList.get(position).getName());
-                i.putExtra("image", productDTOList.get(position).getImage());
-                i.putExtra("price",productDTOList.get(position).getPrice());
-                i.putExtra("desc",productDTOList.get(position).getDescription());
-                i.putExtra("qty",productDTOList.get(position).getAmountAvailable());
-                i.putExtra("unit",productDTOList.get(position).getQuantityType());*/
-
          name = selectedProduct.getName();
          price = String.valueOf(selectedProduct.getPrice());
          desc = selectedProduct.getDescription();
-        /* qty = String.valueOf(selectedProduct.getQuantity());
-         unit = selectedProduct.getQuantityType();*/
-
-
          proName.setText(name);
          proPrice.setText(price);
          proDesc.setText(desc);
-        /* proQty.setText(qty);
-         proUnit.setText(unit);*/
+
 
 
         img.setImageResource(R.drawable.pd);
@@ -133,8 +121,9 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
             if(addressDTO!=null)
             {
                 home.limitCharacterInView(address_userName,8,addressDTO.getName());
+                String pincodeWithComaPrefix=","+addressDTO.getPincode();
 
-                address_pincode.setText(String.valueOf(addressDTO.getPincode()));
+                address_pincode.setText(pincodeWithComaPrefix);
                 home.limitCharacterInView(address_full_address,30,addressDTO.getArea_colony()+","+addressDTO.getHouse_no()+","+addressDTO.getCity());
 
 
@@ -144,6 +133,7 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
         }
         else {
             Log.d(TAG, "setValueInAddress: userRegistrationDTO.getAddressDTOList() is null");
+
 
 
         }

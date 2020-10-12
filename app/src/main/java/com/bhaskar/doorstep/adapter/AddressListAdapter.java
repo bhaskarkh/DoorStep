@@ -23,11 +23,13 @@ import java.util.List;
 public class AddressListAdapter extends RecyclerView.Adapter<AddressListAdapter.AddresListViewHolder>{
 Context context;
 List<AddressDTO> addressDTOList;
+Intent intentforSource;
     private static final String TAG = "AddressListAdapter";
 
-    public AddressListAdapter(Context context, List<AddressDTO> addressDTOList) {
+    public AddressListAdapter(Context context, List<AddressDTO> addressDTOList, Intent intentforSource) {
         this.context = context;
         this.addressDTOList = addressDTOList;
+        this.intentforSource = intentforSource;
     }
 
     @NonNull
@@ -46,11 +48,20 @@ List<AddressDTO> addressDTOList;
         holder.address_list_house_road_landmark.setText(addressServices.firstLineAddress(addressDTO));
         holder.addresslist_city_state_pin.setText(addressServices.secondLineAddress(addressDTO));
         holder.addresslist_rmn.setText(addressDTO.getDeliveryMobileNo());
-        holder.edit_address_btn_image.setOnClickListener(new View.OnClickListener() {
+        if (addressDTO.isPrimaryAddress()) {
+            holder.default_address_text.setVisibility(View.VISIBLE);
+        } else {
+            holder.default_address_text.setVisibility(View.GONE);
+        }
+        ;
+
+        holder.edit_address_btn_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: name= "+ addressDTO.getName());
                 Intent intent=new Intent(context, ChangeAddress.class);
+
+                intent.putExtra("source",intentforSource.getStringExtra("source"));
                 intent.putExtra("method","edit");
                 intent.putExtra("addressVal",addressDTO);
                 context.startActivity(intent);
@@ -66,7 +77,9 @@ List<AddressDTO> addressDTOList;
 
     public static class AddresListViewHolder extends RecyclerView.ViewHolder {
         TextView address_list_name,address_list_house_road_landmark,addresslist_city_state_pin,addresslist_rmn;
-        ImageView edit_address_btn_image;
+        TextView edit_address_btn_text,default_address_text;
+
+
 
         public AddresListViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -74,7 +87,8 @@ List<AddressDTO> addressDTOList;
             address_list_house_road_landmark=itemView.findViewById(R.id.address_list_house_road_landmark);
             addresslist_city_state_pin=itemView.findViewById(R.id.addresslist_city_state_pin);
             addresslist_rmn=itemView.findViewById(R.id.addresslist_rmn);
-            edit_address_btn_image=itemView.findViewById(R.id.edit_address_btn_image);
+            edit_address_btn_text=itemView.findViewById(R.id.edit_address_btn_text);
+            default_address_text=itemView.findViewById(R.id.default_address_text);
 
 
         }

@@ -33,4 +33,5 @@
     <string name="use_my_current_location">Use my current location</string>
     <string name="gps_image">gps_image</string>
     <string name="set_as_default_address">Set as default address</string>
+    <string name="vertical_ellipsis">&#8942;</string>
 </resources>
