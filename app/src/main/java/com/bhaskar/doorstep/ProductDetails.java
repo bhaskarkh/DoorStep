@@ -20,7 +20,6 @@ import com.bhaskar.doorstep.util.MySharedPreferences;
 import com.bhaskar.doorstep.allinterface.OnOrderSubmissionListener;
 import com.bhaskar.doorstep.util.OrderDetailsServices;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class ProductDetails extends AppCompatActivity implements OnOrderSubmissionListener {
@@ -31,10 +30,12 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
     MySharedPreferences mySharedPreferences;
     AddressServices addressServices;
     Home home;
+    String sourceCategory;
 
     String name, price, desc, qty, unit;
 
     int image;
+    Intent i;
     Button buy_btn,change_address_button;
     ProductDTO selectedProduct;
     FirebaseDatabase firebaseDatabase;
@@ -51,7 +52,7 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
         proDesc = findViewById(R.id.prodDesc);
         proPrice = findViewById(R.id.prodPrice_new);
         img = findViewById(R.id.big_image);
-        back = findViewById(R.id.back2);
+        back = findViewById(R.id.product_details_back_btn);
         change_address_button=findViewById(R.id.change_address_button);
         address_userName=findViewById(R.id.prod_address_user_name);
         address_pincode=findViewById(R.id.prod_address_pincode);
@@ -64,9 +65,10 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
         mySharedPreferences=new MySharedPreferences(ProductDetails.this);
         addressServices=new AddressServices(ProductDetails.this);
         home=new Home(ProductDetails.this);
-
-        Intent i = getIntent();
+          i = getIntent();
         selectedProduct=i.getParcelableExtra("selected_product");
+        sourceCategory=i.getStringExtra("cat_name");
+
          name = selectedProduct.getName();
          price = String.valueOf(selectedProduct.getPrice());
          desc = selectedProduct.getDescription();
@@ -83,10 +85,9 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: BackButton productDetails");
 
-                Intent i = new Intent(ProductDetails.this, MainActivity.class);
-                startActivity(i);
-                finish();
+              home.backButton(i,"ProductDetails");
 
             }
         });
@@ -106,6 +107,7 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
                 Log.d(TAG,"going To change address");
                 Intent intent=new Intent(ProductDetails.this,AddressList.class);
                 intent.putExtra("source","ProductDetails");
+                intent.putExtra("cat_name",sourceCategory);
                 intent.putExtra("selected_product",selectedProduct);
                 startActivity(intent);
             }

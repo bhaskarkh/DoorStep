@@ -58,6 +58,7 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
     FirebaseDatabase database;
     DatabaseReference databaseReference;
     Button byPassLoginBtn;
+    MySharedPreferences mySharedPreferences;
 
 
     @Override
@@ -80,6 +81,16 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
         loginProgressBar=findViewById(R.id.login_progress_bar);
         byPassLoginBtn=findViewById(R.id.byPassLoginBtn);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+        mySharedPreferences=new MySharedPreferences(this);
+
+
+        byPassLoginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginProgressBar.setVisibility(View.VISIBLE);
+                SignInUsingEmailandPass("abc@gmail.com","123456");
+            }
+        });
 
 
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -142,38 +153,33 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            afterSuccessfulLogin(task);
-                            // Sign in success, update UI with the signed-in user's information
-                          /*  Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            afterSuccessfulLogin(task,"google");
 
-
-                            Log.d(TAG, "user= "+user.getPhoneNumber());
-                            loginProgressBar.setVisibility(View.GONE);
-                            Boolean isNewUser=task.getResult().getAdditionalUserInfo().isNewUser();
-                           Log.d(TAG,"isnewUser= "+isNewUser);
-                            if(isNewUser) {
-                                Log.d(TAG,"New User");
-                                RegisterUserInFireBase(user);
-                                saveUserDetailsToSharedPreference(user,LoginScreen.this);
-
-                            }
-                            else
-                            {
-                                Log.d(TAG,"Old User");
-                                saveUserDetailsToSharedPreferenceFromFireBase(user,LoginScreen.this);
-                                Intent intent=new Intent(LoginScreen.this, MainActivity.class);
-                                startActivity(intent);
-                            }*/
-
-                          //  updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginScreen.this, " signInWithCredential:failure exception= "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginScreen.this, " ssignInWithCredential Failed try again", Toast.LENGTH_SHORT).show();
 
-                            Log.d(TAG, "signInWithCredential:failure", task.getException());
+                            Log.d(TAG, "signInWithCredential:failure exception= "+task.getException().getMessage());
+                        }
 
-                          //  updateUI(null);
+                    }
+                });
+    }
+
+    public void SignInUsingEmailandPass(String email,String password)
+    {
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            afterSuccessfulLogin(task,"email");
+
+                        } else {
+                            Toast.makeText(LoginScreen.this, " signInWithCredential Failed try again", Toast.LENGTH_SHORT).show();
+
+                            Log.d(TAG, "signInWithCredential:failure exception= "+task.getException().getMessage());
+
                         }
 
                         // ...
@@ -182,7 +188,7 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
     }
 
 
-    public void afterSuccessfulLogin(Task<AuthResult> task)
+    public void afterSuccessfulLogin(Task<AuthResult> task,String source)
     {
         // Sign in success, update UI with the signed-in user's information
         Log.d(TAG, "signInWithCredential:success");
@@ -195,43 +201,76 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
         Log.d(TAG,"isnewUser= "+isNewUser);
         if(isNewUser) {
             Log.d(TAG,"New User");
-            RegisterUserInFireBase(user);
-            saveUserDetailsToSharedPreference(user,LoginScreen.this);
+            if(source.equals("google")) {
+                RegisterGoogleUserInFireBase(user);
+                saveGoogleUserDetailsToSharedPreference(user, LoginScreen.this);
+            }
+            if(source.equals("email"))
+            {
+                RegisterEmailUserInFireBase(user);
+                saveEmailUserDetailsToSharedPreference(user,LoginScreen.this);
+
+            }
 
         }
         else
         {
             Log.d(TAG,"Old User");
-            saveUserDetailsToSharedPreferenceFromFireBase(user,LoginScreen.this);
+            saveUserDetailsToSharedPreferenceFromFireBase(user,LoginScreen.this,source);
             Intent intent=new Intent(LoginScreen.this, MainActivity.class);
             startActivity(intent);
         }
 
     }
 
-    private void saveUserDetailsToSharedPreference(FirebaseUser user, Context context) {
+    private void saveGoogleUserDetailsToSharedPreference(FirebaseUser user, Context context) {
         Log.d(TAG," inside Login saveUserDetailsToSharedPreference");
       UserRegistrationDTO userRegistrationDTO=getUserDetailFromGoogle(user);
 
-      MySharedPreferences mySharedPreferences=new MySharedPreferences(context);
-
       mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);
+      mySharedPreferences.saveLoginSourceToSharedPreference("google");
 
 
     }
-    private void saveUserDetailsToSharedPreferenceFromFireBase(FirebaseUser user, Context context) {
+    private void saveEmailUserDetailsToSharedPreference(FirebaseUser user, Context context) {
+        Log.d(TAG," inside Login saveUserDetailsToSharedPreference");
+        UserRegistrationDTO userRegistrationDTO=getUserDetailFromEmail(user);
+
+
+
+        mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);
+        mySharedPreferences.saveLoginSourceToSharedPreference("email");
+
+
+    }
+    private void saveUserDetailsToSharedPreferenceFromFireBase(FirebaseUser user, Context context,String source) {
         Log.d(TAG," inside Login saveUserDetailsToSharedPreference");
         UsersMethod usersMethod=new UsersMethod(this);
         usersMethod.setUserRegistrationDetailsInterface(this);
         usersMethod.getUserRegistrationFromFireBase();
+        mySharedPreferences.saveLoginSourceToSharedPreference(source);
+
 
 
     }
 
 
-    private void RegisterUserInFireBase(final FirebaseUser fuser) {
+    private void RegisterGoogleUserInFireBase(final FirebaseUser fuser) {
         Log.d(TAG,"inside RegisterUserInFireBase");
         final UserRegistrationDTO userRegistrationDTO=getUserDetailFromGoogle(fuser);
+        RegisterUserToFireBase(userRegistrationDTO,fuser);
+
+
+    }
+    private void RegisterEmailUserInFireBase(final FirebaseUser fuser) {
+        Log.d(TAG, "RegisterEmailUserInFireBase: ");
+         UserRegistrationDTO userRegistrationDTO=getUserDetailFromEmail(fuser);
+        RegisterUserToFireBase(userRegistrationDTO,fuser);
+
+
+    }
+    private void RegisterUserToFireBase(UserRegistrationDTO userRegistrationDTO,FirebaseUser fuser)
+    {
         if(userRegistrationDTO!=null)
         {
             databaseReference.child("user").child("user_registration").child(fuser.getUid()).setValue(userRegistrationDTO);
@@ -239,10 +278,28 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
             startActivity(intent);
 
         }
-
+        else {
+            Log.d(TAG, "RegisterUserToFireBase: UserRegistrationDTO is null");
+        }
     }
 
 
+    public UserRegistrationDTO getUserDetailFromEmail(FirebaseUser firebaseUser)
+    {
+        Log.d(TAG, "getUserDEtailFromEmail: ");
+        UserRegistrationDTO userRegistrationDTO=new UserRegistrationDTO();
+        userRegistrationDTO.setUserName("bhaskar");
+        userRegistrationDTO.setUserEmail(firebaseUser.getEmail());
+        userRegistrationDTO.setUserId(firebaseUser.getUid());
+        userRegistrationDTO.setUserPhoto("https://lh3.googleusercontent.com/a-/AOh14Gj8NW66Zjae1N3Sa0IzYhHPBcfpHSk3jnLPnKGF=s96-c");
+        userRegistrationDTO.setRole("user");
+        userRegistrationDTO.setRmnVerified(false);
+        userRegistrationDTO.setRmn("");
+        userRegistrationDTO.setUserRegisteredDate(getCurrentDateAndTime());
+        userRegistrationDTO.setUserStatus("Active");
+
+        return userRegistrationDTO;
+    }
 
     public UserRegistrationDTO getUserDetailFromGoogle(FirebaseUser fuser)
     {
@@ -281,32 +338,9 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
 
     @Override
     public void saveToSharedPref(UserRegistrationDTO userRegistrationDTO) {
-        MySharedPreferences mySharedPreferences=new MySharedPreferences(this);
 
         mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);
     }
 
-    public void SignUnUsingEmailandPass(String email,String password)
-    {
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
 
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginScreen.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
-
-                        // ...
-                    }
-                });
-    }
 }

@@ -29,6 +29,22 @@ public class MySharedPreferences {
 
 
 
+    public void saveLoginSourceToSharedPreference(String loginSource)
+    {
+        SharedPreferences mPrefs =this.context.getSharedPreferences("loginSourcePref",MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        prefsEditor.putString("loginSource", loginSource);
+        prefsEditor.apply();
+    }
+    public String getLoginSourceToSharedPreference()
+    {
+        String SourceLogin="";
+        SharedPreferences mPrefs =this.context.getSharedPreferences("loginSourcePref",MODE_PRIVATE);
+
+        SourceLogin=mPrefs.getString("loginSource", "empty");
+        return SourceLogin;
+    }
+
     public void saveUserDetailsToSharedPreference(UserRegistrationDTO userRegistrationDTO)
     {
         Log.d(TAG,"inside util saveUserDetailsToSharedPreference");

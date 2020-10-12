@@ -55,14 +55,8 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
 
                 Intent i=new Intent(context, ProductDetails.class);
                 ProductDTO selectedProduct=productDTOList.get(position);
+                i.putExtra("cat_name", selectedProduct.getCategory());
                 i.putExtra("selected_product",selectedProduct);
-              /*  i.putExtra("name", productDTOList.get(position).getName());
-                i.putExtra("image", productDTOList.get(position).getImage());
-                i.putExtra("price",productDTOList.get(position).getPrice());
-                i.putExtra("desc",productDTOList.get(position).getDescription());
-                i.putExtra("qty",productDTOList.get(position).getAmountAvailable());
-                i.putExtra("unit",productDTOList.get(position).getQuantityType());*/
-
                 context.startActivity(i);
 
             }

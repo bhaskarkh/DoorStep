@@ -9,8 +9,12 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
+import com.bhaskar.doorstep.AddressList;
 import com.bhaskar.doorstep.MainActivity;
+import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
+import com.bhaskar.doorstep.SingleCategory;
+import com.bhaskar.doorstep.model.ProductDTO;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.HashMap;
@@ -35,9 +39,87 @@ public class Home {
 
 
 
+    public void backButton(Intent intent,String backCallSource)
+    {
+        Log.d(TAG, "backButton: Clicked inside Home");
+        if (backCallSource.equals("ProductDetails"))
+        {
+            
+            Log.d(TAG, "backButton: call from ProductDetails");
+            String goingSource = intent.getStringExtra("cat_name");
+
+            if (goingSource != null) {
+                Log.d(TAG, "goingSource : "+goingSource);
+                if (!goingSource.equals("NA")) {
+                    Log.d(TAG, "backButton: not NA");
+
+                    Intent i = new Intent(context, SingleCategory.class);
+                    i.putExtra("cat_name", goingSource);
+                    context.startActivity(i);
+                } else {
+                    Log.d(TAG, "goingSource: is NA ");
+                    gotToHome();
+                }
+            }else {
+                Log.d(TAG, "goingSource: is null");
+                gotToHome();
+            }
+
+        }else if(backCallSource.equals("AddressList")){
+            Log.d(TAG, "backButton: AddressList");
+            String comingSource=intent.getStringExtra("source");
+
+
+            if(comingSource!=null)
+            {
+                Log.d(TAG, "comingSource: "+comingSource);
+                if (comingSource.equals("ProductDetails")){
+                    Intent i = new Intent(context, ProductDetails.class);
+                    ProductDTO productDTO=(ProductDTO)intent.getParcelableExtra("selected_product");
+                    String cat_nam=intent.getStringExtra("cat_name");
+                    Log.d(TAG, "AddressList: cat_name"+cat_nam);
+                    i.putExtra("cat_name", cat_nam);
+                    i.putExtra("selected_product",productDTO);
+                    context.startActivity(i);
+                }
+
+            }else {
+                Log.d(TAG, "AddressList : comingSource= is null");
+                gotToHome();
+            }
+
+
+
+        }
+        else if(backCallSource.equals("ChangeAddress")){
+            Log.d(TAG, "backButton: ChangeAddress");
+            String comingSource=intent.getStringExtra("source");
+
+            if(comingSource!=null)
+            {
+                if (comingSource.equals("ProductDetails")){
+                    Intent i = new Intent(context, AddressList.class);
+                    i.putExtra("cat_name", intent.getStringExtra("cat_name"));
+                    i.putExtra("source",intent.getStringExtra("source"));
+                    i.putExtra("selected_product",(ProductDTO)intent.getParcelableExtra("selected_product"));
+                    context.startActivity(i);
+                }
+
+            }
+            else {
+                gotToHome();
+            }
+
+
+
+        }else {
+            gotToHome();
+        }
+    }
 
     public void  gotToHome()
     {
+        Log.d(TAG, "gotToHome: ");
         Intent intent=new Intent(context, MainActivity.class);
         context.startActivity(intent);
 

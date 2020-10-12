@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -66,6 +67,7 @@ public class ChangeAddress extends AppCompatActivity implements LocationListener
     String method;
     Intent intentForSource;
     AddressDTO sentAddresForEdit;
+    ImageView change_address_back_btn;
     TextInputLayout address_pincode, address_house_no, address_area_colony, address_city, address_state, address_user_name, address_delivery_mobile_number;
 
     TextInputEditText address_pincode_et, address_house_no_et, address_area_colony_et, address_city_et, address_state_et, address_user_name_et, address_delivery_mobile_number_et;
@@ -95,15 +97,23 @@ public class ChangeAddress extends AppCompatActivity implements LocationListener
         address_user_name=findViewById(R.id.address_user_name);
         address_delivery_mobile_number=findViewById(R.id.address_delivery_mobile_number);
         primary_address_checkbox=findViewById(R.id.set_default_address_checkbox);
+        change_address_back_btn=findViewById(R.id.change_address_back_btn);
         firebaseDatabase=FirebaseDatabase.getInstance();
 
         intentForSource= getIntent();
-
-
-
-
         home=new Home(this);
+
+        change_address_back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                home.backButton(intentForSource,"ChangeAddress");
+            }
+        });
+
+
+
         method=home.getMethod(intentForSource);
+
         mySharedPreferences=new MySharedPreferences(this);
         userRegistrationDTO=mySharedPreferences.getUserDetailsFromSharedPreference();
         fillDetailsInBox(intentForSource);
@@ -115,6 +125,12 @@ public class ChangeAddress extends AppCompatActivity implements LocationListener
             Log.d(TAG, "onCreate: either null");
             primary_address_checkbox.setChecked(true);
             primary_address_checkbox.setClickable(false);
+        }else if(userRegistrationDTO.getAddressDTOList().size()==0)
+        {
+            Log.d(TAG, "only 1 address primary check box is Unclickable");
+            primary_address_checkbox.setChecked(true);
+            primary_address_checkbox.setClickable(false);
+
         }
 
 
@@ -210,6 +226,11 @@ public class ChangeAddress extends AppCompatActivity implements LocationListener
          address_user_name_et.setText(addressDTO.getName());
         if (addressDTO.getHouse_no()!=null)
             address_house_no_et.setText(addressDTO.getHouse_no());
+        if (addressDTO.isPrimaryAddress()) {
+            primary_address_checkbox.setChecked(true);
+            primary_address_checkbox.setClickable(false);
+        }
+
 
     }
 

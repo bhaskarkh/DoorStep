@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bhaskar.doorstep.adapter.AddressListAdapter;
 import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
@@ -42,6 +44,9 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
     String source;
     RelativeLayout add_address_layout;
     TextView number_saved_address;
+    String categorySource;
+    ImageView back_btn;
+    private static final String TAG = "AddressList";
 
 
     @Override
@@ -52,6 +57,7 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
         addresListRecycler=findViewById(R.id.addresslist_recyclerview);
         add_address_layout=findViewById(R.id.add_address_layout);
         number_saved_address=findViewById(R.id.number_saved_address);
+        back_btn=findViewById(R.id.addres_list_back_btn);
 
         intentForSource=getIntent();
         addressListProgressBar.setVisibility(View.VISIBLE);
@@ -64,12 +70,25 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
         addressServices.fetchAddressFromFirebase(firebaseDatabase,firebaseAuth);
         checkSourceInformation(intentForSource);
 
+        back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                home.backButton(intentForSource,"AddressList");
+            }
+        });
+
         add_address_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(AddressList.this,ChangeAddress.class);
                 intent.putExtra("method","add");
+                Log.d(TAG, "onClick: add_address_layout source= "+source);
                 intent.putExtra("source",source);
+                if(source.equals("ProductDetails"))
+                {
+                    intent.putExtra("selected_product",(ProductDTO)intentForSource.getParcelableExtra("selected_product"));
+                    intent.putExtra("cat_name",categorySource);
+                }
                 startActivity(intent);
             }
         });
@@ -81,6 +100,7 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
 
     private void checkSourceInformation(Intent intentForSource) {
         String src=home.getSource(intentForSource);
+
        if(src.equals("No source found"))
        {
           source="MainActivity";
@@ -88,6 +108,7 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
        }
        else if(src.equals("ProductDetails"))
         {
+            categorySource=intentForSource.getStringExtra("cat_name");
             source="ProductDetails";
            productDTO=intentForSource.getParcelableExtra("selected_product");
 
@@ -109,7 +130,21 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void setAddresList(List<AddressDTO> addressDTOList) {
-        addressDTOList.sort(new AddressComparator());
-        setCategoryRecycler(addressDTOList);
+        int sizeOfList=addressDTOList.size();
+        if(sizeOfList==0) {
+            addressListProgressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "No  address Added", Toast.LENGTH_SHORT).show();
+        }
+        else if (sizeOfList==1)
+        {
+            setCategoryRecycler(addressDTOList);
+        }
+        else {
+            addressDTOList.sort(new AddressComparator());
+            setCategoryRecycler(addressDTOList);
+        }
+
+
+
     }
 }

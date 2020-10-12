@@ -107,6 +107,10 @@ public class AddressServices {
     {
         Log.d(TAG, "editAddress: addressDTO= "+addressDTO.toString());
        List<AddressDTO> addressDTOList=userRegistrationDTO.getAddressDTOList();
+       if(addressDTO.isPrimaryAddress())
+       {
+           addressDTOList=setALlAdressPrimaryFalse(addressDTOList);
+       }
        int i=0;
         Log.d(TAG, "editAddress: addressList before"+addressDTOList.toString());
        for(AddressDTO addressDTO1:addressDTOList)
@@ -125,7 +129,9 @@ public class AddressServices {
        }
 
         Log.d(TAG, "editAddress: addressList After"+addressDTOList.toString());
+
         userRegistrationDTO.setAddressDTOList(addressDTOList);
+
         addAddressInFirebase(userRegistrationDTO,firebaseDatabase,intentForSource);
 
 
@@ -233,6 +239,7 @@ public class AddressServices {
                                 ProductDTO productDTO=intentForSource.getParcelableExtra("selected_product");
                                 intent.putExtra("selected_product",productDTO);
                                 intent.putExtra("source","ProductDetails");
+                                intent.putExtra("cat_name",intentForSource.getStringExtra("cat_name"));
                                 context.startActivity(intent);
                             }
 

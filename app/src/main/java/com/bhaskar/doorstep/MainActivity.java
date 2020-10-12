@@ -1,9 +1,11 @@
 package com.bhaskar.doorstep;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +33,7 @@ import com.bhaskar.doorstep.model.GoogleSignInDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
 import com.bhaskar.doorstep.model.SliderItem;
+import com.bhaskar.doorstep.util.MySharedPreferences;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -96,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
     private String TAG="MainActivity";
     List<String> sliderUrlList;
     ProgressBar discount_list_progressbar;
+    MySharedPreferences mySharedPreferences;
+    String Loginsource;
 
 
     @Override
@@ -121,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         fAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
+        mySharedPreferences=new MySharedPreferences(this);
         //slider
         Log.d(TAG,"fuid in main= "+fAuth.getCurrentUser().getUid());
         sadapter= new SliderAdapterExample(this);
@@ -135,29 +142,25 @@ public class MainActivity extends AppCompatActivity {
 
         renewItems();
         //slider
+       Loginsource=mySharedPreferences.getLoginSourceToSharedPreference();
+
+       if(Loginsource.equals("google")) {
+           createGoogleSignInRequest();
+       }
+
+        Glide.with(MainActivity.this).load(mySharedPreferences.getUserDetailsFromSharedPreference().getUserPhoto()).circleCrop().into(profile_pic);
 
 
-        googleSignInDTO=getUserDetailFromGoogle();
-        Log.d("MainActivity","googleSignInDTO to String= "+googleSignInDTO.toString());
-        createGoogleSignInRequest();
-       Glide.with(MainActivity.this).load(String.valueOf(googleSignInDTO.getUserPhoto())).circleCrop().into(profile_pic);
-
-       // Glide.with(this).load(String.valueOf(googleSignInDTO.getUserPhoto())).into(profile_pic);
 
         account_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-               mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                 @Override
-                 public void onComplete(@NonNull Task<Void> task) {
-                     Intent i = new Intent(MainActivity.this, LoginScreen.class);
-                     startActivity(i);
-                 }
-             });
-
+                Log.d(TAG, "onClick: ");
+               CheckLoginSourceAndSignOut();
             }
         });
+
+
 
 
         allCategory.setOnClickListener(new View.OnClickListener() {
@@ -208,6 +211,39 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void CheckLoginSourceAndSignOut() {
+        Log.d(TAG, "CheckLoginSourceAndSignOut: Loginsource= "+Loginsource);
+        if(Loginsource.equals("google")) {
+            Log.d(TAG, "CheckLoginSourceAndSignOut: google login");
+            FirebaseAuth.getInstance().signOut();
+            mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Toast.makeText(MainActivity.this, "Logged out Successfully", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(MainActivity.this, LoginScreen.class);
+                    startActivity(i);
+                }
+            });
+        }
+        if (Loginsource.equals("email"))
+        {
+            Log.d(TAG, "CheckLoginSourceAndSignOut: email login");
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(MainActivity.this, "Logged out Successfully", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MainActivity.this, LoginScreen.class);
+            startActivity(i);
+
+        }
+        else {
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(MainActivity.this, "Logged out Successfully", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(MainActivity.this, LoginScreen.class);
+            startActivity(i);
+
+        }
+
+    }
+
     private void getCategoryList() {
         categoryList = new ArrayList<>();
         String[] category_array=MainActivity.this.getResources().getStringArray(R.array.category_array);
@@ -242,75 +278,7 @@ public class MainActivity extends AppCompatActivity {
         return sList;
     }
 
-   /* private void getProductList() {
-        categoryProgressbar.setVisibility(View.VISIBLE);
-        Log.d(TAG,"insdie Get ProductList");
-        final List<ProductDTO> productDTOList1=new ArrayList<>();
 
-        DatabaseReference databaseReference=firebaseDatabase.getReference().child("test").child("product");
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot:snapshot.getChildren())
-                {
-                    Log.d(TAG,"key= "+dataSnapshot.getKey());
-                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren())
-                    {
-                        Log.d(TAG,"2nd key= "+dataSnapshot1.getKey());
-                        Log.d(TAG,"2nd key value= "+dataSnapshot1.getValue());
-                        ProductDTO productDTO=dataSnapshot1.getValue(ProductDTO.class);
-                        productDTOList1.add(productDTO);
-
-
-
-                    }
-                }
-
-                loadCategoryDataInAdapter(productDTOList1);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-       Log.d(TAG,"productList size= "+productDTOList1.size());
-
-
-
-    }
-*/
-  /*  private void loadCategoryDataInAdapter(List<ProductDTO> productDTOList1) {
-
-        Log.d(TAG,"inside loadCategoryDataInAdapter= "+productDTOList1.size());
-        categoryList = new ArrayList<>();
-        categoryList=getUniqueCategoryName(productDTOList1);
-       Log.d(TAG,"inside categoryList size= "+categoryList.size());
-
-        setCategoryRecycler(categoryList);
-        categoryProgressbar.setVisibility(View.GONE);
-    }
-
-    private List<Category> getUniqueCategoryName(List<ProductDTO> productDTOList1) {
-        Log.d(TAG,"inside getUniqueCategoryName");
-        List<Category> categoryList=new ArrayList<>();
-        HashSet<ProductDTO> uniqueCatProductList=new HashSet<>();
-        for (ProductDTO productDTO:productDTOList1)
-        {
-            uniqueCatProductList.add(productDTO);
-        }
-        for (ProductDTO productDTO:uniqueCatProductList)
-        {
-            categoryList.add(new Category(Integer.getInteger(productDTO.getId()),ic_home_fruits,productDTO.getCategory()));
-        }
-
-        Log.d(TAG,"inside getUniqueCategoryName categoryList size= "+categoryList.size());
-        return categoryList;
-    }
-*/
     private void setDiscountedRecycler(List<DiscountedProducts> dataList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         discountRecyclerView.setLayoutManager(layoutManager);
@@ -337,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
     //Now again we need to create a adapter and model class for recently viewed items.
     // lets do it fast.
 
+
     private void createGoogleSignInRequest() {
 // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -347,7 +316,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public GoogleSignInDTO getUserDetailFromGoogle()
+/*
+
+ public GoogleSignInDTO getUserDetailFromGoogle()
     {
         GoogleSignInDTO googleSignInDTO=new GoogleSignInDTO();
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(MainActivity.this);
@@ -362,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
 
         return googleSignInDTO;
     }
+*/
 
 
     // now we need some item decoration class for manage spacing
@@ -462,5 +434,32 @@ public class MainActivity extends AppCompatActivity {
         sadapter.addItem(sliderItem);
     }
 
+    @Override
+    public void onBackPressed() {
 
+        Dialog epicDialog=new Dialog(this);
+        epicDialog.setContentView(R.layout.exit_layout);
+        ImageView btnYes=epicDialog.findViewById(R.id.yesIdOnExit);
+        ImageView btnNo=epicDialog.findViewById(R.id.noIdOnExit);
+        epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        epicDialog.show();
+        btnYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Toast.makeText(FragmentMain.this,"Yes",Toast.LENGTH_SHORT).show();
+                epicDialog.dismiss();
+                finish();
+
+            }
+        });
+        btnNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Toast.makeText(FragmentMain.this,"No",Toast.LENGTH_SHORT).show();
+                epicDialog.dismiss();
+
+            }
+        });
+
+    }
 }

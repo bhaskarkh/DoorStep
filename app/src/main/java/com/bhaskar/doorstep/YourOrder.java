@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class YourOrder extends AppCompatActivity  implements OrderStatusInterfac
     public String TAG="YourOrder";
     ProgressBar progressBar;
     Home hm;
+    ImageView your_order_list_back_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +42,17 @@ public class YourOrder extends AppCompatActivity  implements OrderStatusInterfac
         setContentView(R.layout.activity_your_order);
         your_order_recylcerview=findViewById(R.id.order_st_recylerview);
         progressBar=findViewById(R.id.your_order_status_progressbar);
+        your_order_list_back_btn=findViewById(R.id.your_order_list_back_btn);
         firebaseDatabase=FirebaseDatabase.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         progressBar.setVisibility(View.VISIBLE);
         hm=new Home(this);
+        your_order_list_back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hm.gotToHome();
+            }
+        });
         getAllOrderOfUser();
 
     }
@@ -68,6 +77,11 @@ public class YourOrder extends AppCompatActivity  implements OrderStatusInterfac
     @Override
     public void setOrderStatusAdaptor(List<OrderDTO> orderDTOList) {
         progressBar.setVisibility(View.GONE);
+        int orderListSize=orderDTOList.size();
+        if(orderListSize==0)
+        {
+            Toast.makeText(this, "No Order Yet Placed", Toast.LENGTH_SHORT).show();
+        }
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
         your_order_recylcerview.setLayoutManager(layoutManager);
         your_order_recylcerview.setItemAnimator(new DefaultItemAnimator());

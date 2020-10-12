@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bhaskar.doorstep.ChangeAddress;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.model.AddressDTO;
+import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.util.AddressServices;
 
 import java.util.List;
@@ -60,10 +61,15 @@ Intent intentforSource;
             public void onClick(View v) {
                 Log.d(TAG, "onClick: name= "+ addressDTO.getName());
                 Intent intent=new Intent(context, ChangeAddress.class);
+                String source=intentforSource.getStringExtra("source");
 
-                intent.putExtra("source",intentforSource.getStringExtra("source"));
+                intent.putExtra("source",source);
+                intent.putExtra("selected_product",(ProductDTO)intentforSource.getParcelableExtra("selected_product"));
                 intent.putExtra("method","edit");
                 intent.putExtra("addressVal",addressDTO);
+                if(source.equals("ProductDetails")) {
+                    intent.putExtra("cat_name", intentforSource.getStringExtra("cat_name"));
+                }
                 context.startActivity(intent);
             }
         });

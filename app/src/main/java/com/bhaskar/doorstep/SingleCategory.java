@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
+import com.bhaskar.doorstep.util.Home;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +49,7 @@ public class SingleCategory extends AppCompatActivity {
     TextView singleCategoryTitle;
      final String TAG="SingleCategory";
      ProgressBar single_category_progressBar;
+     Home home;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +62,11 @@ public class SingleCategory extends AppCompatActivity {
         single_category_progressBar=findViewById(R.id.single_category_progressBar);
         firebaseDatabase=FirebaseDatabase.getInstance();
         singleCategoryRecycler.setNestedScrollingEnabled(false);
+        home=new Home(this);
         singleCategoryBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(SingleCategory.this,MainActivity.class);
-                startActivity(intent);
-                finish();
+               home.gotToHome();
             }
         });
         String categoryName=getIntent().getStringExtra("cat_name");
