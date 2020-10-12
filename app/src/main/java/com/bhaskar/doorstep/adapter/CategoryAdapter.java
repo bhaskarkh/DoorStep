@@ -56,6 +56,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 Log.d("AllCategoryAdapter","Button Clicked");
                 i.putExtra("cat_name", categoryList.get(position).getName());
                 i.putExtra("imageUrl", categoryList.get(position).getImageurl());
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
         });

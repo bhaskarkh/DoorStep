@@ -216,7 +216,22 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
         else
         {
             Log.d(TAG,"Old User");
-            saveUserDetailsToSharedPreferenceFromFireBase(user,LoginScreen.this,source);
+            if(mySharedPreferences.checkSharedPrefernceExistorNot("userDTOsharedPrefernce"))
+            {
+                saveUserDetailsToSharedPreferenceFromFireBase(user,LoginScreen.this,source);
+            }
+            else {
+                if(source.equals("google")) {
+
+                    saveGoogleUserDetailsToSharedPreference(user, LoginScreen.this);
+                }
+                if(source.equals("email"))
+                {
+
+                    saveEmailUserDetailsToSharedPreference(user,LoginScreen.this);
+
+                }
+            }
             Intent intent=new Intent(LoginScreen.this, MainActivity.class);
             startActivity(intent);
         }
@@ -246,9 +261,12 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
     private void saveUserDetailsToSharedPreferenceFromFireBase(FirebaseUser user, Context context,String source) {
         Log.d(TAG," inside Login saveUserDetailsToSharedPreference");
         UsersMethod usersMethod=new UsersMethod(this);
-        usersMethod.setUserRegistrationDetailsInterface(this);
-        usersMethod.getUserRegistrationFromFireBase();
         mySharedPreferences.saveLoginSourceToSharedPreference(source);
+        usersMethod.setUserRegistrationDetailsInterface(this);
+
+        Log.d(TAG, "saveUserDetailsToSharedPreferenceFromFireBase: mAuth="+mAuth.getCurrentUser().getUid());
+        usersMethod.getUserRegistrationFromFireBase(database,mAuth);
+
 
 
 
@@ -338,8 +356,13 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
 
     @Override
     public void saveToSharedPref(UserRegistrationDTO userRegistrationDTO) {
-
-        mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);
+        Log.d(TAG, "saveToSharedPref: ");
+        if (userRegistrationDTO!=null)
+        { mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);}
+        else 
+        {
+            Log.d(TAG, "saveToSharedPref: userRegistrationDTO is null");
+        }
     }
 
 

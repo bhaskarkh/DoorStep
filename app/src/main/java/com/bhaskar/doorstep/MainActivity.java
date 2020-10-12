@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
            createGoogleSignInRequest();
        }
 
-        Glide.with(MainActivity.this).load(mySharedPreferences.getUserDetailsFromSharedPreference().getUserPhoto()).circleCrop().into(profile_pic);
+    Glide.with(MainActivity.this).load(mySharedPreferences.getUserDetailsFromSharedPreference().getUserPhoto()).circleCrop().into(profile_pic);
 
 
 
@@ -221,7 +221,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     Toast.makeText(MainActivity.this, "Logged out Successfully", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(MainActivity.this, LoginScreen.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(i);
+                    finish();
                 }
             });
         }
@@ -231,7 +234,10 @@ public class MainActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(MainActivity.this, "Logged out Successfully", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(MainActivity.this, LoginScreen.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);
+            finish();
 
         }
         else {
@@ -239,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Logged out Successfully", Toast.LENGTH_SHORT).show();
             Intent i = new Intent(MainActivity.this, LoginScreen.class);
             startActivity(i);
+            finish();
 
         }
 

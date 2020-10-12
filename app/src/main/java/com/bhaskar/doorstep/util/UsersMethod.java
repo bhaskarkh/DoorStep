@@ -12,6 +12,7 @@ import com.bhaskar.doorstep.allinterface.UserRegistrationDetailsInterface;
 import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,8 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class UsersMethod {
     Context context;
-    FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-    FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     UserRegistrationDetailsInterface userRegistrationDetailsInterface;
     private static final String TAG = "UsersMethod";
 
@@ -41,8 +40,25 @@ public class UsersMethod {
         this.userRegistrationDetailsInterface = userRegistrationDetailsInterface;
     }
 
-    public void getUserRegistrationFromFireBase()
+    public void getUserRegistrationFromFireBase(FirebaseDatabase firebaseDatabase, FirebaseAuth firebaseAuth)
     {
+        Log.d(TAG, "getUserRegistrationFromFireBase: ");
+        if (firebaseDatabase==null)
+        {
+            Log.d(TAG, "firebaseDatabase: null ");
+        }
+        else {
+            Log.d(TAG, "firebaseDatabase: not null ");
+        }
+        if (firebaseAuth==null)
+        {
+            Log.d(TAG, "firebaseAuth: null ");
+        }
+        else {
+
+            Log.d(TAG, "firebaseAuth: not null ");
+            Log.d(TAG, " firebaseAuth.getCurrentUser().getUid()"+firebaseAuth.getCurrentUser().getUid());
+        }
         final UserRegistrationDTO[] userRegistrationDTO = {new UserRegistrationDTO()};
         DatabaseReference databaseReference=firebaseDatabase.getReference().child("test").child("user").child("user_registration");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {

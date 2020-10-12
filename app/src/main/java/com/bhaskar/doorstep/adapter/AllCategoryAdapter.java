@@ -1,5 +1,6 @@
 package com.bhaskar.doorstep.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -46,7 +47,12 @@ public class AllCategoryAdapter extends RecyclerView.Adapter<AllCategoryAdapter.
             public void onClick(View v) {
                 Intent i=new Intent(context, SingleCategory.class);
                 Log.d("AllCategoryAdapter","Button Clicked");
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
+                ((Activity)context).finish();
+
+
             }
         });
 

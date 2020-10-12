@@ -27,14 +27,24 @@ public class MySharedPreferences {
         this.context = context;
     }
 
+    public boolean checkSharedPrefernceExistorNot(String value)
+    {
+        SharedPreferences mPrefs =this.context.getSharedPreferences("userDTOsharedPrefernce",MODE_PRIVATE);
+       boolean containPref= mPrefs.contains("userRegistrationDTO");
+        Log.d(TAG, "checkSharedPrefernceExistorNot: containPref= "+containPref);
+
+    return  containPref;
+    }
+
 
 
     public void saveLoginSourceToSharedPreference(String loginSource)
     {
+        Log.d(TAG, "saveLoginSourceToSharedPreference: ");
         SharedPreferences mPrefs =this.context.getSharedPreferences("loginSourcePref",MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         prefsEditor.putString("loginSource", loginSource);
-        prefsEditor.apply();
+        prefsEditor.commit();
     }
     public String getLoginSourceToSharedPreference()
     {

@@ -1,5 +1,6 @@
 package com.bhaskar.doorstep.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -55,7 +56,10 @@ public class Home {
 
                     Intent i = new Intent(context, SingleCategory.class);
                     i.putExtra("cat_name", goingSource);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
+                    ((Activity)context).finish();
                 } else {
                     Log.d(TAG, "goingSource: is NA ");
                     gotToHome();
@@ -80,7 +84,10 @@ public class Home {
                     Log.d(TAG, "AddressList: cat_name"+cat_nam);
                     i.putExtra("cat_name", cat_nam);
                     i.putExtra("selected_product",productDTO);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
+                    ((Activity)context).finish();
                 }
 
             }else {
@@ -102,7 +109,10 @@ public class Home {
                     i.putExtra("cat_name", intent.getStringExtra("cat_name"));
                     i.putExtra("source",intent.getStringExtra("source"));
                     i.putExtra("selected_product",(ProductDTO)intent.getParcelableExtra("selected_product"));
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
+                    ((Activity)context).finish();
                 }
 
             }
@@ -121,7 +131,10 @@ public class Home {
     {
         Log.d(TAG, "gotToHome: ");
         Intent intent=new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+        ((Activity)context).finish();
 
     }
     public String getSource(Intent intent)
