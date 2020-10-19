@@ -20,6 +20,7 @@ public class OrderStatusDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_status_detail);
         place_to_confirmed_line=findViewById(R.id.placed_to_confirmed_line);
+        order_std_back_btn=findViewById(R.id.order_std_back_btn);
         TranslateAnimation animation=new TranslateAnimation(0,0,place_to_confirmed_line.getHeight(),0);
         animation.setDuration(2000);
         animation.setFillAfter(true);

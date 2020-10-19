@@ -19,6 +19,7 @@ import com.bhaskar.doorstep.util.Home;
 import com.bhaskar.doorstep.util.MySharedPreferences;
 import com.bhaskar.doorstep.allinterface.OnOrderSubmissionListener;
 import com.bhaskar.doorstep.util.OrderDetailsServices;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -75,10 +76,11 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
          proName.setText(name);
          proPrice.setText(price);
          proDesc.setText(desc);
+        Glide.with(ProductDetails.this).load(selectedProduct.getImage()).into(img);
 
 
 
-        img.setImageResource(R.drawable.pd);
+
         setValueInAddress(address_userName,address_pincode,address_full_address,deliver_to_text);
 
 

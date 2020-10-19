@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "446595057078",
+    "firebase_url": "https://doorstep-a5714.firebaseio.com",
+    "project_id": "doorstep-a5714",
+    "storage_bucket": "doorstep-a5714.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446595057078:android:1d4931d5be6f3b67caed17",
+        "android_client_info": {
+          "package_name": "com.bhaskar.doorstep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446595057078-9f9f9gc2r0721a44qm8774d54v2fk2m7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bhaskar.doorstep",
+            "certificate_hash": "13412ad550b1bb0aa2db3cc9e52c79140d07b4c2"
+          }
+        },
+        {
+          "client_id": "446595057078-sfu168ra49jv1dis3ou2rdlno1qc8p9t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBePwsnOjWTHlnHs4_Oi9m4bkpLFv4pYqI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446595057078-sfu168ra49jv1dis3ou2rdlno1qc8p9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

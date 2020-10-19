@@ -16,7 +16,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="32dp"
+            android:layout_height="27dp"
             android:background="#292b3d"
             android:padding="2dp">
 
@@ -38,7 +38,7 @@
                 android:layout_marginLeft="50dp"
                 android:text="@string/app_name"
                 android:textColor="#fff"
-                android:textSize="24dp"
+                android:textSize="14dp"
                 android:textStyle="bold" />
 
 

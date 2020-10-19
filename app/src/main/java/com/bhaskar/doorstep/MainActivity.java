@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         main_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,YourOrder.class);
+                Intent i=new Intent(MainActivity.this,AdminDashboard.class);
                 startActivity(i);
             }
         });
@@ -274,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG,"Inside getXmlName catName= "+categoryName);
         categoryName=categoryName.toLowerCase();
         categoryName=categoryName.replace(" ","_");
+        categoryName="ic_"+categoryName;
         Log.d(TAG,"Inside getXmlName Converted catName= "+categoryName);
         return categoryName;
     }

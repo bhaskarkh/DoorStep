@@ -26,6 +26,7 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
 
     Context context;
     List<ProductDTO> productDTOList;
+    private static final String TAG = "SingleCategoryAdapter";
 
     public SingleCategoryAdapter(Context context, List<ProductDTO> productDTOList) {
         this.context = context;
@@ -47,7 +48,9 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
 
         holder.description.setText(productDTOList.get(position).getName());
       //  Glide.with(context).load(productDTOList.get(position).getImage()).into(holder.category_image);
-        Glide.with(context).load(R.drawable.b4).into(holder.category_image);
+        String imgUrl=productDTOList.get(position).getImage();
+        Log.d(TAG, "onBindViewHolder: image url= "+imgUrl);
+        Glide.with(context).load(imgUrl).into(holder.category_image);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -103,7 +103,13 @@ public class SingleCategory extends AppCompatActivity {
                     }
                 }
 
-                setCategoryRecycler(productDTOList);
+                if(productDTOList!=null && productDTOList.size()>0) {
+                    setCategoryRecycler(productDTOList);
+                }
+                else {
+                    single_category_progressBar.setVisibility(View.GONE);
+                    Toast.makeText(SingleCategory.this, "No Product Found for this Category", Toast.LENGTH_SHORT).show();
+                }
 
 
             }
