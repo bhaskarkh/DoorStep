@@ -17,6 +17,16 @@
         <item>IT solution</item>
 
     </string-array>
+    <string-array name="quantity_type_array">
+        <item>NA</item>
+        <item>KG</item>
+        <item>L</item>
+
+    </string-array>
+    <string-array name="is_required_array">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
     <string name="Rs">\u20B9</string>
     <string name="Rs100">\u20B9100</string>
     <string name="order_confirmed">Order Confirmed</string>

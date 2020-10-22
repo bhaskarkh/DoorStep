@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -20,69 +20,6 @@
             tools:context=".AddProductInDb">
 
             <EditText
-                android:id="@+id/add_product_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:ems="10"
-                android:hint="Description"
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_product_productTypeId" />
-
-            <EditText
-                android:id="@+id/add_product_quantity_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:ems="10"
-                android:hint="QuantityType"
-
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_product_description" />
-
-            <EditText
-                android:id="@+id/add_product_isrequired"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:ems="10"
-                android:hint="IsRequired"
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_product_quantity_type" />
-
-
-            <Spinner
-                android:id="@+id/add_product_category"
-                android:layout_width="200sp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:maxLines="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_product_name" />
-
-
-            <EditText
-                android:id="@+id/add_product_productTypeId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:ems="10"
-                android:hint="productTypeId"
-
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_product_category" />
-
-            <EditText
                 android:id="@+id/add_product_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,6 +30,113 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/add_product_title" />
+
+            <TextView
+                android:id="@+id/category_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginLeft="3dp"
+                android:layout_marginTop="16dp"
+                android:text="Category"
+                app:layout_constraintStart_toStartOf="@+id/add_product_name"
+                app:layout_constraintTop_toBottomOf="@+id/add_product_name" />
+
+
+            <Spinner
+                android:id="@+id/add_product_category"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="16dp"
+
+                app:layout_constraintBottom_toBottomOf="@+id/category_text"
+                app:layout_constraintEnd_toEndOf="@+id/add_product_name"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/category_text"
+                app:layout_constraintTop_toBottomOf="@+id/add_product_name" />
+
+            <EditText
+                android:id="@+id/add_product_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="price"
+                android:inputType="number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_product_productTypeId" />
+
+            <Spinner
+                android:id="@+id/add_product_quantity_type"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:maxLines="1"
+                app:layout_constraintBottom_toBottomOf="@+id/quantity_type_text"
+                app:layout_constraintEnd_toEndOf="@+id/add_product_price"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/quantity_type_text"
+                app:layout_constraintTop_toBottomOf="@+id/add_product_price"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/quantity_type_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unit"
+                android:textSize="20sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="1dp"
+                app:layout_constraintStart_toStartOf="@+id/add_product_price"
+                app:layout_constraintTop_toBottomOf="@+id/add_product_price"
+                />
+
+
+            <TextView
+                android:id="@+id/is_required_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Self"
+                android:textSize="20sp"
+                android:layout_marginLeft="1dp"
+                app:layout_constraintStart_toStartOf="@+id/quantity_type_text"
+                app:layout_constraintTop_toBottomOf="@+id/quantity_type_text" />
+
+
+            <Spinner
+                android:id="@+id/add_product_isrequired"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:maxLines="1"
+                app:layout_constraintBottom_toBottomOf="@+id/is_required_text"
+                app:layout_constraintEnd_toEndOf="@id/add_product_quantity_type"
+                app:layout_constraintHorizontal_bias="0.941"
+                app:layout_constraintStart_toEndOf="@+id/is_required_text"
+                app:layout_constraintTop_toBottomOf="@+id/add_product_quantity_type"
+                app:layout_constraintVertical_bias="1.0" />
+
+
+            <EditText
+                android:id="@+id/add_product_productTypeId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="productTypeId"
+
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_product_category" />
 
             <Button
                 android:id="@+id/add_product_button"
@@ -141,9 +185,7 @@
                 android:layout_marginTop="32dp"
                 android:text="Select Image"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.33"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/is_required_text"
                 app:layout_constraintTop_toBottomOf="@+id/add_product_isrequired" />
 
             <ImageView
@@ -152,27 +194,43 @@
                 android:layout_height="70dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="76dp"
-                android:layout_marginRight="76dp"
                 app:layout_constraintBottom_toBottomOf="@+id/upload_product_image_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.63"
+                app:layout_constraintEnd_toEndOf="@+id/add_product_isrequired"
+                app:layout_constraintHorizontal_bias="0.529"
                 app:layout_constraintStart_toEndOf="@+id/upload_product_image_btn"
-                app:layout_constraintTop_toBottomOf="@+id/add_product_isrequired"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/civil" />
+                app:layout_constraintTop_toTopOf="@+id/upload_product_image_btn"
+                app:srcCompat="@drawable/ic_no_image_selected" />
+
+
+
+
+            <EditText
+                android:id="@+id/add_product_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="Description"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                android:scrollbars="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/upload_product_image_btn"
+                />
 
             <ProgressBar
                 android:id="@+id/image_upload_progressbar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/upload_product_image_btn"
-                app:layout_constraintTop_toBottomOf="@+id/upload_product_image_btn" />
+                app:layout_constraintStart_toStartOf="@+id/add_product_description"
+                app:layout_constraintTop_toBottomOf="@+id/add_product_description" />
 
             <ProgressBar
                 android:id="@+id/upload_product_progressbar"
@@ -189,6 +247,6 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

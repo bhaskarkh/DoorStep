@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
-import com.bhaskar.doorstep.util.Home;
-
 public class OrderStatusDetail extends AppCompatActivity {
 
     View place_to_confirmed_line;

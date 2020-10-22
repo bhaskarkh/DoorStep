@@ -18,7 +18,7 @@ import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.model.OrderDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.ShippingDTO;
-import com.bhaskar.doorstep.util.Home;
+import com.bhaskar.doorstep.services.Home;
 
 import java.util.List;
 

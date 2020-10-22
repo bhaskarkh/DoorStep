@@ -18,13 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bhaskar.doorstep.adapter.AddressListAdapter;
-import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
 import com.bhaskar.doorstep.allinterface.SetAddresListInAdapterInterface;
 import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.util.AddressComparator;
-import com.bhaskar.doorstep.util.AddressServices;
-import com.bhaskar.doorstep.util.Home;
+import com.bhaskar.doorstep.services.AddressServices;
+import com.bhaskar.doorstep.services.Home;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 

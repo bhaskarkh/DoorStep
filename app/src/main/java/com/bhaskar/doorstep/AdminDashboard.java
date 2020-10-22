@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.bhaskar.doorstep.util.Home;
+import com.bhaskar.doorstep.services.Home;
 
 public class AdminDashboard extends AppCompatActivity {
 

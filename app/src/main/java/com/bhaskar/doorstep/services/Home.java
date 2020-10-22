@@ -1,11 +1,13 @@
-package com.bhaskar.doorstep.util;
+package com.bhaskar.doorstep.services;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -15,9 +17,12 @@ import com.bhaskar.doorstep.MainActivity;
 import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.SingleCategory;
+import com.bhaskar.doorstep.adapter.SpinnerViewAdapter;
 import com.bhaskar.doorstep.model.ProductDTO;
+import com.bhaskar.doorstep.model.SpinnerDTO;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -137,6 +142,18 @@ public class Home {
         ((Activity)context).finish();
 
     }
+
+    public int getImageNameFromCategory(String categoryName) {
+        Log.d(TAG,"Inside getXmlName catName= "+categoryName);
+        categoryName=categoryName.toLowerCase();
+        categoryName=categoryName.replace(" ","_");
+        categoryName=categoryName+"_svg";
+        Log.d(TAG,"Inside getXmlName Converted catName= "+categoryName);
+
+
+        return context.getResources().getIdentifier(categoryName,"drawable",context.getPackageName());
+    }
+
     public String getSource(Intent intent)
     {
         String src="No source found";
@@ -165,6 +182,28 @@ public class Home {
     }
 
 
+    public void setSpinnerAdapterForTextOnly(String[] stringList, Spinner spinner,Boolean isTextOnly)
+    {
+        if(isTextOnly) {
+            final ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, R.layout.myspinnerstylehome, stringList);
+            dataAdapter.setDropDownViewResource(R.layout.myspinnerstylehome);
+            spinner.setAdapter(dataAdapter);
+        }
+        else {
+            spinner.setAdapter(new SpinnerViewAdapter(context,R.layout.spinner_row,getSpinnerDTOList(stringList)));
+        }
+    }
+
+    private ArrayList<SpinnerDTO> getSpinnerDTOList(String[] catList) {
+        ArrayList<SpinnerDTO> sList=new ArrayList<>();
+
+        for (String name:catList)
+        {
+            sList.add(new SpinnerDTO(name,getImageNameFromCategory(name)));
+        }
+
+        return sList;
+    }
 
     public String getFirstUpperCase(String str)
     {

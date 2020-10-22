@@ -1,4 +1,4 @@
-package com.bhaskar.doorstep.util;
+package com.bhaskar.doorstep.services;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 
 import com.bhaskar.doorstep.AddressList;
 import com.bhaskar.doorstep.MainActivity;
-import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.allinterface.SetAddresListInAdapterInterface;
 import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.ProductDTO;

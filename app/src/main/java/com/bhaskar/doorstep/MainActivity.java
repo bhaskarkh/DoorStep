@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -18,7 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,32 +31,24 @@ import com.bhaskar.doorstep.model.GoogleSignInDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
 import com.bhaskar.doorstep.model.SliderItem;
-import com.bhaskar.doorstep.util.MySharedPreferences;
+import com.bhaskar.doorstep.services.Home;
+import com.bhaskar.doorstep.services.MySharedPreferences;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
-import static com.bhaskar.doorstep.R.drawable.abc_cab_background_internal_bg;
 import static com.bhaskar.doorstep.R.drawable.b1;
 import static com.bhaskar.doorstep.R.drawable.b2;
 import static com.bhaskar.doorstep.R.drawable.b3;
@@ -67,12 +57,10 @@ import static com.bhaskar.doorstep.R.drawable.card1;
 import static com.bhaskar.doorstep.R.drawable.card2;
 import static com.bhaskar.doorstep.R.drawable.card3;
 import static com.bhaskar.doorstep.R.drawable.card4;
-import static com.bhaskar.doorstep.R.drawable.discountberry;
 import static com.bhaskar.doorstep.R.drawable.discountbrocoli;
 import static com.bhaskar.doorstep.R.drawable.discountmeat;
 import static com.bhaskar.doorstep.R.drawable.ic_home_fish;
 import static com.bhaskar.doorstep.R.drawable.ic_home_fruits;
-import static com.bhaskar.doorstep.R.drawable.ic_home_meats;
 import static com.bhaskar.doorstep.R.drawable.ic_home_veggies;
 
 public class MainActivity extends AppCompatActivity {
@@ -102,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar discount_list_progressbar;
     MySharedPreferences mySharedPreferences;
     String Loginsource;
+    Home home;
 
 
     @Override
@@ -127,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         fAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
+        home=new Home(this);
         mySharedPreferences=new MySharedPreferences(this);
         //slider
         Log.d(TAG,"fuid in main= "+fAuth.getCurrentUser().getUid());
@@ -257,8 +247,7 @@ public class MainActivity extends AppCompatActivity {
        int i=1;
         for(String categoryName:category_array)
         {
-            String catxmlName=getXmlName(categoryName);
-            int imageName=MainActivity.this.getResources().getIdentifier(catxmlName,"drawable",this.getPackageName());
+            int imageName=home.getImageNameFromCategory(categoryName);
             categoryList.add(new Category(i,imageName,categoryName));
             i++;
 
@@ -270,14 +259,8 @@ public class MainActivity extends AppCompatActivity {
         setCategoryRecycler(categoryList);
     }
 
-    private String getXmlName(String categoryName) {
-        Log.d(TAG,"Inside getXmlName catName= "+categoryName);
-        categoryName=categoryName.toLowerCase();
-        categoryName=categoryName.replace(" ","_");
-        categoryName="ic_"+categoryName;
-        Log.d(TAG,"Inside getXmlName Converted catName= "+categoryName);
-        return categoryName;
-    }
+
+
 
     private List<String> getSliderUrlList() {
         List<String> sList=new ArrayList<>();

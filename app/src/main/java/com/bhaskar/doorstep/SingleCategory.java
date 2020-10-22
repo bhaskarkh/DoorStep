@@ -1,6 +1,5 @@
 package com.bhaskar.doorstep;
 
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -21,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
-import com.bhaskar.doorstep.util.Home;
+import com.bhaskar.doorstep.services.Home;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,15 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.bhaskar.doorstep.R.drawable.b1;
-import static com.bhaskar.doorstep.R.drawable.b2;
-import static com.bhaskar.doorstep.R.drawable.b3;
-import static com.bhaskar.doorstep.R.drawable.b4;
-import static com.bhaskar.doorstep.R.drawable.card1;
-import static com.bhaskar.doorstep.R.drawable.card2;
-import static com.bhaskar.doorstep.R.drawable.card3;
-import static com.bhaskar.doorstep.R.drawable.card4;
 
 public class SingleCategory extends AppCompatActivity {
     RecyclerView singleCategoryRecycler;

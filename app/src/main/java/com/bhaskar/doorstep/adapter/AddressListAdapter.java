@@ -2,12 +2,10 @@ package com.bhaskar.doorstep.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Insets;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +15,7 @@ import com.bhaskar.doorstep.ChangeAddress;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
-import com.bhaskar.doorstep.util.AddressServices;
+import com.bhaskar.doorstep.services.AddressServices;
 
 import java.util.List;
 

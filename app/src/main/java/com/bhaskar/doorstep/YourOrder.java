@@ -13,13 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bhaskar.doorstep.adapter.OrderHistoryAdapter;
-import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
 import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
 import com.bhaskar.doorstep.model.OrderDTO;
-import com.bhaskar.doorstep.util.Home;
-import com.bhaskar.doorstep.util.OrderDetailsServices;
+import com.bhaskar.doorstep.services.Home;
+import com.bhaskar.doorstep.services.OrderDetailsServices;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.bhaskar.doorstep.util;
+package com.bhaskar.doorstep.services;
 
 import android.content.Context;
 

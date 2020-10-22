@@ -9,20 +9,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Scroller;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhaskar.doorstep.allinterface.ProductInterface;
 import com.bhaskar.doorstep.model.ProductDTO;
-import com.bhaskar.doorstep.util.Home;
+import com.bhaskar.doorstep.services.ProductServices;
+import com.bhaskar.doorstep.services.Home;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,13 +40,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-
-import java.util.List;
-import java.util.Random;
-
-public class AddProductInDb extends AppCompatActivity {
-    EditText name,category,productTypeId,description,quantityType,isRequired;
-    String Sname,Scategory,SproductTypeId,Sdescription,SquantityType,SisRequired;
+public class AddProductInDb extends AppCompatActivity implements ProductInterface {
+    EditText name,category,productTypeId,description,price;
+    String Sname,Scategory,SproductTypeId,Sdescription,SquantityType,SisRequired,Sprice;
     String id="0";
     String imageUrlFromStorage;
     TextView title;
@@ -49,10 +50,11 @@ public class AddProductInDb extends AppCompatActivity {
     Button add_product_btn;
     private String TAG="AddProductInDb";
     Home hm;
+    ProductServices productServices;
    // FirebaseFirestore firebaseFirestore;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    Spinner spinnercat;
+    Spinner spinnercat,quantityType,isRequired;
     Button upload_product_image_btn;
     StorageReference storageReference;
     StorageTask uploadTask;
@@ -68,6 +70,7 @@ public class AddProductInDb extends AppCompatActivity {
         name=findViewById(R.id.add_product_name);
         spinnercat=findViewById(R.id.add_product_category);
         productTypeId=findViewById(R.id.add_product_productTypeId);
+        price=findViewById(R.id.add_product_price);
         description=findViewById(R.id.add_product_description);
         quantityType=findViewById(R.id.add_product_quantity_type);
         isRequired=findViewById(R.id.add_product_isrequired);
@@ -85,8 +88,45 @@ public class AddProductInDb extends AppCompatActivity {
         storageReference=FirebaseStorage.getInstance().getReference("product");
         id= String.valueOf(System.currentTimeMillis());
         hm=new Home(this);
+        productServices=new ProductServices(this);
 
-        setCategoryInSpinner();
+        description.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(final View v, final MotionEvent motionEvent) {
+                if (v.getId() == R.id.add_product_description) {
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+                    switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
+                        case MotionEvent.ACTION_UP:
+                            v.getParent().requestDisallowInterceptTouchEvent(
+                                    false);
+                            break;
+                    }
+                }
+                return false;
+            }
+        });
+
+        setValueInSpinner();
+
+        spinnercat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
+
+                Scategory = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
+                Log.d(TAG, "onItemSelected: Scategory="+Scategory);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+                Log.d(TAG, "onItemSelected: No Category Selected ");
+
+            }
+
+        });
+
+
         add_product_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,7 +139,7 @@ public class AddProductInDb extends AppCompatActivity {
                     }
                     else
                     {
-                        uploadFile();
+                        uploadImageInFireStorage();
                     }
 
                 }
@@ -152,63 +192,45 @@ public class AddProductInDb extends AppCompatActivity {
         }
     }
 
-    private void setCategoryInSpinner() {
-        String[] catList=AddProductInDb.this.getResources().getStringArray(R.array.category_array);
-        final ArrayAdapter<String> dataAdapter=new ArrayAdapter<String>(this,R.layout.myspinnerstylehome,catList);
-        dataAdapter.setDropDownViewResource(R.layout.myspinnerstylehome);
-        spinnercat.setAdapter(dataAdapter);
-    }
+    private void setValueInSpinner() {
 
-    private void addInDb() {
-        Log.d(TAG,"inside addInDb");
-
-        Boolean isReq=true;
-        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,100,150,true,1) ;
-
-
-        firebaseDatabase.getReference().child("test").child("product").child(productDTO.getCategory()).child(productDTO.getName()).setValue(productDTO).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG,"onSuccess firebase added");
-                upload_product_progressbar.setVisibility(View.GONE);
-                Toast.makeText(AddProductInDb.this, "Succesfully added ", Toast.LENGTH_SHORT).show();
-                clearAllInput();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG,"failure exception msg= "+e.getMessage());
-                Toast.makeText(AddProductInDb.this, "Failed ", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-
-
+         String[] quantityTypeList=AddProductInDb.this.getResources().getStringArray(R.array.quantity_type_array);
+         String[] isRequiredList=AddProductInDb.this.getResources().getStringArray(R.array.is_required_array);
+         String[] catList=AddProductInDb.this.getResources().getStringArray(R.array.category_array);
+          hm.setSpinnerAdapterForTextOnly(quantityTypeList,quantityType,true);
+          hm.setSpinnerAdapterForTextOnly(isRequiredList,isRequired,true);
+          hm.setSpinnerAdapterForTextOnly(catList,spinnercat,false);
 
     }
+
+
+
 
     private void clearAllInput() {
         name.setText(null);
         productTypeId.setText(null);
+        price.setText(null);
         description.setText(null);
-        description.setText(null);
-        quantityType.setText(null);
-        isRequired.setText(null);
-        upload_image_preview.setImageResource(R.drawable.civil);
+        upload_image_preview.setImageResource(R.drawable.ic_no_image_selected);
+        image_upload_progressbar.setVisibility(View.GONE);
+
     }
 
 
     private boolean checkTextInput() {
         Sname= name.getText().toString();
-        Scategory=String.valueOf(spinnercat.getSelectedItem());;
         SproductTypeId=productTypeId.getText().toString();
         Sdescription=description.getText().toString();
-        SquantityType=quantityType.getText().toString();
-        SisRequired=isRequired.getText().toString();
+        Sprice=price.getText().toString();
+        SquantityType=String.valueOf(quantityType.getSelectedItem());
+        SisRequired=String.valueOf(isRequired.getSelectedItemId());
+
+
+
+
+
 
         Log.d(TAG,"inside checkTextInput");
-        Log.d(TAG,"Sname= "+Sname+" Scategory= "+Scategory+" SproductTypeId="+SproductTypeId+" Sdescription= "+Sdescription+" SquantityType= "+SquantityType+" SisRequired= "+SisRequired);
 
         if(Sname.isEmpty())
         {
@@ -218,10 +240,11 @@ public class AddProductInDb extends AppCompatActivity {
         }
         if(Scategory.isEmpty())
         {
-            category.setError("Category Required");
-            category.requestFocus();
+            Toast.makeText(this, "Select Category", Toast.LENGTH_SHORT).show();
+            spinnercat.requestFocus();
             return false;
         }
+
         if(SproductTypeId.isEmpty())
         {
             productTypeId.setError("product type id Required");
@@ -234,20 +257,28 @@ public class AddProductInDb extends AppCompatActivity {
             description.requestFocus();
             return false;
         }
+        if(Sprice.isEmpty())
+        {
+            price.setError("Price  Required");
+            price.requestFocus();
+            return false;
+
+        }
         if(SquantityType.isEmpty())
         {
-            quantityType.setError("quantity Type Required");
+            Toast.makeText(this, "Select Quantity Type", Toast.LENGTH_SHORT).show();
             quantityType.requestFocus();
             return false;
         }
         if(SisRequired.isEmpty())
         {
-            isRequired.setError("This is  Required");
             isRequired.requestFocus();
             return false;
         }
 
         //if everyThing is Correct
+
+        Log.d(TAG,"Sname= "+Sname+" Scategory= "+Scategory+" SproductTypeId="+SproductTypeId+" Sdescription= "+Sdescription+" SquantityType= "+SquantityType+" SisRequired= "+SisRequired);
 
         Log.d(TAG,"inside checkTextInput everyThing Is correct");
         return true;
@@ -261,9 +292,11 @@ public class AddProductInDb extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
-    private void uploadFile(){
+    private void uploadImageInFireStorage(){
         if(mImageUri!=null)
         {
+            image_upload_progressbar.setVisibility(View.VISIBLE);
+            upload_product_progressbar.setVisibility(View.VISIBLE);
 
             StorageReference fileReference=storageReference.child(Scategory+"/"+id+"."+getFileExtension(mImageUri));
             uploadTask=fileReference.putFile(mImageUri)
@@ -284,7 +317,7 @@ public class AddProductInDb extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     imageUrlFromStorage=uri.toString();
                                     Log.d(TAG, "onSuccess: image url updated as ="+imageUrlFromStorage);
-                                    upload_product_progressbar.setVisibility(View.VISIBLE);
+
                                     addInDb();
                                 }
                             });
@@ -317,4 +350,31 @@ public class AddProductInDb extends AppCompatActivity {
             Toast.makeText(this, "Select Image of Product", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void addInDb() {
+        Boolean isReq=true;
+        if(SisRequired.equals("Yes"))
+        {
+            isReq=false;
+        }
+        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1) ;
+        productServices.setProductInterface(this);
+        productServices.addProductInDb(productDTO,firebaseDatabase);
+
+    }
+
+    @Override
+    public void onProductAddedinDb() {
+        upload_product_progressbar.setVisibility(View.GONE);
+        Toast.makeText(AddProductInDb.this, "Succesfully added ", Toast.LENGTH_SHORT).show();
+        clearAllInput();
+    }
+
+    @Override
+    public void onProductAddFailed() {
+        image_upload_progressbar.setVisibility(View.GONE);
+        upload_product_progressbar.setVisibility(View.GONE);
+        Toast.makeText(this, "Failed To upload Product Try again", Toast.LENGTH_SHORT).show();
+    }
+
 }

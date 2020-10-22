@@ -2,23 +2,19 @@ package com.bhaskar.doorstep;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bhaskar.doorstep.util.Home;
+import com.bhaskar.doorstep.services.Home;
 import com.bhaskar.doorstep.util.MyClickableSpan;
-import com.codesgood.views.JustifiedTextView;
 
 public class OrderSuccessOrFail extends AppCompatActivity {
     TextView order_title;
