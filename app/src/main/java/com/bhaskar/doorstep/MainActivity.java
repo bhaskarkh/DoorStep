@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         main_cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,AdminDashboard.class);
+                Intent i=new Intent(MainActivity.this,AddDiscountProduct.class);
                 startActivity(i);
             }
         });
@@ -451,6 +451,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mySharedPreferences.removeProductListSharedPref();
 
     }
 }

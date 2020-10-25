@@ -4,9 +4,23 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.bhaskar.doorstep.allinterface.ProductInterface;
+import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
@@ -14,6 +28,11 @@ import static android.content.Context.MODE_PRIVATE;
 public class MySharedPreferences {
     Context context;
     private static final String TAG = "MySharedPreferences";
+    ProductInterface productInterface;
+
+    public void setProductInterface(ProductInterface productInterface) {
+        this.productInterface = productInterface;
+    }
 
     public MySharedPreferences(Context context) {
         this.context = context;
@@ -78,4 +97,64 @@ public class MySharedPreferences {
 
        return userRegistrationDTO;
     }
+    public  void  saveAllProductListFromFirebase(List<ProductDTO> productDTOList)
+    {
+        Log.d(TAG, "saveAllProductListFromFirebase: ");
+
+        if(!checkSharedPrefExistsOrNot("productListSharedPref","productListPref")) {
+            Log.d(TAG, "inside storeAllProductListFromFirebase");
+            SharedPreferences mPrefs = this.context.getSharedPreferences("productListSharedPref", MODE_PRIVATE);
+            SharedPreferences.Editor prefsEditor = mPrefs.edit();
+            Gson gson = new Gson();
+            String productListJson = gson.toJson(productDTOList);
+            Log.d(TAG, "productListJson= " + productListJson);
+            prefsEditor.putString("productListPref", productListJson);
+            prefsEditor.commit();
+            productInterface.setProductListToRecyclerView(productDTOList);
+
+
+        }
+        else {
+            Log.d(TAG, "saveAllProductListFromFirebase: already exist");
+        }
+
+
+    }
+    public List<ProductDTO> getAllProductListFromSharedPreference()
+    {
+        List<ProductDTO> prodList=new ArrayList<>();
+        if(checkSharedPrefExistsOrNot("productListSharedPref","productListPref")) {
+
+            SharedPreferences mPrefs = this.context.getSharedPreferences("productListSharedPref", MODE_PRIVATE);
+            UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO();
+            Gson gson = new Gson();
+            String json = mPrefs.getString("productListPref", "empty");
+            Type type = new TypeToken<List<ProductDTO>>() {
+            }.getType();
+            prodList = gson.fromJson(json, type);
+            Log.d(TAG, "getAllProductListFromSharedPreference in getSharedPref= " + prodList.toString());
+
+        }
+        else {
+            Log.d(TAG, "getAllProductListFromSharedPreference: sharedPref doestNot exits null ProductList Returned");
+        }
+        return prodList;
+
+    }
+
+    public void removeProductListSharedPref()
+    {
+        Log.d(TAG, "removeProductListSharedPref:");
+        SharedPreferences mPrefs = this.context.getSharedPreferences("productListSharedPref", MODE_PRIVATE);
+        mPrefs.edit().remove("productListPref").commit();
+        
+    }
+
+    public boolean checkSharedPrefExistsOrNot(String getSharedText,String containsText)
+    {
+        SharedPreferences mPrefs = this.context.getSharedPreferences(getSharedText,MODE_PRIVATE);
+        return  mPrefs.contains(containsText);
+    }
+
+
 }

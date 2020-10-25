@@ -40,6 +40,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.List;
+
 public class AddProductInDb extends AppCompatActivity implements ProductInterface {
     EditText name,category,productTypeId,description,price;
     String Sname,Scategory,SproductTypeId,Sdescription,SquantityType,SisRequired,Sprice;
@@ -357,7 +359,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
         {
             isReq=false;
         }
-        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1) ;
+        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1,false) ;
         productServices.setProductInterface(this);
         productServices.addProductInDb(productDTO,firebaseDatabase);
 
@@ -375,6 +377,11 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
         image_upload_progressbar.setVisibility(View.GONE);
         upload_product_progressbar.setVisibility(View.GONE);
         Toast.makeText(this, "Failed To upload Product Try again", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setProductListToRecyclerView(List<ProductDTO> productDTOList) {
+
     }
 
 }

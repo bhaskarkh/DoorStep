@@ -19,12 +19,13 @@ public class ProductDTO implements Parcelable {
     private double mrpPrice;
     private boolean showCost;
     private int quantity;
+    private boolean isDiscountProduct;
 
 
     public ProductDTO()
     {}
 
-    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId, int amountAvailable, double myPrice, double mrpPrice, boolean showCost, int quantity) {
+    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId, int amountAvailable, double myPrice, double mrpPrice, boolean showCost, int quantity,boolean isDiscountProduct) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -40,6 +41,7 @@ public class ProductDTO implements Parcelable {
         this.mrpPrice = mrpPrice;
         this.showCost = showCost;
         this.quantity = quantity;
+        this.isDiscountProduct=isDiscountProduct;
     }
 
 
@@ -59,6 +61,8 @@ public class ProductDTO implements Parcelable {
         mrpPrice = in.readDouble();
         showCost = in.readByte() != 0;
         quantity = in.readInt();
+        isDiscountProduct=in.readByte() != 0;
+
     }
 
     public static final Creator<ProductDTO> CREATOR = new Creator<ProductDTO>() {
@@ -201,6 +205,14 @@ public class ProductDTO implements Parcelable {
         this.mrpPrice = mrpPrice;
     }
 
+    public boolean isDiscountProduct() {
+        return isDiscountProduct;
+    }
+
+    public void setDiscountProduct(boolean discountProduct) {
+        isDiscountProduct = discountProduct;
+    }
+
     @Override
     public String toString() {
         return "ProductDTO{" +
@@ -219,6 +231,7 @@ public class ProductDTO implements Parcelable {
                 ", mrpPrice=" + mrpPrice +
                 ", showCost=" + showCost +
                 ", quantity=" + quantity +
+                ", isDiscountProduct=" + isDiscountProduct +
                 '}';
     }
 
@@ -227,8 +240,8 @@ public class ProductDTO implements Parcelable {
     {
         if(o!=null && o instanceof ProductDTO)
         {
-            String cat=((ProductDTO)o).getCategory();
-            if (cat!=null && cat.equals(this.category))
+            String cat=((ProductDTO)o).getId();
+            if (cat!=null && cat.equals(this.id))
             {
                 return true;
             }
@@ -266,5 +279,6 @@ public class ProductDTO implements Parcelable {
         dest.writeDouble(mrpPrice);
         dest.writeByte((byte) (showCost ? 1 : 0));
         dest.writeInt(quantity);
+        dest.writeByte((byte) (isDiscountProduct ? 1 : 0));
     }
 }

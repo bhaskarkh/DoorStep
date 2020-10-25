@@ -37,6 +37,12 @@ public class AdminDashboard extends AppCompatActivity {
                 home.gotToHome();
             }
         });
+        admin_discount_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AdminDashboard.this,AddDiscountProduct.class));
+            }
+        });
 
     }
 }

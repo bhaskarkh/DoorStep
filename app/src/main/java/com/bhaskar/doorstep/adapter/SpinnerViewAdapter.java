@@ -54,8 +54,6 @@ public class SpinnerViewAdapter extends ArrayAdapter<SpinnerDTO> {
         } else {
             holder = (ViewHolder) row.getTag();
         }
-        Log.d(TAG, "getCustomView: name= "+listItemAddProg.getName());
-        Log.d(TAG, "getCustomView: image= "+listItemAddProg.getImage());
         holder.name.setText(listItemAddProg.getName());
         holder.img.setBackgroundResource(listItemAddProg.getImage());
 
