@@ -102,16 +102,8 @@ public class MySharedPreferences {
         Log.d(TAG, "saveAllProductListFromFirebase: ");
 
         if(!checkSharedPrefExistsOrNot("productListSharedPref","productListPref")) {
-            Log.d(TAG, "inside storeAllProductListFromFirebase");
-            SharedPreferences mPrefs = this.context.getSharedPreferences("productListSharedPref", MODE_PRIVATE);
-            SharedPreferences.Editor prefsEditor = mPrefs.edit();
-            Gson gson = new Gson();
-            String productListJson = gson.toJson(productDTOList);
-            Log.d(TAG, "productListJson= " + productListJson);
-            prefsEditor.putString("productListPref", productListJson);
-            prefsEditor.commit();
-            productInterface.setProductListToRecyclerView(productDTOList);
 
+            setProductListInSharedPreference(productDTOList);
 
         }
         else {
@@ -119,6 +111,19 @@ public class MySharedPreferences {
         }
 
 
+    }
+
+    public void setProductListInSharedPreference(List<ProductDTO> productDTOList)
+    {
+        Log.d(TAG, "setProductListInSharedPreference: ");
+        SharedPreferences mPrefs = this.context.getSharedPreferences("productListSharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String productListJson = gson.toJson(productDTOList);
+        Log.d(TAG, "productListJson= " + productListJson);
+        prefsEditor.putString("productListPref", productListJson);
+        prefsEditor.commit();
+        productInterface.setProductListToRecyclerView(productDTOList);
     }
     public List<ProductDTO> getAllProductListFromSharedPreference()
     {
@@ -154,6 +159,25 @@ public class MySharedPreferences {
     {
         SharedPreferences mPrefs = this.context.getSharedPreferences(getSharedText,MODE_PRIVATE);
         return  mPrefs.contains(containsText);
+    }
+
+    public  void changeValueofDiscountProduct(ProductDTO productDTO)
+    {
+        List<ProductDTO> productDTOList=getAllProductListFromSharedPreference();
+        for (ProductDTO productDTO1:productDTOList)
+        {
+
+            if(productDTO1.getId().equalsIgnoreCase(productDTO.getId()))
+            {
+                productDTO1.setDiscountProduct(productDTO.isDiscountProduct());
+                break;
+            }
+
+        }
+        Log.d(TAG, "changeValueofDiscountProduct: productDTOList size= "+productDTOList.size());
+
+        setProductListInSharedPreference(productDTOList);
+
     }
 
 

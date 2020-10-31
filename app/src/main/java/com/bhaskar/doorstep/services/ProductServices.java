@@ -35,6 +35,8 @@ public class ProductServices {
 
     public void setMySharedPreferences(Context context) {
         mySharedPreferences=new MySharedPreferences(context);
+        mySharedPreferences.setProductInterface(productInterface);
+
     }
 
     public ProductServices(Context context) {
@@ -43,6 +45,10 @@ public class ProductServices {
 
     public void setProductInterface(ProductInterface productInterface) {
         this.productInterface = productInterface;
+    }
+
+    public ProductInterface getProductInterface() {
+        return productInterface;
     }
 
     public void addProductInDb(ProductDTO productDTO, FirebaseDatabase firebaseDatabase) {
@@ -90,16 +96,7 @@ public class ProductServices {
             Log.d(TAG, "getProductListByCategory: shared Pref Exit");
             List<ProductDTO> productDTOList = mySharedPreferences.getAllProductListFromSharedPreference();
 
-            /*ProductComparatorForDiscount*/
-            if (productDTOList != null) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    productDTOList.sort(new ProductComparatorForDiscount());
-
-                }
-
-
-            }
 
             if (category.equals("All Category")) {
                 productInterface.setProductListToRecyclerView(productDTOList);
@@ -142,6 +139,7 @@ public class ProductServices {
                     }
 
                 }
+                Log.d(TAG, "productDTOList123: "+productDTOList.size());
                 mySharedPreferences.setProductInterface(productInterface);
                 mySharedPreferences.saveAllProductListFromFirebase(productDTOList);
 
@@ -156,4 +154,51 @@ public class ProductServices {
     }
 
 
+
+    public void addRemoveProductFromDiscount(ProductDTO productDTO) {
+        mySharedPreferences=new MySharedPreferences(context);
+        mySharedPreferences.setProductInterface(productInterface);
+
+        Log.d(TAG, "addRemoveProductFromDiscount: ");
+        DatabaseReference fireDataBaseReference = FirebaseDatabase.getInstance().getReference();
+        productDTO.setDiscountProduct(!productDTO.isDiscountProduct());
+        fireDataBaseReference.child("test").child("product").child(productDTO.getCategory()).child(productDTO.getName()).child("discountProduct").setValue(productDTO.isDiscountProduct())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        mySharedPreferences.changeValueofDiscountProduct(productDTO);
+                        if(productDTO.isDiscountProduct()) {
+                            Toast.makeText(context, "Added in Discount product", Toast.LENGTH_SHORT).show();
+
+                        }
+                        else {
+                            Toast.makeText(context, "Removed From Discount product", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Failed To Add/Remove in discount Product", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: Failed To Add/Remove in discount Product exception msg= "+e.getMessage());
+            }
+        });
+
+    }
+
+    public List<ProductDTO> sortProductList(List<ProductDTO> productDTOList)
+    {
+        /*ProductComparatorForDiscount*/
+        if (productDTOList != null) {
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                productDTOList.sort(new ProductComparatorForDiscount());
+
+            }
+
+
+        }
+        return productDTOList;
+    }
 }

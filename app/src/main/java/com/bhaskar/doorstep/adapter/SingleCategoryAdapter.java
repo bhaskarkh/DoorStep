@@ -2,6 +2,7 @@ package com.bhaskar.doorstep.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,12 @@ import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
+import com.bhaskar.doorstep.services.Home;
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAdapter.SingleCategoryViewHolder> {
@@ -43,14 +48,22 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SingleCategoryViewHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull SingleCategoryViewHolder holder, final int position) {
+        Log.d(TAG, "onBindViewHolder: called");
+        Home home=new Home(context);
+        ProductDTO productDTO= productDTOList.get(position);
 
-
-        holder.description.setText(productDTOList.get(position).getName());
+        holder.description.setText(productDTO.getName());
       //  Glide.with(context).load(productDTOList.get(position).getImage()).into(holder.category_image);
-        String imgUrl=productDTOList.get(position).getImage();
+        String imgUrl=productDTO.getImage();
+       /* String iUrl="https://firebasestorage.googleapis.com/v0/b/doorstep-a5714.appspot.com/o/product%2FElectrical%2F1604033565322.jpg";*/
         Log.d(TAG, "onBindViewHolder: image url= "+imgUrl);
-        Glide.with(context).load(imgUrl).into(holder.category_image);
+        Log.d(TAG, "onBindViewHolder: name= "+productDTO.getName());
+        home.loadImageInGlide(holder.category_image,imgUrl);
+        //Glide.with(context).load(Uri.parse(imgUrl)).into(holder.category_image);
+        //Picasso.get().load(iUrl).into(holder.category_image);
+
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

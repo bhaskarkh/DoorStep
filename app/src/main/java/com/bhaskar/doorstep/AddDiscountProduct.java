@@ -23,7 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.List;
 
 public class AddDiscountProduct extends AppCompatActivity implements ProductInterface {
-
     Spinner add_discount_cat;
     Home home;
     ProductServices productServices;
@@ -42,6 +41,7 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
         home=new Home(this);
         firebaseDatabase=FirebaseDatabase.getInstance();
         productServices=new ProductServices(this);
+        productServices.setProductInterface(this);
 
         setAllSpinnerValue();
         
@@ -67,7 +67,7 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
 
     private void fetchDiscountProduct(String category) {
         Log.d(TAG, "fetchDiscountProduct: category="+category);
-        productServices.setProductInterface(this);
+
         productServices.getProductListByCategory(category,firebaseDatabase);
 
     }
@@ -75,22 +75,22 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
     private void setAllSpinnerValue() {
 
         String[] catList = AddDiscountProduct.this.getResources().getStringArray(R.array.category_array);
-        String[] newCatArray=new String[4];
+        String[] newCatArray=new String[catList.length+1];
         newCatArray[0]="All Category";
-        for (int i=1;i<4;i++)
+        for (int i=1;i<newCatArray.length;i++)
         {
-            newCatArray[i]=catList[i];
+            newCatArray[i]=catList[i-1];
 
         }
         home.setSpinnerAdapterForTextOnly(newCatArray,add_discount_cat,false);
     }
 
     private void setCategoryRecycler(List<ProductDTO> productDTOList) {
-
+        productServices.sortProductList(productDTOList);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
         productRecyclerView.setLayoutManager(layoutManager);
         productRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        addDiscountProductAdapter =new AddDiscountProductAdapter(this,productDTOList);
+        addDiscountProductAdapter =new AddDiscountProductAdapter(this,productDTOList,productServices);
         productRecyclerView.setAdapter(addDiscountProductAdapter);
 
     }

@@ -3,13 +3,17 @@ package com.bhaskar.doorstep.services;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.bhaskar.doorstep.AddressList;
@@ -20,6 +24,14 @@ import com.bhaskar.doorstep.SingleCategory;
 import com.bhaskar.doorstep.adapter.SpinnerViewAdapter;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.SpinnerDTO;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
@@ -306,6 +318,25 @@ public class Home {
         }
 
         return EmptyString.get();
+    }
+
+    public void loadImageInGlide(ImageView imageView,String url)
+    {
+        Log.d(TAG, "loadImageInGlide: ");
+        RequestOptions options = new RequestOptions()
+                       .placeholder(R.drawable.ic_no_image_selected)
+                       .error(R.drawable.ic_no_image_selected)
+                       .diskCacheStrategy(DiskCacheStrategy.ALL)
+                       .priority(Priority.NORMAL);
+
+        Glide.with(context).load(url)
+                       .apply(options)
+                       .into(imageView);
+
+
+
+
+
     }
 
 

@@ -44,7 +44,7 @@ import java.util.List;
 
 public class AddProductInDb extends AppCompatActivity implements ProductInterface {
     EditText name,category,productTypeId,description,price;
-    String Sname,Scategory,SproductTypeId,Sdescription,SquantityType,SisRequired,Sprice;
+    String Sname,Scategory,SproductTypeId,Sdescription,SquantityType,SisRequired,Sprice,SisDiscount;
     String id="0";
     String imageUrlFromStorage;
     TextView title;
@@ -56,7 +56,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
    // FirebaseFirestore firebaseFirestore;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    Spinner spinnercat,quantityType,isRequired;
+    Spinner spinnercat,quantityType,isRequired,add_product_discount;
     Button upload_product_image_btn;
     StorageReference storageReference;
     StorageTask uploadTask;
@@ -83,12 +83,13 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
         upload_image_preview=findViewById(R.id.upload_image_preview);
         image_upload_progressbar=findViewById(R.id.image_upload_progressbar);
         upload_product_progressbar=findViewById(R.id.upload_product_progressbar);
+        add_product_discount=findViewById(R.id.add_product_discount);
 
       //  firebaseFirestore=FirebaseFirestore.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
         storageReference=FirebaseStorage.getInstance().getReference("product");
-        id= String.valueOf(System.currentTimeMillis());
+       // id= String.valueOf(System.currentTimeMillis());
         hm=new Home(this);
         productServices=new ProductServices(this);
 
@@ -195,6 +196,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
     }
 
     private void setValueInSpinner() {
+        String[] discountArray={"No","Yes"};
 
          String[] quantityTypeList=AddProductInDb.this.getResources().getStringArray(R.array.quantity_type_array);
          String[] isRequiredList=AddProductInDb.this.getResources().getStringArray(R.array.is_required_array);
@@ -202,6 +204,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
           hm.setSpinnerAdapterForTextOnly(quantityTypeList,quantityType,true);
           hm.setSpinnerAdapterForTextOnly(isRequiredList,isRequired,true);
           hm.setSpinnerAdapterForTextOnly(catList,spinnercat,false);
+          hm.setSpinnerAdapterForTextOnly(discountArray,add_product_discount,true);
 
     }
 
@@ -226,6 +229,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
         Sprice=price.getText().toString();
         SquantityType=String.valueOf(quantityType.getSelectedItem());
         SisRequired=String.valueOf(isRequired.getSelectedItemId());
+        SisDiscount=String.valueOf(add_product_discount.getSelectedItemId());
 
 
 
@@ -300,7 +304,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
             image_upload_progressbar.setVisibility(View.VISIBLE);
             upload_product_progressbar.setVisibility(View.VISIBLE);
 
-            StorageReference fileReference=storageReference.child(Scategory+"/"+id+"."+getFileExtension(mImageUri));
+            StorageReference fileReference=storageReference.child(Scategory+"/"+Sname+"."+getFileExtension(mImageUri));
             uploadTask=fileReference.putFile(mImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -312,7 +316,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
                                     image_upload_progressbar.setProgress(0);
                                 }
                             },2000);
-                            Toast.makeText(AddProductInDb.this, "Upload SuccessFull", Toast.LENGTH_SHORT).show();
+
                             Task<Uri> firebaseUri=taskSnapshot.getStorage().getDownloadUrl();
                             firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
@@ -354,12 +358,21 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
     }
 
     private void addInDb() {
-        Boolean isReq=true;
-        if(SisRequired.equals("Yes"))
+        Boolean isReq=false;
+        Boolean isDiscount=false;
+
+        if(SisRequired.equals("1")) //0 means yes 1 means No
         {
-            isReq=false;
+            isReq=true;
         }
-        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1,false) ;
+        Log.d(TAG, "addInDb: SisDiscount= "+SisDiscount);
+        if(SisDiscount.equals("1")) //0 means No 1 means Yes
+        {
+            isDiscount=true;
+
+        }
+        id= String.valueOf(System.currentTimeMillis());
+        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1,isDiscount) ;
         productServices.setProductInterface(this);
         productServices.addProductInDb(productDTO,firebaseDatabase);
 
