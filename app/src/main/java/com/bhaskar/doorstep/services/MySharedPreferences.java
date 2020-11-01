@@ -108,6 +108,7 @@ public class MySharedPreferences {
         }
         else {
             Log.d(TAG, "saveAllProductListFromFirebase: already exist");
+            productInterface.setProductListToRecyclerView(productDTOList);
         }
 
 

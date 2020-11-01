@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,7 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bhaskar.doorstep.adapter.CategoryAdapter;
 import com.bhaskar.doorstep.adapter.DiscountedProductAdapter;
 import com.bhaskar.doorstep.adapter.RecentlyViewedAdapter;
+import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
 import com.bhaskar.doorstep.adapter.SliderAdapterExample;
+import com.bhaskar.doorstep.allinterface.ProductInterface;
 import com.bhaskar.doorstep.model.Category;
 import com.bhaskar.doorstep.model.DiscountedProducts;
 import com.bhaskar.doorstep.model.GoogleSignInDTO;
@@ -33,6 +36,7 @@ import com.bhaskar.doorstep.model.RecentlyViewed;
 import com.bhaskar.doorstep.model.SliderItem;
 import com.bhaskar.doorstep.services.Home;
 import com.bhaskar.doorstep.services.MySharedPreferences;
+import com.bhaskar.doorstep.services.ProductServices;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -63,11 +67,11 @@ import static com.bhaskar.doorstep.R.drawable.ic_home_fish;
 import static com.bhaskar.doorstep.R.drawable.ic_home_fruits;
 import static com.bhaskar.doorstep.R.drawable.ic_home_veggies;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProductInterface {
 
     RecyclerView discountRecyclerView, categoryRecyclerView, recentlyViewedRecycler;
     DiscountedProductAdapter discountedProductAdapter;
-    List<DiscountedProducts> discountedProductsList;
+    List<ProductDTO> discountedProductsList;
 
     CategoryAdapter categoryAdapter;
     List<Category> categoryList;
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     MySharedPreferences mySharedPreferences;
     String Loginsource;
     Home home;
+    ProductServices productServices;
 
 
     @Override
@@ -112,14 +117,18 @@ public class MainActivity extends AppCompatActivity {
         main_cart=findViewById(R.id.main_cart);
         sliderView=findViewById(R.id.imageSlider);
         discount_list_progressbar=findViewById(R.id.discount_list_progressbar);
-        discount_list_progressbar.setVisibility(View.GONE);
+        discount_list_progressbar.setVisibility(View.VISIBLE);
 
         fAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
         home=new Home(this);
         mySharedPreferences=new MySharedPreferences(this);
+        mySharedPreferences.setProductInterface(this);
+        productServices=new ProductServices(this);
+        productServices.setProductInterface(this);
         //slider
         Log.d(TAG,"fuid in main= "+fAuth.getCurrentUser().getUid());
+        productServices.getDiscountProductList(firebaseDatabase);
         sadapter= new SliderAdapterExample(this);
 
         sliderView.setSliderAdapter(sadapter);
@@ -132,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
         renewItems();
         //slider
+
        Loginsource=mySharedPreferences.getLoginSourceToSharedPreference();
 
        if(Loginsource.equals("google")) {
@@ -170,13 +180,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // adding data to model
-        discountedProductsList = new ArrayList<>();
-        discountedProductsList.add(new DiscountedProducts(1, ic_home_fruits));
-        discountedProductsList.add(new DiscountedProducts(2, ic_home_fish));
-        discountedProductsList.add(new DiscountedProducts(3, ic_home_veggies));
-        discountedProductsList.add(new DiscountedProducts(4, b4));
-        discountedProductsList.add(new DiscountedProducts(5, discountbrocoli));
-        discountedProductsList.add(new DiscountedProducts(6, discountmeat));
+
 
         // adding data to model
         //jcdj
@@ -195,7 +199,6 @@ public class MainActivity extends AppCompatActivity {
 
       //  getProductList();
         getCategoryList();
-        setDiscountedRecycler(discountedProductsList);
 
        setRecentlyViewedRecycler(recentlyViewedList);
 
@@ -270,7 +273,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setDiscountedRecycler(List<DiscountedProducts> dataList) {
+    private void setDiscountedRecycler(List<ProductDTO> dataList) {
+        discount_list_progressbar.setVisibility(View.GONE);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         discountRecyclerView.setLayoutManager(layoutManager);
         discountedProductAdapter = new DiscountedProductAdapter(this,dataList);
@@ -288,11 +292,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRecentlyViewedRecycler(List<RecentlyViewed> recentlyViewedDataList) {
+        Log.d(TAG, "setRecentlyViewedRecycler: size= "+recentlyViewedDataList.size());
+
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
+        recentlyViewedRecycler.setItemAnimator(new DefaultItemAnimator());
+        recentlyViewedRecycler.setLayoutManager(layoutManager);
+        recentlyViewedAdapter = new RecentlyViewedAdapter(this,recentlyViewedDataList);
+        recentlyViewedRecycler.setAdapter(recentlyViewedAdapter);
+
+    }
+
+/*    private void setRecentlyViewedRecycler(List<RecentlyViewed> recentlyViewedDataList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recentlyViewedRecycler.setLayoutManager(layoutManager);
         recentlyViewedAdapter = new RecentlyViewedAdapter(this,recentlyViewedDataList);
         recentlyViewedRecycler.setAdapter(recentlyViewedAdapter);
-    }
+    }*/
+
     //Now again we need to create a adapter and model class for recently viewed items.
     // lets do it fast.
 
@@ -460,4 +476,23 @@ public class MainActivity extends AppCompatActivity {
         mySharedPreferences.removeProductListSharedPref();
 
     }
+
+
+    @Override
+    public void onProductAddedinDb() {
+
+    }
+
+    @Override
+    public void onProductAddFailed() {
+
+    }
+
+    @Override
+    public void setProductListToRecyclerView(List<ProductDTO> productDTOList) {
+        setDiscountedRecycler(productDTOList);
+    }
+
+
+
 }

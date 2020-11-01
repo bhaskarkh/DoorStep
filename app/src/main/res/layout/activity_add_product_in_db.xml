@@ -11,8 +11,10 @@
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -88,13 +90,12 @@
                 android:id="@+id/quantity_type_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="16dp"
                 android:text="Unit"
                 android:textSize="20sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="1dp"
                 app:layout_constraintStart_toStartOf="@+id/add_product_price"
-                app:layout_constraintTop_toBottomOf="@+id/add_product_price"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/add_product_price" />
 
 
             <TextView
@@ -104,24 +105,18 @@
                 android:layout_marginTop="16dp"
                 android:text="Self"
                 android:textSize="20sp"
-                android:layout_marginLeft="1dp"
-                app:layout_constraintStart_toStartOf="@+id/quantity_type_text"
-                app:layout_constraintTop_toBottomOf="@+id/quantity_type_text" />
-
+                app:layout_constraintStart_toStartOf="@+id/add_product_discount_text"
+                app:layout_constraintTop_toBottomOf="@+id/add_product_discount_text" />
 
             <Spinner
                 android:id="@+id/add_product_isrequired"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
                 android:maxLines="1"
                 app:layout_constraintBottom_toBottomOf="@+id/is_required_text"
-                app:layout_constraintEnd_toEndOf="@id/add_product_quantity_type"
-                app:layout_constraintHorizontal_bias="0.941"
-                app:layout_constraintStart_toEndOf="@+id/is_required_text"
-                app:layout_constraintTop_toBottomOf="@+id/add_product_quantity_type"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintEnd_toEndOf="@+id/add_product_discount"
+                app:layout_constraintStart_toEndOf="@+id/is_required_text" />
 
 
             <EditText
@@ -202,8 +197,6 @@
                 app:srcCompat="@drawable/ic_no_image_selected" />
 
 
-
-
             <EditText
                 android:id="@+id/add_product_description"
                 android:layout_width="wrap_content"
@@ -217,8 +210,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/upload_product_image_btn"
-                />
+                app:layout_constraintTop_toBottomOf="@id/upload_product_image_btn" />
 
             <ProgressBar
                 android:id="@+id/image_upload_progressbar"
@@ -244,6 +236,28 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.36" />
+
+            <TextView
+                android:id="@+id/add_product_discount_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Discount"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@+id/quantity_type_text"
+                app:layout_constraintTop_toBottomOf="@+id/quantity_type_text" />
+
+
+            <Spinner
+                android:id="@+id/add_product_discount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:maxLines="1"
+                app:layout_constraintBottom_toBottomOf="@+id/add_product_discount_text"
+                app:layout_constraintEnd_toEndOf="@+id/add_product_quantity_type"
+                app:layout_constraintStart_toEndOf="@+id/add_product_discount_text" />
+
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
     FirebaseDatabase firebaseDatabase;
     RecyclerView productRecyclerView;
     AddDiscountProductAdapter addDiscountProductAdapter;
+    ProgressBar add_discount_product_progressbar;
     private static final String TAG = "AddDiscountProduct";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
         setContentView(R.layout.activity_add_discount_product);
         add_discount_cat=findViewById(R.id.add_discount_cat);
         productRecyclerView=findViewById(R.id.add_discount_prod_recyclerview);
+        add_discount_product_progressbar=findViewById(R.id.add_discount_product_progressbar);
+        add_discount_product_progressbar.setVisibility(View.VISIBLE);
         
         home=new Home(this);
         firebaseDatabase=FirebaseDatabase.getInstance();
@@ -87,6 +91,7 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
 
     private void setCategoryRecycler(List<ProductDTO> productDTOList) {
         productServices.sortProductList(productDTOList);
+        add_discount_product_progressbar.setVisibility(View.GONE);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
         productRecyclerView.setLayoutManager(layoutManager);
         productRecyclerView.setItemAnimator(new DefaultItemAnimator());

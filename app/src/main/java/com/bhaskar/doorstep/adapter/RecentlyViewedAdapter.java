@@ -2,6 +2,7 @@ package com.bhaskar.doorstep.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
+import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
 
     Context context;
     List<RecentlyViewed> recentlyViewedList;
+    private static final String TAG = "RecentlyViewedAdapter";
 
     public RecentlyViewedAdapter(Context context, List<RecentlyViewed> recentlyViewedList) {
         this.context = context;
@@ -38,11 +41,14 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
     @Override
     public void onBindViewHolder(@NonNull RecentlyViewedViewHolder holder, final int position) {
 
-        holder.name.setText(recentlyViewedList.get(position).getName());
-        holder.description.setText(recentlyViewedList.get(position).getDescription());
-        holder.price.setText(recentlyViewedList.get(position).getPrice());
-        holder.qty.setText(recentlyViewedList.get(position).getQuantity());
-        holder.unit.setText(recentlyViewedList.get(position).getUnit());
+        RecentlyViewed productDTO=recentlyViewedList.get(position);
+        Log.d(TAG, "onBindViewHolder: productDTO= "+productDTO.getName());
+
+        holder.name.setText(productDTO.getName());
+        holder.description.setText(productDTO.getDescription());
+        holder.price.setText(String.valueOf(productDTO.getPrice()));
+        holder.qty.setText(productDTO.getQuantity());
+        holder.unit.setText(productDTO.getUnit());
         if(position%2==0) {
             holder.bg.setBackgroundResource(R.drawable.card_bg1);
         }
@@ -56,11 +62,11 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
 
                 Intent i=new Intent(context, ProductDetails.class);
                 i.putExtra("name", recentlyViewedList.get(position).getName());
-                i.putExtra("image", recentlyViewedList.get(position).getBigimageurl());
+                i.putExtra("image", productDTO.getBigimageurl());
                 i.putExtra("price",recentlyViewedList.get(position).getPrice());
                 i.putExtra("desc",recentlyViewedList.get(position).getDescription());
                 i.putExtra("qty",recentlyViewedList.get(position).getQuantity());
-                i.putExtra("unit",recentlyViewedList.get(position).getUnit());
+                i.putExtra("unit",productDTO.getUnit());
 
                 context.startActivity(i);
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -12,15 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.model.DiscountedProducts;
+import com.bhaskar.doorstep.model.ProductDTO;
+import com.bhaskar.doorstep.services.Home;
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedProductAdapter.DiscountedProductViewHolder> {
 
     Context context;
-    List<DiscountedProducts> discountedProductsList;
+    List<ProductDTO> discountedProductsList;
 
-    public DiscountedProductAdapter(Context context, List<DiscountedProducts> discountedProductsList) {
+    public DiscountedProductAdapter(Context context, List<ProductDTO> discountedProductsList) {
         this.context = context;
         this.discountedProductsList = discountedProductsList;
     }
@@ -35,12 +39,12 @@ public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedPro
 
     @Override
     public void onBindViewHolder(@NonNull DiscountedProductViewHolder holder, int position) {
+        Home home=new Home(context);
+        ProductDTO productDTO=discountedProductsList.get(position);
+        home.loadImageInGlide(holder.discountImageView,productDTO.getImage());
+        holder.title.setText(productDTO.getName());
 
-        holder.discountImageView.setImageResource(discountedProductsList.get(position).getImageurl());
-       /* if((position%2)==0)
-        {
-            holder.constraintLayout.setBackgroundResource(R.drawable.card_bg2);
-        }*/
+
 
     }
 
@@ -52,14 +56,15 @@ public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedPro
     public static class DiscountedProductViewHolder extends  RecyclerView.ViewHolder{
 
         ImageView discountImageView;
-        ConstraintLayout constraintLayout;
+        TextView title;
+
 
         public DiscountedProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
             discountImageView = itemView.findViewById(R.id.discountImage);
-            constraintLayout=itemView.findViewById(R.id.discount_layout);
 
+            title=itemView.findViewById(R.id.title_text);
         }
     }
 }

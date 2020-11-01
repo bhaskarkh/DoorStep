@@ -153,6 +153,42 @@ public class ProductServices {
         });
     }
 
+    public void getDiscountProductList(FirebaseDatabase firebaseDatabase) {
+        Log.d(TAG, "storeProductFromFirebaseToSharedPref: ");
+
+        mySharedPreferences=new MySharedPreferences(context);
+        List<ProductDTO> productDTOList=new ArrayList<>();
+        Log.d(TAG, "getAllProductList: ");
+        DatabaseReference fireRef=firebaseDatabase.getReference();
+        fireRef.child("test").child("product").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+
+                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
+
+                        ProductDTO productDTO=dataSnapshot1.getValue(ProductDTO.class);
+                        if(productDTO.isDiscountProduct()) {
+                            productDTOList.add(productDTO);
+                        }
+
+                    }
+
+                }
+                Log.d(TAG, "productDTOList get list size=  "+productDTOList.size());
+                productInterface.setProductListToRecyclerView(productDTOList);
+
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
 
     public void addRemoveProductFromDiscount(ProductDTO productDTO) {
