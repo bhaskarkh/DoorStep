@@ -73,6 +73,7 @@ public class SingleCategoryAdapter extends RecyclerView.Adapter<SingleCategoryAd
                 ProductDTO selectedProduct=productDTOList.get(position);
                 i.putExtra("cat_name", selectedProduct.getCategory());
                 i.putExtra("selected_product",selectedProduct);
+                i.putExtra("source_to_product_details","SingleCategory");
                 context.startActivity(i);
 
             }

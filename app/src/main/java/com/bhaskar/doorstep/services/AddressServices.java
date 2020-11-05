@@ -228,7 +228,7 @@ public class AddressServices {
                     mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);
 
 
-                String source=intentForSource.getStringExtra("source");
+                    String source=intentForSource.getStringExtra("source");
                         if(source!=null)
                         {
                             Log.d(TAG, "onSuccess: source"+source);
@@ -239,6 +239,7 @@ public class AddressServices {
                                 intent.putExtra("selected_product",productDTO);
                                 intent.putExtra("source","ProductDetails");
                                 intent.putExtra("cat_name",intentForSource.getStringExtra("cat_name"));
+                                intent.putExtra("source_to_product_details",intentForSource.getStringExtra("source_to_product_details"));
                                 context.startActivity(intent);
                             }
 

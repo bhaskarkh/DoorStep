@@ -31,7 +31,7 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
     MySharedPreferences mySharedPreferences;
     AddressServices addressServices;
     Home home;
-    String sourceCategory;
+    String sourceCategory,sourceComingFrom;
 
     String name, price, desc, qty, unit;
 
@@ -67,8 +67,10 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
         addressServices=new AddressServices(ProductDetails.this);
         home=new Home(ProductDetails.this);
           i = getIntent();
+          //all Intent Value
         selectedProduct=i.getParcelableExtra("selected_product");
         sourceCategory=i.getStringExtra("cat_name");
+        sourceComingFrom=i.getStringExtra("source_to_product_details");
 
          name = selectedProduct.getName();
          price = String.valueOf(selectedProduct.getPrice());
@@ -111,6 +113,8 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
                 intent.putExtra("source","ProductDetails");
                 intent.putExtra("cat_name",sourceCategory);
                 intent.putExtra("selected_product",selectedProduct);
+                intent.putExtra("source_to_product_details",sourceComingFrom);
+
                 startActivity(intent);
             }
         });

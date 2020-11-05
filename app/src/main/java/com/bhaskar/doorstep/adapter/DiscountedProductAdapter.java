@@ -1,6 +1,7 @@
 package com.bhaskar.doorstep.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.model.DiscountedProducts;
 import com.bhaskar.doorstep.model.ProductDTO;
@@ -43,6 +45,16 @@ public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedPro
         ProductDTO productDTO=discountedProductsList.get(position);
         home.loadImageInGlide(holder.discountImageView,productDTO.getImage());
         holder.title.setText(productDTO.getName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(context, ProductDetails.class);
+                i.putExtra("cat_name", productDTO.getCategory());
+                i.putExtra("selected_product",productDTO);
+                i.putExtra("source_to_product_details","Home");
+                context.startActivity(i);
+            }
+        });
 
 
 

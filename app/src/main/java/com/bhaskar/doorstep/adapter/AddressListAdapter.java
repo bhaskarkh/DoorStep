@@ -60,6 +60,7 @@ Intent intentforSource;
                 Log.d(TAG, "onClick: name= "+ addressDTO.getName());
                 Intent intent=new Intent(context, ChangeAddress.class);
                 String source=intentforSource.getStringExtra("source");
+                String sourceComingtoProductDetails=intentforSource.getStringExtra("source");
 
                 intent.putExtra("source",source);
                 intent.putExtra("selected_product",(ProductDTO)intentforSource.getParcelableExtra("selected_product"));

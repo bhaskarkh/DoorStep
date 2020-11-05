@@ -46,6 +46,7 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
     String categorySource;
     ImageView back_btn;
     private static final String TAG = "AddressList";
+    private String sourceComingtoProductDetails;
 
 
     @Override
@@ -87,6 +88,8 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
                 {
                     intent.putExtra("selected_product",(ProductDTO)intentForSource.getParcelableExtra("selected_product"));
                     intent.putExtra("cat_name",categorySource);
+                    intent.putExtra("source_to_product_details",sourceComingtoProductDetails);
+
                 }
                 startActivity(intent);
             }
@@ -108,6 +111,7 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
        else if(src.equals("ProductDetails"))
         {
             categorySource=intentForSource.getStringExtra("cat_name");
+            sourceComingtoProductDetails=intentForSource.getStringExtra("source_to_product_details");
             source="ProductDetails";
            productDTO=intentForSource.getParcelableExtra("selected_product");
 

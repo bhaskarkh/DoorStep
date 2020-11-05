@@ -65,22 +65,25 @@ public class Home {
             
             Log.d(TAG, "backButton: call from ProductDetails");
             String goingSource = intent.getStringExtra("cat_name");
+            String sourceComing=intent.getStringExtra("source_to_product_details");
 
-            if (goingSource != null) {
-                Log.d(TAG, "goingSource : "+goingSource);
-                if (!goingSource.equals("NA")) {
-                    Log.d(TAG, "backButton: not NA");
+            if (goingSource != null && sourceComing!=null) {
+                Log.d(TAG, "goingSource : " + goingSource);
 
-                    Intent i = new Intent(context, SingleCategory.class);
-                    i.putExtra("cat_name", goingSource);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(i);
-                    ((Activity)context).finish();
-                } else {
-                    Log.d(TAG, "goingSource: is NA ");
-                    gotToHome();
-                }
+                    if (!goingSource.equals("NA") && sourceComing.equalsIgnoreCase("SingleCategory") ) {
+                        Log.d(TAG, "backButton: not NA");
+
+                        Intent i = new Intent(context, SingleCategory.class);
+                        i.putExtra("cat_name", goingSource);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                        ((Activity) context).finish();
+                    } else {   //NA else
+                        Log.d(TAG, "goingSource: is NA ");
+                        gotToHome();
+                    }
+
             }else {
                 Log.d(TAG, "goingSource: is null");
                 gotToHome();
@@ -89,23 +92,23 @@ public class Home {
         }else if(backCallSource.equals("AddressList")){
             Log.d(TAG, "backButton: AddressList");
             String comingSource=intent.getStringExtra("source");
+            String sourceComing=intent.getStringExtra("source_to_product_details");
 
 
-            if(comingSource!=null)
-            {
-                Log.d(TAG, "comingSource: "+comingSource);
-                if (comingSource.equals("ProductDetails")){
+
+                if (comingSource!=null && sourceComing!=null && comingSource.equals("ProductDetails")){
+                    Log.d(TAG, "SingleCategory: and ProductDetails ");
                     Intent i = new Intent(context, ProductDetails.class);
                     ProductDTO productDTO=(ProductDTO)intent.getParcelableExtra("selected_product");
                     String cat_nam=intent.getStringExtra("cat_name");
                     Log.d(TAG, "AddressList: cat_name"+cat_nam);
                     i.putExtra("cat_name", cat_nam);
                     i.putExtra("selected_product",productDTO);
+                    i.putExtra("source_to_product_details",sourceComing);
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);
                     ((Activity)context).finish();
-                }
 
             }else {
                 Log.d(TAG, "AddressList : comingSource= is null");
