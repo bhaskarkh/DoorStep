@@ -12,7 +12,7 @@ import com.bhaskar.doorstep.services.Home;
 
 public class AdminDashboard extends AppCompatActivity {
 
-    Button admin_add_product_btn,admin_slider_btn,admin_discount_btn;
+    Button admin_add_product_btn,admin_slider_btn,admin_discount_btn,admin_recently_btn;
     ImageView admin_back_btn;
     Home home;
     @Override
@@ -23,6 +23,7 @@ public class AdminDashboard extends AppCompatActivity {
         admin_slider_btn=findViewById(R.id.admin_slider_btn);
         admin_discount_btn=findViewById(R.id.admin_discount_btn);
         admin_back_btn=findViewById(R.id.admin_back_btn);
+        admin_recently_btn=findViewById(R.id.admin_recently_btn);
         home=new Home(this);
 
         admin_add_product_btn.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +42,12 @@ public class AdminDashboard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AdminDashboard.this,AddDiscountProduct.class));
+            }
+        });
+        admin_recently_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AdminDashboard.this,AddRecentlyViewedProduct.class));
             }
         });
 

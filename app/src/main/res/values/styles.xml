@@ -27,5 +27,12 @@
         <item name="stGravity">top</item> top or center
         <item name="stRadius">5dp</item>
     </style>
+    <style name="TextViewTheme" parent="android:Widget.TextView">
+        <!-- Set the default global color for TextViews to Holo Blue Dark -->
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="android:textColorSecondary">@android:color/black</item>
+        <item name="android:textColorTertiary">@android:color/black</item>
+        <item name="android:textColorHint">@android:color/black</item>
+    </style>
 
 </resources>

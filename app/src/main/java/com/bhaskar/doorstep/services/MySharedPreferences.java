@@ -180,6 +180,24 @@ public class MySharedPreferences {
         setProductListInSharedPreference(productDTOList);
 
     }
+    public  void changeValueofRecentlyViewProduct(ProductDTO productDTO)
+    {
+        List<ProductDTO> productDTOList=getAllProductListFromSharedPreference();
+        for (ProductDTO productDTO1:productDTOList)
+        {
+
+            if(productDTO1.getId().equalsIgnoreCase(productDTO.getId()))
+            {
+                productDTO1.setRecentlyViewProduct(productDTO.isRecentlyViewProduct());
+                break;
+            }
+
+        }
+        Log.d(TAG, "changeValueofDiscountProduct: productDTOList size= "+productDTOList.size());
+
+        setProductListInSharedPreference(productDTOList);
+
+    }
 
 
 }

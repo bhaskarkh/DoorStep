@@ -13,8 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.bhaskar.doorstep.adapter.AddDiscountProductAdapter;
-import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
+import com.bhaskar.doorstep.adapter.AddDiscountRecentlyProductAdapter;
 import com.bhaskar.doorstep.allinterface.ProductInterface;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.services.Home;
@@ -30,7 +29,7 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
     String category;
     FirebaseDatabase firebaseDatabase;
     RecyclerView productRecyclerView;
-    AddDiscountProductAdapter addDiscountProductAdapter;
+    AddDiscountRecentlyProductAdapter addDiscountRecentlyProductAdapter;
     ProgressBar add_discount_product_progressbar;
     private static final String TAG = "AddDiscountProduct";
     @Override
@@ -95,8 +94,8 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
         productRecyclerView.setLayoutManager(layoutManager);
         productRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        addDiscountProductAdapter =new AddDiscountProductAdapter(this,productDTOList,productServices);
-        productRecyclerView.setAdapter(addDiscountProductAdapter);
+        addDiscountRecentlyProductAdapter =new AddDiscountRecentlyProductAdapter(this,productDTOList,productServices,"discount");
+        productRecyclerView.setAdapter(addDiscountRecentlyProductAdapter);
 
     }
     @Override
@@ -114,5 +113,15 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
     @Override
     public void setProductListToRecyclerView(List<ProductDTO> productDTOList) {
         setCategoryRecycler(productDTOList);
+    }
+
+    @Override
+    public void setDiscountProductListToRecyclerView(List<ProductDTO> discountProductDTOList) {
+
+    }
+
+    @Override
+    public void setRecentlyViewProductListToRecyclerView(List<ProductDTO> recentlyViewProductDTOList) {
+
     }
 }

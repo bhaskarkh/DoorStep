@@ -82,6 +82,17 @@ public class ProductServices {
         }
 
     }
+    public void addOrRemoveBtnForRecentlyViewedProduct(ProductDTO productDTO, ImageView btnImageView)
+    {
+        if (productDTO!=null && productDTO.isRecentlyViewProduct())
+        {
+            Glide.with(context).load(R.drawable.remove_red).into(btnImageView);
+        }
+        else {
+            Glide.with(context).load(R.drawable.add_green).into(btnImageView);
+        }
+
+    }
     public  void getProductListByCategory(String category,FirebaseDatabase firebaseDatabase)
     {
         setMySharedPreferences(context);
@@ -153,11 +164,12 @@ public class ProductServices {
         });
     }
 
-    public void getDiscountProductList(FirebaseDatabase firebaseDatabase) {
+    public void getDiscountandRecentlyViewProductList(FirebaseDatabase firebaseDatabase) {
         Log.d(TAG, "storeProductFromFirebaseToSharedPref: ");
 
         mySharedPreferences=new MySharedPreferences(context);
-        List<ProductDTO> productDTOList=new ArrayList<>();
+        List<ProductDTO> DiscountproductDTOList=new ArrayList<>();
+        List<ProductDTO> RecentlyViewproductDTOList=new ArrayList<>();
         Log.d(TAG, "getAllProductList: ");
         DatabaseReference fireRef=firebaseDatabase.getReference();
         fireRef.child("test").child("product").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -169,15 +181,23 @@ public class ProductServices {
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
 
                         ProductDTO productDTO=dataSnapshot1.getValue(ProductDTO.class);
-                        if(productDTO.isDiscountProduct()) {
-                            productDTOList.add(productDTO);
-                        }
+
+                            if (productDTO.isDiscountProduct()) {
+                                DiscountproductDTOList.add(productDTO);
+                            }
+                            if (productDTO.isRecentlyViewProduct()) {
+                                Log.d(TAG, "inside Recently view");
+                                RecentlyViewproductDTOList.add(productDTO);
+                            }
+
 
                     }
 
                 }
-                Log.d(TAG, "productDTOList get list size=  "+productDTOList.size());
-                productInterface.setProductListToRecyclerView(productDTOList);
+                Log.d(TAG, "DiscountproductDTOList get list size=  "+DiscountproductDTOList.size());
+                Log.d(TAG, "RecentlyViewproductDTOList get list size=  "+RecentlyViewproductDTOList.size());
+                productInterface.setDiscountProductListToRecyclerView(DiscountproductDTOList);
+                productInterface.setRecentlyViewProductListToRecyclerView(RecentlyViewproductDTOList);
 
 
 
@@ -210,6 +230,40 @@ public class ProductServices {
                         }
                         else {
                             Toast.makeText(context, "Removed From Discount product", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "Failed To Add/Remove in discount Product", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onFailure: Failed To Add/Remove in discount Product exception msg= "+e.getMessage());
+            }
+        });
+
+    }
+    public void addRemoveProductFromRecentlyViewed(ProductDTO productDTO) {
+        mySharedPreferences=new MySharedPreferences(context);
+        mySharedPreferences.setProductInterface(productInterface);
+
+        Log.d(TAG, "addRemoveProductFromRecentlyViewed: ");
+        DatabaseReference fireDataBaseReference = FirebaseDatabase.getInstance().getReference();
+        productDTO.setRecentlyViewProduct(!productDTO.isRecentlyViewProduct());
+        Log.d(TAG, "recently= : "+productDTO.isRecentlyViewProduct());
+        Log.d(TAG, "addRemoveProductFromRecentlyViewed: productDTO= "+productDTO.toString());
+
+        fireDataBaseReference.child("test").child("product").child(productDTO.getCategory()).child(productDTO.getName()).child("recentlyViewProduct").setValue(productDTO.isRecentlyViewProduct())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+                        mySharedPreferences.changeValueofRecentlyViewProduct(productDTO);
+                        if(productDTO.isRecentlyViewProduct()) {
+                            Toast.makeText(context, "Added in RecentlyView product", Toast.LENGTH_SHORT).show();
+
+                        }
+                        else {
+                            Toast.makeText(context, "Removed From RecentlyView product", Toast.LENGTH_SHORT).show();
                         }
 
                     }

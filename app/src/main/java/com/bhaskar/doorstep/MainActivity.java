@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
         productServices.setProductInterface(this);
         //slider
         Log.d(TAG,"fuid in main= "+fAuth.getCurrentUser().getUid());
-        productServices.getDiscountProductList(firebaseDatabase);
+        productServices.getDiscountandRecentlyViewProductList(firebaseDatabase);
         sadapter= new SliderAdapterExample(this);
 
         sliderView.setSliderAdapter(sadapter);
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
       //  getProductList();
         getCategoryList();
 
-       setRecentlyViewedRecycler(recentlyViewedList);
+       //setRecentlyViewedRecycler(recentlyViewedList);
 
     }
 
@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
 
     }
 
-    private void setRecentlyViewedRecycler(List<RecentlyViewed> recentlyViewedDataList) {
+    private void setRecentlyViewedRecycler(List<ProductDTO> recentlyViewedDataList) {
         Log.d(TAG, "setRecentlyViewedRecycler: size= "+recentlyViewedDataList.size());
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
@@ -491,8 +491,21 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
 
     @Override
     public void setProductListToRecyclerView(List<ProductDTO> productDTOList) {
-        setDiscountedRecycler(productDTOList);
+
+
     }
+
+    @Override
+    public void setDiscountProductListToRecyclerView(List<ProductDTO> discountProductDTOList) {
+        setDiscountedRecycler(discountProductDTOList);
+    }
+
+    @Override
+    public void setRecentlyViewProductListToRecyclerView(List<ProductDTO> recentlyViewProductDTOList) {
+
+        setRecentlyViewedRecycler(recentlyViewProductDTOList);
+    }
+
 
 
 

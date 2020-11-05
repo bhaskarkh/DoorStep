@@ -20,12 +20,13 @@ public class ProductDTO implements Parcelable {
     private boolean showCost;
     private int quantity;
     private boolean isDiscountProduct;
+    private boolean isRecentlyViewProduct;
 
 
     public ProductDTO()
     {}
 
-    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId, int amountAvailable, double myPrice, double mrpPrice, boolean showCost, int quantity,boolean isDiscountProduct) {
+    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId, int amountAvailable, double myPrice, double mrpPrice, boolean showCost, int quantity, boolean isDiscountProduct, boolean isRecentlyViewProduct) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -41,9 +42,9 @@ public class ProductDTO implements Parcelable {
         this.mrpPrice = mrpPrice;
         this.showCost = showCost;
         this.quantity = quantity;
-        this.isDiscountProduct=isDiscountProduct;
+        this.isDiscountProduct = isDiscountProduct;
+        this.isRecentlyViewProduct = isRecentlyViewProduct;
     }
-
 
     protected ProductDTO(Parcel in) {
         id = in.readString();
@@ -62,6 +63,7 @@ public class ProductDTO implements Parcelable {
         showCost = in.readByte() != 0;
         quantity = in.readInt();
         isDiscountProduct=in.readByte() != 0;
+        isRecentlyViewProduct=in.readByte() != 0;
 
     }
 
@@ -213,6 +215,14 @@ public class ProductDTO implements Parcelable {
         isDiscountProduct = discountProduct;
     }
 
+    public boolean isRecentlyViewProduct() {
+        return isRecentlyViewProduct;
+    }
+
+    public void setRecentlyViewProduct(boolean recentlyViewProduct) {
+        isRecentlyViewProduct = recentlyViewProduct;
+    }
+
     @Override
     public String toString() {
         return "ProductDTO{" +
@@ -232,6 +242,7 @@ public class ProductDTO implements Parcelable {
                 ", showCost=" + showCost +
                 ", quantity=" + quantity +
                 ", isDiscountProduct=" + isDiscountProduct +
+                ", isRecentlyViewProduct=" + isRecentlyViewProduct +
                 '}';
     }
 
@@ -280,5 +291,6 @@ public class ProductDTO implements Parcelable {
         dest.writeByte((byte) (showCost ? 1 : 0));
         dest.writeInt(quantity);
         dest.writeByte((byte) (isDiscountProduct ? 1 : 0));
+        dest.writeByte((byte) (isRecentlyViewProduct ? 1 : 0));
     }
 }

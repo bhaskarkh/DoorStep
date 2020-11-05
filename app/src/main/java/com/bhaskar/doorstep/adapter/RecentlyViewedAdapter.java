@@ -2,6 +2,8 @@ package com.bhaskar.doorstep.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,16 +18,20 @@ import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
+import com.bhaskar.doorstep.services.Home;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.List;
 
 public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAdapter.RecentlyViewedViewHolder> {
 
     Context context;
-    List<RecentlyViewed> recentlyViewedList;
+    List<ProductDTO> recentlyViewedList;
     private static final String TAG = "RecentlyViewedAdapter";
 
-    public RecentlyViewedAdapter(Context context, List<RecentlyViewed> recentlyViewedList) {
+    public RecentlyViewedAdapter(Context context, List<ProductDTO> recentlyViewedList) {
         this.context = context;
         this.recentlyViewedList = recentlyViewedList;
     }
@@ -41,20 +47,23 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
     @Override
     public void onBindViewHolder(@NonNull RecentlyViewedViewHolder holder, final int position) {
 
-        RecentlyViewed productDTO=recentlyViewedList.get(position);
+        Home home=new Home(context);
+        ProductDTO productDTO=recentlyViewedList.get(position);
         Log.d(TAG, "onBindViewHolder: productDTO= "+productDTO.getName());
-
         holder.name.setText(productDTO.getName());
         holder.description.setText(productDTO.getDescription());
         holder.price.setText(String.valueOf(productDTO.getPrice()));
-        holder.qty.setText(productDTO.getQuantity());
-        holder.unit.setText(productDTO.getUnit());
-        if(position%2==0) {
-            holder.bg.setBackgroundResource(R.drawable.card_bg1);
-        }
-        else {
-            holder.bg.setBackgroundResource(R.drawable.card_bg2);
-        }
+        holder.unit.setText(productDTO.getQuantityType());
+       // home.loadImageInGlide(holder.bg,productDTO.getImage());
+        Glide.with(context).load(productDTO.getImage()).into(new SimpleTarget<Drawable>() {
+            @Override
+            public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    holder.bg.setBackground(resource); 
+                }
+            }
+        });
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,11 +71,11 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
 
                 Intent i=new Intent(context, ProductDetails.class);
                 i.putExtra("name", recentlyViewedList.get(position).getName());
-                i.putExtra("image", productDTO.getBigimageurl());
+                i.putExtra("image", productDTO.getImage());
                 i.putExtra("price",recentlyViewedList.get(position).getPrice());
                 i.putExtra("desc",recentlyViewedList.get(position).getDescription());
                 i.putExtra("qty",recentlyViewedList.get(position).getQuantity());
-                i.putExtra("unit",productDTO.getUnit());
+                i.putExtra("unit",productDTO.getQuantityType());
 
                 context.startActivity(i);
 
@@ -91,7 +100,6 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
             name = itemView.findViewById(R.id.product_name);
             description = itemView.findViewById(R.id.description);
             price = itemView.findViewById(R.id.price);
-            qty = itemView.findViewById(R.id.qty);
             unit = itemView.findViewById(R.id.unit);
             bg = itemView.findViewById(R.id.recently_layout);
 

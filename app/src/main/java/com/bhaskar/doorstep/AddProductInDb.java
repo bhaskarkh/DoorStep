@@ -372,7 +372,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
 
         }
         id= String.valueOf(System.currentTimeMillis());
-        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1,isDiscount) ;
+        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1,isDiscount,false) ;
         productServices.setProductInterface(this);
         productServices.addProductInDb(productDTO,firebaseDatabase);
 
@@ -394,6 +394,15 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
 
     @Override
     public void setProductListToRecyclerView(List<ProductDTO> productDTOList) {
+
+    }
+    @Override
+    public void setDiscountProductListToRecyclerView(List<ProductDTO> discountProductDTOList) {
+
+    }
+
+    @Override
+    public void setRecentlyViewProductListToRecyclerView(List<ProductDTO> recentlyViewProductDTOList) {
 
     }
 

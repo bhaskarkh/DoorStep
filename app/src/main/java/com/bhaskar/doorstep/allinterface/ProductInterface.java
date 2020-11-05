@@ -8,5 +8,7 @@ public interface ProductInterface {
     public  void onProductAddedinDb();
     public void onProductAddFailed();
     public void setProductListToRecyclerView(List<ProductDTO> productDTOList);
+    public void setDiscountProductListToRecyclerView(List<ProductDTO> discountProductDTOList);
+    public void setRecentlyViewProductListToRecyclerView(List<ProductDTO> recentlyViewProductDTOList);
 
 }
