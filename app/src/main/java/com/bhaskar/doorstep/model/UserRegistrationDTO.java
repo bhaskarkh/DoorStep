@@ -1,11 +1,13 @@
 package com.bhaskar.doorstep.model;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Date;
 import java.util.List;
 
-public class UserRegistrationDTO {
+public class UserRegistrationDTO implements Parcelable {
     private String userName;
     private String userEmail;
     private  String userId;
@@ -33,6 +35,31 @@ public class UserRegistrationDTO {
         this.userStatus = userStatus;
         this.addressDTOList = addressDTOList;
     }
+
+    protected UserRegistrationDTO(Parcel in) {
+        userName = in.readString();
+        userEmail = in.readString();
+        userId = in.readString();
+        userPhoto = in.readString();
+        role = in.readString();
+        rmn = in.readString();
+        isRmnVerified = in.readByte() != 0;
+        userRegisteredDate = in.readString();
+        userStatus = in.readString();
+        addressDTOList = in.createTypedArrayList(AddressDTO.CREATOR);
+    }
+
+    public static final Creator<UserRegistrationDTO> CREATOR = new Creator<UserRegistrationDTO>() {
+        @Override
+        public UserRegistrationDTO createFromParcel(Parcel in) {
+            return new UserRegistrationDTO(in);
+        }
+
+        @Override
+        public UserRegistrationDTO[] newArray(int size) {
+            return new UserRegistrationDTO[size];
+        }
+    };
 
     public String getUserName() {
         return userName;
@@ -129,5 +156,24 @@ public class UserRegistrationDTO {
                 ", userStatus='" + userStatus + '\'' +
                 ", addressDTOList=" + addressDTOList +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(userName);
+        dest.writeString(userEmail);
+        dest.writeString(userId);
+        dest.writeString(userPhoto);
+        dest.writeString(role);
+        dest.writeString(rmn);
+        dest.writeByte((byte) (isRmnVerified ? 1 : 0));
+        dest.writeString(userRegisteredDate);
+        dest.writeString(userStatus);
+        dest.writeTypedList(addressDTOList);
     }
 }

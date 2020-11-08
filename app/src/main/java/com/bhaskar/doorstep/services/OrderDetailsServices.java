@@ -3,6 +3,9 @@ package com.bhaskar.doorstep.services;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,6 +29,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 public class OrderDetailsServices {
@@ -168,6 +172,11 @@ public class OrderDetailsServices {
 
             }
         });
+    }
+
+    public void setOrderProgressDetails(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, View> viewMap)
+    {
+
     }
 }
 

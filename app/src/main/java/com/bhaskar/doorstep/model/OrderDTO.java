@@ -1,6 +1,9 @@
 package com.bhaskar.doorstep.model;
 
-public class OrderDTO {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class OrderDTO implements Parcelable {
     private String orderId;
     private String orderStatus;
     private String orderDateTime;
@@ -34,6 +37,35 @@ public class OrderDTO {
         this.orderCancelDate = orderCancelDate;
         this.isOrderCanceled = isOrderCanceled;
     }
+
+
+    protected OrderDTO(Parcel in) {
+        orderId = in.readString();
+        orderStatus = in.readString();
+        orderDateTime = in.readString();
+        expectedStartDateOfDelivery = in.readString();
+        expectedLastDateOfDelivery = in.readString();
+        completeDateTime = in.readString();
+        orderConfirmDate = in.readString();
+        shippingDTO = in.readParcelable(ShippingDTO.class.getClassLoader());
+        customerInfoDTO = in.readParcelable(UserRegistrationDTO.class.getClassLoader());
+        productDTO = in.readParcelable(ProductDTO.class.getClassLoader());
+        isOrderConfirmed = in.readByte() != 0;
+        orderCancelDate = in.readString();
+        isOrderCanceled = in.readByte() != 0;
+    }
+
+    public static final Creator<OrderDTO> CREATOR = new Creator<OrderDTO>() {
+        @Override
+        public OrderDTO createFromParcel(Parcel in) {
+            return new OrderDTO(in);
+        }
+
+        @Override
+        public OrderDTO[] newArray(int size) {
+            return new OrderDTO[size];
+        }
+    };
 
     @Override
     public String toString() {
@@ -158,4 +190,26 @@ public class OrderDTO {
         this.orderConfirmDate = orderConfirmDate;
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(orderId);
+        dest.writeString(orderStatus);
+        dest.writeString(orderDateTime);
+        dest.writeString(expectedStartDateOfDelivery);
+        dest.writeString(expectedLastDateOfDelivery);
+        dest.writeString(completeDateTime);
+        dest.writeString(orderConfirmDate);
+        dest.writeParcelable(shippingDTO, flags);
+        dest.writeParcelable(customerInfoDTO, flags);
+        dest.writeParcelable(productDTO, flags);
+        dest.writeByte((byte) (isOrderConfirmed ? 1 : 0));
+        dest.writeString(orderCancelDate);
+        dest.writeByte((byte) (isOrderCanceled ? 1 : 0));
+    }
 }

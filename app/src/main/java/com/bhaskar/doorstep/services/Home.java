@@ -327,8 +327,8 @@ public class Home {
     {
         Log.d(TAG, "loadImageInGlide: ");
         RequestOptions options = new RequestOptions()
-                       .placeholder(R.drawable.ic_no_image_selected)
-                       .error(R.drawable.ic_no_image_selected)
+                       .placeholder(R.drawable.ic_no_image_available)
+                       .error(R.drawable.ic_no_image_available)
                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                        .priority(Priority.NORMAL);
 

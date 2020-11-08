@@ -49,8 +49,9 @@ public class AddressServices {
     public String firstLineAddress(AddressDTO addressDTO)
     {
         String str="No First Line";
-
-        str=addressDTO.getHouse_no()+","+addressDTO.getArea_colony();
+        if(addressDTO!=null) {
+            str = addressDTO.getHouse_no() + "," + addressDTO.getArea_colony();
+        }
 
 
       return  str;
@@ -58,11 +59,25 @@ public class AddressServices {
     public String secondLineAddress(AddressDTO addressDTO)
     {
         String str="No First Line";
-
-        str=addressDTO.getCity()+","+addressDTO.getState()+"-"+addressDTO.getPincode();
+        if(addressDTO!=null) {
+            str = addressDTO.getCity() + "," + addressDTO.getState() + "-" + addressDTO.getPincode();
+        }
 
 
         return  str;
+    }
+
+    public String getFullAddress(AddressDTO addressDTO)
+    {
+        String str="Failed to load Address";
+        if(addressDTO!=null)
+        {
+            str=firstLineAddress(addressDTO)+","+secondLineAddress(addressDTO)+"("+addressDTO.getDeliveryMobileNo()+")";
+        }
+        else {
+            Log.d(TAG, "getFullAddress: addressDto is null");
+        }
+        return str;
     }
 
     public AddressDTO getPrimaryAddress(List<AddressDTO> addressDTOList)

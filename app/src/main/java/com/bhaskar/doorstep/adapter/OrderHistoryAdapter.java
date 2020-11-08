@@ -42,6 +42,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     @Override
     public void onBindViewHolder(@NonNull OrderHistoryViewHolder holder, int position) {
         Home hm=new Home(context);
+        OrderDTO orderDTO=orderDTOList.get(position);
         ProductDTO productDTO=orderDTOList.get(position).getProductDTO();
         ShippingDTO shippingDTO=orderDTOList.get(position).getShippingDTO();
        String firstCapsProdName=hm.getFirstUpperCase(productDTO.getName());
@@ -55,12 +56,15 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         hm.changeColorOfTextView(holder.order_status,orderDTOList.get(position).getOrderStatus(),"order_status");
         holder.price.setText(hm.appendRuppeSymbol(String.valueOf(productDTO.getMyPrice())));
         holder.delivery_date.setText(orderDTOList.get(position).getExpectedLastDateOfDelivery());
-        holder.prod_image.setImageResource(R.drawable.ic_home_fish);
+        hm.loadImageInGlide(holder.prod_image,productDTO.getImage());
+       // holder.prod_image.setImageResource(R.drawable.ic_home_fish);
         holder.order_st_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "orderStatus Clicked", Toast.LENGTH_SHORT).show();
-                context.startActivity(new Intent(context, OrderStatusDetail.class));
+                Intent intent=new Intent(context,OrderStatusDetail.class);
+                intent.putExtra("OrderInfo",orderDTO);
+                context.startActivity(intent);
             }
         });
 

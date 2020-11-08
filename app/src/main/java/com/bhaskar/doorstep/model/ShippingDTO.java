@@ -1,6 +1,9 @@
 package com.bhaskar.doorstep.model;
 
-public class ShippingDTO {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ShippingDTO  implements Parcelable {
     private String shippingId;
     private UserRegistrationDTO shippingPersonDTO;
 
@@ -9,6 +12,23 @@ public class ShippingDTO {
         this.shippingId = shippingId;
         this.shippingPersonDTO = shippingPersonDTO;
     }
+
+    protected ShippingDTO(Parcel in) {
+        shippingId = in.readString();
+        shippingPersonDTO = in.readParcelable(UserRegistrationDTO.class.getClassLoader());
+    }
+
+    public static final Creator<ShippingDTO> CREATOR = new Creator<ShippingDTO>() {
+        @Override
+        public ShippingDTO createFromParcel(Parcel in) {
+            return new ShippingDTO(in);
+        }
+
+        @Override
+        public ShippingDTO[] newArray(int size) {
+            return new ShippingDTO[size];
+        }
+    };
 
     public String getShippingId() {
         return shippingId;
@@ -32,5 +52,16 @@ public class ShippingDTO {
                 "shippingId='" + shippingId + '\'' +
                 ", shippingPersonDTO=" + shippingPersonDTO +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(shippingId);
+        dest.writeParcelable(shippingPersonDTO, flags);
     }
 }
