@@ -2,6 +2,7 @@ package com.bhaskar.doorstep.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,8 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.bhaskar.doorstep.OrderSuccessOrFail;
+import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.allinterface.OnOrderSubmissionListener;
 import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
 import com.bhaskar.doorstep.model.OrderDTO;
@@ -174,13 +177,40 @@ public class OrderDetailsServices {
         });
     }
 
-    public void setOrderProgressDetails(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, View> viewMap)
+
+    public void setOrderProgressDetails(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap,Map<String, View> viewMap)
     {
         if (orderDTO.getOrderStatus().equalsIgnoreCase("pending"))
         {
 
+            designForPending(orderDTO,textViewMap,imageViewMap,cicleImageMap,viewMap);
+
+
+
         }
 
+    }
+
+    private void designForPending(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap, Map<String, View> viewMap) {
+
+        List<String> greenCircleTextList=new ArrayList<>();
+        greenCircleTextList.add("placed_circle");
+        setCicleGreen(greenCircleTextList,cicleImageMap);
+    }
+
+    private void setCicleGreen(List<String> greenCircleTextList,Map<String, ImageView> cicleImageMap) {
+        for (Map.Entry <String,ImageView> entry:cicleImageMap.entrySet())
+        {
+
+            if (greenCircleTextList.contains(entry.getKey()))
+            {
+                entry.getValue().setImageResource(R.drawable.oval_shape_green);
+            }
+            else {
+                entry.getValue().setImageResource(R.drawable.oval_shape_gray);
+            }
+
+        }
     }
 }
 

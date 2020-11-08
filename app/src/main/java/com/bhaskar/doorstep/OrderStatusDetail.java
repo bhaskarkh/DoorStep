@@ -23,11 +23,9 @@ import java.util.Map;
 
 public class OrderStatusDetail extends AppCompatActivity {
 
-    View
-            placed_to_confirmed_line,
+    View     placed_to_confirmed_line,
             confirmed_to_delivering,
-            delivering_to_complet_or_cancel
-           ;
+            delivering_to_complet_or_cancel;
 
     ImageView order_std_back_btn,
             confirmed_circle,
@@ -62,6 +60,7 @@ public class OrderStatusDetail extends AppCompatActivity {
     Map<String,TextView> textViewMap=new HashMap<>();
     Map<String,ImageView> imageViewMap=new HashMap<>();
     Map<String,View> viewMap=new HashMap<>();
+    Map<String,ImageView> circleImageMap=new HashMap<>();
     OrderDetailsServices orderDetailsServices;
 
     private static final String TAG = "OrderStatusDetail";
@@ -135,7 +134,7 @@ public class OrderStatusDetail extends AppCompatActivity {
             Log.d(TAG, "full address= "+fullAddress);
             order_std_primary_address_full.setText(fullAddress);
             setAllMapValue();
-            orderDetailsServices.setOrderProgressDetails(orderDTOInfo,textViewMap,imageViewMap,viewMap);
+            orderDetailsServices.setOrderProgressDetails(orderDTOInfo,textViewMap,imageViewMap,circleImageMap,viewMap);
 
             
         }
@@ -174,10 +173,10 @@ public class OrderStatusDetail extends AppCompatActivity {
         imageViewMap.put("order_confirmed_image",order_confirmed_image);
         imageViewMap.put("order_delivering_image",order_delivering_image);
         imageViewMap.put("order_completed_or_cancelled_image",order_completed_or_cancelled_image);
-        imageViewMap.put("placed_circle",placed_circle);
-        imageViewMap.put("confirmed_circle",confirmed_circle);
-        imageViewMap.put("delivering_circle",delivering_circle);
-        imageViewMap.put("completed_or_cancelled_circle",completed_or_cancelled_circle);
+        circleImageMap.put("placed_circle",placed_circle);
+        circleImageMap.put("confirmed_circle",confirmed_circle);
+        circleImageMap.put("delivering_circle",delivering_circle);
+        circleImageMap.put("completed_or_cancelled_circle",completed_or_cancelled_circle);
 
     }
 
