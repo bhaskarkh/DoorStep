@@ -178,6 +178,7 @@ public class OrderStatusDetail extends AppCompatActivity {
         imageViewMap.put("confirmed_circle",confirmed_circle);
         imageViewMap.put("delivering_circle",delivering_circle);
         imageViewMap.put("completed_or_cancelled_circle",completed_or_cancelled_circle);
+
     }
 
 
