@@ -176,6 +176,10 @@ public class OrderDetailsServices {
 
     public void setOrderProgressDetails(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, View> viewMap)
     {
+        if (orderDTO.getOrderStatus().equalsIgnoreCase("pending"))
+        {
+
+        }
 
     }
 }

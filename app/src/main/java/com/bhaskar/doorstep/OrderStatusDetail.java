@@ -23,15 +23,17 @@ import java.util.Map;
 
 public class OrderStatusDetail extends AppCompatActivity {
 
-    View    placed_circle,
+    View
             placed_to_confirmed_line,
-            confirmed_circle,
             confirmed_to_delivering,
-            delivering_circle,
-            delivering_to_complet_or_cancel,
-           completed_or_cancelled_circle;
+            delivering_to_complet_or_cancel
+           ;
 
     ImageView order_std_back_btn,
+            confirmed_circle,
+            placed_circle,
+            delivering_circle,
+            completed_or_cancelled_circle,
             order_std_prodImage,
             order_placed_image,
             order_confirmed_image,
@@ -172,17 +174,19 @@ public class OrderStatusDetail extends AppCompatActivity {
         imageViewMap.put("order_confirmed_image",order_confirmed_image);
         imageViewMap.put("order_delivering_image",order_delivering_image);
         imageViewMap.put("order_completed_or_cancelled_image",order_completed_or_cancelled_image);
+        imageViewMap.put("placed_circle",placed_circle);
+        imageViewMap.put("confirmed_circle",confirmed_circle);
+        imageViewMap.put("delivering_circle",delivering_circle);
+        imageViewMap.put("completed_or_cancelled_circle",completed_or_cancelled_circle);
     }
 
 
     private void setAllView() {
-        viewMap.put("placed_circle",placed_circle);
+
         viewMap.put("placed_to_confirmed_line",placed_to_confirmed_line);
-        viewMap.put("confirmed_circle",confirmed_circle);
-        viewMap.put("confirmed_to_delivering",confirmed_to_delivering);
-        viewMap.put("delivering_circle",delivering_circle);
-        viewMap.put("delivering_to_complet_or_cancel",delivering_to_complet_or_cancel);
-        viewMap.put("completed_or_cancelled_circle",completed_or_cancelled_circle);
+       viewMap.put("confirmed_to_delivering",confirmed_to_delivering);
+      viewMap.put("delivering_to_complet_or_cancel",delivering_to_complet_or_cancel);
+
     }
 
     private void getIntentValue(Intent intent) {
