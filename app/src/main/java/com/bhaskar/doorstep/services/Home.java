@@ -34,7 +34,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -339,6 +341,71 @@ public class Home {
 
 
 
+
+    }
+    public String getDefaultDateInStringFormatFromDate(Date date)
+    {
+        String sDtae="Invalid Date";
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd MMM yyyy");
+        try {
+
+            sDtae=simpleDateFormat.format(date);
+
+        }catch (Exception e)
+        {
+            Log.d(TAG, "getDefaultDateFormat: exception msg= "+e.getMessage());
+        }
+
+        return sDtae;
+    }
+    public String getDefaultDateAndTimeInStringFormatFromDate(Date date)
+    {
+        String sDtae="Invalid Date";
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd MMM yyyy HH:mm");
+        try {
+
+            sDtae=simpleDateFormat.format(date);
+
+        }catch (Exception e)
+        {
+            Log.d(TAG, "getDefaultDateAndTimeInStringFormatFromDate: exception msg= "+e.getMessage());
+        }
+
+
+        return sDtae;
+
+    }
+
+    public Date getDateFromString(String sDate)
+    {
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd MMM yyyy");
+        try {
+            date=simpleDateFormat.parse(sDate);
+
+        }catch (Exception e)
+        {
+            Log.d(TAG, "getDateFromString: exception msg= "+e.getMessage());
+        }
+
+
+        return date;
+
+    }
+    public Date getDateAndTimeFromString(String sDate)
+    {
+        Date date=new Date();
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd MMM yyyy HH:mm");
+        try {
+            date=simpleDateFormat.parse(sDate);
+
+        }catch (Exception e)
+        {
+            Log.d(TAG, "getDateAndTimeFromString: exception msg= "+e.getMessage());
+        }
+
+
+        return date;
 
     }
 

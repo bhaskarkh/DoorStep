@@ -1,13 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
+    <!--Theme.AppCompat.Light.NoActionBar-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">#25000000</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    <style name="MaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorIncompleted</item>
+        <item name="colorPrimaryDark">#25000000</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
     <style name="FullScreenTheme"  parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>

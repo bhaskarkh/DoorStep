@@ -475,6 +475,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
     protected void onDestroy() {
         super.onDestroy();
         mySharedPreferences.removeProductListSharedPref();
+        mySharedPreferences.removeOrderListSharedPref();
 
     }
 

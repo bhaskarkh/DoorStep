@@ -62,7 +62,7 @@ public class AdminDashboard extends AppCompatActivity {
         admin_order_progresss_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AdminDashboard.this,OrderStatusDetail.class));
+                startActivity(new Intent(AdminDashboard.this,OrderDashboard.class));
             }
         });
 

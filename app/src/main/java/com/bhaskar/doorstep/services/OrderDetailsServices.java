@@ -40,6 +40,7 @@ public class OrderDetailsServices {
     final String TAG = "OrderDetailsServices";
     OnOrderSubmissionListener listener;
     OrderStatusInterface orderStatusInterface;
+    MySharedPreferences mySharedPreferences;
 
 
     public OrderDetailsServices(Context context) {
@@ -177,6 +178,70 @@ public class OrderDetailsServices {
         });
     }
 
+    public  void getOrderListByCategory(String category,FirebaseDatabase firebaseDatabase)
+    {
+        setMySharedPreferences(context);
+        Log.d(TAG, "getOrderListByCategory: ");
+        if(!mySharedPreferences.checkSharedPrefExistsOrNot("orderListSharedPref","orderListPref"))
+        {
+            Log.d(TAG, "getOrderListByCategory: shared Pref Doesn't Exist");
+            storeOrderFromFirebaseToSharedPref(firebaseDatabase);
+
+        }
+        else {
+            Log.d(TAG, "getOrderListByCategory: shared Pref Exit");
+            List<OrderDTO> orderDTOList = mySharedPreferences.getAllOrderListFromSharedPreference();
+
+
+
+            if (category.equalsIgnoreCase("Show All")) {
+                Log.d(TAG, "inside Show All ");
+                orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
+
+            } else {
+                List<OrderDTO> oList = new ArrayList<>();
+                for (OrderDTO orderDTO : orderDTOList) {
+                    if (orderDTO.getOrderStatus().equalsIgnoreCase(category)) {
+                        oList.add(orderDTO);
+                    }
+                }
+                orderStatusInterface.setOrderStatusAdaptor(oList);
+
+            }
+        }
+    }
+    public void refreshOrderByCategory(String show_all,FirebaseDatabase firebaseDatabase) {
+        storeOrderFromFirebaseToSharedPref(firebaseDatabase);
+    }
+
+    public  void storeOrderFromFirebaseToSharedPref(FirebaseDatabase firebaseDatabase)
+    {
+        mySharedPreferences=new MySharedPreferences(context);
+        mySharedPreferences.setOrderStatusInterface(orderStatusInterface);
+        final List<OrderDTO> orderDTOList=new ArrayList<>();
+        DatabaseReference ref = firebaseDatabase.getReference().child("test").child("order");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                {
+                    OrderDTO orderDTO=dataSnapshot.getValue(OrderDTO.class);
+                    orderDTOList.add(orderDTO);
+
+                }
+
+                mySharedPreferences.setOrderListInSharedPreference(orderDTOList);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
 
     public void setOrderProgressDetails(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap,Map<String, View> viewMap)
     {
@@ -212,6 +277,13 @@ public class OrderDetailsServices {
 
         }
     }
+    public void setMySharedPreferences(Context context) {
+        mySharedPreferences=new MySharedPreferences(context);
+        mySharedPreferences.setOrderStatusInterface(orderStatusInterface);
+
+    }
+
+
 }
 
 

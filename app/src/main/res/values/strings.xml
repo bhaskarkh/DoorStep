@@ -10,6 +10,13 @@
     <string name="your_order">Your Order</string>
     <string name="back_btn">back btn</string>
     <string name="running_shoes">Kedo running Shoes from Addidas</string>
+    <string-array name="order_category_array">
+        <item>Pending</item>
+        <item>Confirmed</item>
+        <item>Cancelled</item>
+        <item>Completed</item>
+
+    </string-array>
     <string-array name="category_array">
         <item>Electrical</item>
         <item>Civil</item>

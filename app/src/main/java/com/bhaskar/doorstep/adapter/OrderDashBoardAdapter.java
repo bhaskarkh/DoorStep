@@ -14,6 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bhaskar.doorstep.OrderStatusDetail;
+import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.model.OrderDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
@@ -22,25 +23,26 @@ import com.bhaskar.doorstep.services.Home;
 
 import java.util.List;
 
-public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapter.OrderHistoryViewHolder> {
+public class OrderDashBoardAdapter extends RecyclerView.Adapter<OrderDashBoardAdapter.OrderDashBoardViewHolder>{
+
     Context context;
     List<OrderDTO> orderDTOList;
 
-    public OrderHistoryAdapter(Context context, List<OrderDTO> orderDTOList) {
+    public OrderDashBoardAdapter(Context context, List<OrderDTO> orderDTOList) {
         this.context = context;
         this.orderDTOList = orderDTOList;
     }
 
     @NonNull
     @Override
-    public OrderHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view=LayoutInflater.from(context).inflate(R.layout.order_history_card_view,parent,false);
+    public OrderDashBoardAdapter.OrderDashBoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        return new OrderHistoryViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.order_history_card_view, parent, false);
+        return new OrderDashBoardAdapter.OrderDashBoardViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderHistoryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull OrderDashBoardAdapter.OrderDashBoardViewHolder holder, int position) {
         Home hm=new Home(context);
         OrderDTO orderDTO=orderDTOList.get(position);
         ProductDTO productDTO=orderDTOList.get(position).getProductDTO();
@@ -57,44 +59,40 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         holder.price.setText(hm.appendRuppeSymbol(String.valueOf(productDTO.getMyPrice())));
         holder.delivery_date.setText(orderDTOList.get(position).getExpectedLastDateOfDelivery());
         hm.loadImageInGlide(holder.prod_image,productDTO.getImage());
-       // holder.prod_image.setImageResource(R.drawable.ic_home_fish);
+        // holder.prod_image.setImageResource(R.drawable.ic_home_fish);
         holder.order_st_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "orderStatus Clicked", Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(context,OrderStatusDetail.class);
+                Intent intent=new Intent(context, OrderStatusDetail.class);
                 intent.putExtra("OrderInfo",orderDTO);
                 context.startActivity(intent);
             }
         });
 
-
     }
-
 
     @Override
     public int getItemCount() {
         return orderDTOList.size();
     }
 
-    public static class OrderHistoryViewHolder extends RecyclerView.ViewHolder{
+    public static class OrderDashBoardViewHolder extends  RecyclerView.ViewHolder{
+
         TextView prod_name,order_status,price,delivery_date;
         ImageView prod_image;
         ConstraintLayout order_st_layout;
 
 
-        public OrderHistoryViewHolder(@NonNull View itemView) {
+        public OrderDashBoardViewHolder(@NonNull View itemView) {
             super(itemView);
             prod_name=itemView.findViewById(R.id.order_st_prod_name);
             order_status=itemView.findViewById(R.id.order_st_status);
-           // order_date=itemView.findViewById(R.id.order_st_date_time);
+            // order_date=itemView.findViewById(R.id.order_st_date_time);
             price=itemView.findViewById(R.id.order_st_price);
             delivery_date=itemView.findViewById(R.id.order_st_delivery_date);
             prod_image=itemView.findViewById(R.id.order_st_product_image);
             order_st_layout=itemView.findViewById(R.id.order_st_layout);
-
-
         }
     }
-
 }

@@ -6,7 +6,9 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
 import com.bhaskar.doorstep.allinterface.ProductInterface;
+import com.bhaskar.doorstep.model.OrderDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +31,11 @@ public class MySharedPreferences {
     Context context;
     private static final String TAG = "MySharedPreferences";
     ProductInterface productInterface;
+    OrderStatusInterface orderStatusInterface;
+
+    public void setOrderStatusInterface(OrderStatusInterface orderStatusInterface) {
+        this.orderStatusInterface = orderStatusInterface;
+    }
 
     public void setProductInterface(ProductInterface productInterface) {
         this.productInterface = productInterface;
@@ -155,6 +162,47 @@ public class MySharedPreferences {
         mPrefs.edit().remove("productListPref").commit();
         
     }
+
+    public void setOrderListInSharedPreference(List<OrderDTO> orderDTOList)
+    {
+        Log.d(TAG, "setOrderListInSharedPreference: ");
+        SharedPreferences mPrefs = this.context.getSharedPreferences("orderListSharedPref", MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        Gson gson = new Gson();
+        String orderListJson = gson.toJson(orderDTOList);
+        Log.d(TAG, "orderListJson= " + orderListJson);
+        prefsEditor.putString("orderListPref", orderListJson);
+        prefsEditor.commit();
+
+    }
+    public List<OrderDTO> getAllOrderListFromSharedPreference()
+    {
+        List<OrderDTO> orderDTOList=new ArrayList<>();
+        if(checkSharedPrefExistsOrNot("orderListSharedPref","orderListPref")) {
+
+            SharedPreferences mPrefs = this.context.getSharedPreferences("orderListSharedPref", MODE_PRIVATE);
+            Gson gson = new Gson();
+            String json = mPrefs.getString("orderListPref", "empty");
+            Type type = new TypeToken<List<OrderDTO>>() {
+            }.getType();
+            orderDTOList = gson.fromJson(json, type);
+            Log.d(TAG, "getAllProductListFromSharedPreference in getSharedPref= " + orderDTOList.toString());
+
+        }
+        else {
+            Log.d(TAG, "getAllOrderListFromSharedPreference: sharedPref doestNot exits null orderList Returned");
+        }
+        return orderDTOList;
+
+    }
+    public void removeOrderListSharedPref()
+    {
+        Log.d(TAG, "removeOrderListSharedPref:");
+        SharedPreferences mPrefs = this.context.getSharedPreferences("orderListSharedPref", MODE_PRIVATE);
+        mPrefs.edit().remove("orderListPref").commit();
+
+    }
+
 
     public boolean checkSharedPrefExistsOrNot(String getSharedText,String containsText)
     {
