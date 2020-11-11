@@ -136,9 +136,11 @@ public class ProductServices {
         List<ProductDTO> productDTOList=new ArrayList<>();
         Log.d(TAG, "getAllProductList: ");
         DatabaseReference fireRef=firebaseDatabase.getReference();
-        fireRef.child("test").child("product").addListenerForSingleValueEvent(new ValueEventListener() {
+        fireRef.child("test").child("product").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "onDataChange: storeProductFromFirebaseToSharedPref");
+                productDTOList.clear();
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
                 {
 
@@ -165,49 +167,18 @@ public class ProductServices {
     }
 
     public void getDiscountandRecentlyViewProductList(FirebaseDatabase firebaseDatabase) {
-        Log.d(TAG, "storeProductFromFirebaseToSharedPref: ");
+       mySharedPreferences=new MySharedPreferences(context);
+       if(mySharedPreferences.checkSharedPrefExistsOrNot("productListSharedPref","productListPref"))
+       {
+           Log.d(TAG, "getDiscountandRecentlyViewProductList: SharedPref Exist");
+           List<ProductDTO> productDTOList=mySharedPreferences.getAllProductListFromSharedPreference();
+           productInterface.setProductListToRecyclerView(productDTOList);
+       }
+       else {
+           Log.d(TAG, "getDiscountandRecentlyViewProductList: SharedPref not Exist");
+           storeProductFromFirebaseToSharedPref(firebaseDatabase);
+       }
 
-        mySharedPreferences=new MySharedPreferences(context);
-        List<ProductDTO> DiscountproductDTOList=new ArrayList<>();
-        List<ProductDTO> RecentlyViewproductDTOList=new ArrayList<>();
-        Log.d(TAG, "getAllProductList: ");
-        DatabaseReference fireRef=firebaseDatabase.getReference();
-        fireRef.child("test").child("product").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot:snapshot.getChildren())
-                {
-
-                    for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
-
-                        ProductDTO productDTO=dataSnapshot1.getValue(ProductDTO.class);
-
-                            if (productDTO.isDiscountProduct()) {
-                                DiscountproductDTOList.add(productDTO);
-                            }
-                            if (productDTO.isRecentlyViewProduct()) {
-                                Log.d(TAG, "inside Recently view");
-                                RecentlyViewproductDTOList.add(productDTO);
-                            }
-
-
-                    }
-
-                }
-                Log.d(TAG, "DiscountproductDTOList get list size=  "+DiscountproductDTOList.size());
-                Log.d(TAG, "RecentlyViewproductDTOList get list size=  "+RecentlyViewproductDTOList.size());
-                productInterface.setDiscountProductListToRecyclerView(DiscountproductDTOList);
-                productInterface.setRecentlyViewProductListToRecyclerView(RecentlyViewproductDTOList);
-
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
 

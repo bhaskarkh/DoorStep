@@ -107,16 +107,20 @@ public class MySharedPreferences {
     public  void  saveAllProductListFromFirebase(List<ProductDTO> productDTOList)
     {
         Log.d(TAG, "saveAllProductListFromFirebase: ");
+        setProductListInSharedPreference(productDTOList);
+
+/*
 
         if(!checkSharedPrefExistsOrNot("productListSharedPref","productListPref")) {
 
-            setProductListInSharedPreference(productDTOList);
+
 
         }
         else {
             Log.d(TAG, "saveAllProductListFromFirebase: already exist");
             productInterface.setProductListToRecyclerView(productDTOList);
         }
+*/
 
 
     }
@@ -173,6 +177,7 @@ public class MySharedPreferences {
         Log.d(TAG, "orderListJson= " + orderListJson);
         prefsEditor.putString("orderListPref", orderListJson);
         prefsEditor.commit();
+        orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
 
     }
     public List<OrderDTO> getAllOrderListFromSharedPreference()
@@ -198,8 +203,15 @@ public class MySharedPreferences {
     public void removeOrderListSharedPref()
     {
         Log.d(TAG, "removeOrderListSharedPref:");
-        SharedPreferences mPrefs = this.context.getSharedPreferences("orderListSharedPref", MODE_PRIVATE);
-        mPrefs.edit().remove("orderListPref").commit();
+
+        if(checkSharedPrefExistsOrNot("orderListSharedPref","orderListPref")) {
+            Log.d(TAG, "removeOrderListSharedPref: shared Pref  exist removing");
+            SharedPreferences mPrefs = this.context.getSharedPreferences("orderListSharedPref", MODE_PRIVATE);
+            mPrefs.edit().remove("orderListPref").commit();
+        }
+        else {
+            Log.d(TAG, "removeOrderListSharedPref: shared Pref Does not exist");
+        }
 
     }
 

@@ -205,6 +205,7 @@ public class Home {
             final ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(context, R.layout.myspinnerstylehome, stringList);
             dataAdapter.setDropDownViewResource(R.layout.myspinnerstylehome);
             spinner.setAdapter(dataAdapter);
+
         }
         else {
             spinner.setAdapter(new SpinnerViewAdapter(context,R.layout.spinner_row,getSpinnerDTOList(stringList)));

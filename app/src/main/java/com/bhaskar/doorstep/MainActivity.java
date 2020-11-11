@@ -474,6 +474,8 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy: Called MainActivity");
+        Toast.makeText(this, "onDestroy Called", Toast.LENGTH_SHORT).show();
         mySharedPreferences.removeProductListSharedPref();
         mySharedPreferences.removeOrderListSharedPref();
 
@@ -492,19 +494,32 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
 
     @Override
     public void setProductListToRecyclerView(List<ProductDTO> productDTOList) {
+        List<ProductDTO> discountproductDTOList=new ArrayList<>();
+        List<ProductDTO> recentlyViewproductDTOList=new ArrayList<>();
 
+        for (ProductDTO productDTO : productDTOList) {
+        if (productDTO.isDiscountProduct()) {
+            discountproductDTOList.add(productDTO);
+        }
+        if (productDTO.isRecentlyViewProduct()) {
+            Log.d(TAG, "inside Recently view");
+            recentlyViewproductDTOList.add(productDTO);
+        }
+    }
+        setDiscountedRecycler(discountproductDTOList);
+        setRecentlyViewedRecycler(recentlyViewproductDTOList);
 
     }
 
     @Override
     public void setDiscountProductListToRecyclerView(List<ProductDTO> discountProductDTOList) {
-        setDiscountedRecycler(discountProductDTOList);
+
     }
 
     @Override
     public void setRecentlyViewProductListToRecyclerView(List<ProductDTO> recentlyViewProductDTOList) {
 
-        setRecentlyViewedRecycler(recentlyViewProductDTOList);
+
     }
 
 

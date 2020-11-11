@@ -178,59 +178,55 @@ public class OrderDetailsServices {
         });
     }
 
-    public  void getOrderListByCategory(String category,FirebaseDatabase firebaseDatabase)
+    public  void getOrderListByCategory(String category,FirebaseDatabase firebaseDatabase,String source,boolean autoUpdate)
     {
-        setMySharedPreferences(context);
-        Log.d(TAG, "getOrderListByCategory: ");
-        if(!mySharedPreferences.checkSharedPrefExistsOrNot("orderListSharedPref","orderListPref"))
-        {
-            Log.d(TAG, "getOrderListByCategory: shared Pref Doesn't Exist");
-            storeOrderFromFirebaseToSharedPref(firebaseDatabase);
-
-        }
-        else {
-            Log.d(TAG, "getOrderListByCategory: shared Pref Exit");
-            List<OrderDTO> orderDTOList = mySharedPreferences.getAllOrderListFromSharedPreference();
-
-
-
-            if (category.equalsIgnoreCase("Show All")) {
-                Log.d(TAG, "inside Show All ");
-                orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
+        if (!autoUpdate) {
+            setMySharedPreferences(context);
+            Log.d(TAG, "getOrderListByCategory: ");
+            if (!mySharedPreferences.checkSharedPrefExistsOrNot("orderListSharedPref", "orderListPref")) {
+                Log.d(TAG, "getOrderListByCategory: shared Pref Doesn't Exist");
+                getOrderListFromFirebase(firebaseDatabase, source,category);
 
             } else {
-                List<OrderDTO> oList = new ArrayList<>();
-                for (OrderDTO orderDTO : orderDTOList) {
-                    if (orderDTO.getOrderStatus().equalsIgnoreCase(category)) {
-                        oList.add(orderDTO);
-                    }
-                }
-                orderStatusInterface.setOrderStatusAdaptor(oList);
-
+                Log.d(TAG, "getOrderListByCategory: shared Pref Exit");
+                List<OrderDTO> orderDTOList = mySharedPreferences.getAllOrderListFromSharedPreference();
+                setOrderListByCategoryType(category,orderDTOList);
             }
         }
+        else {
+            getOrderListFromFirebase(firebaseDatabase, source,category);
+        }
     }
-    public void refreshOrderByCategory(String show_all,FirebaseDatabase firebaseDatabase) {
-        storeOrderFromFirebaseToSharedPref(firebaseDatabase);
+    public void refreshOrderByCategory(FirebaseDatabase firebaseDatabase,String category,String source) {
+        getOrderListFromFirebase(firebaseDatabase,source,category);
     }
 
-    public  void storeOrderFromFirebaseToSharedPref(FirebaseDatabase firebaseDatabase)
+    public  void getOrderListFromFirebase(FirebaseDatabase firebaseDatabase,String source,String category)
     {
+        //If source is SharedPref than it will store to shared pref otherwise data will be  directly from firebase real time
+        //which means auto update is on
         mySharedPreferences=new MySharedPreferences(context);
         mySharedPreferences.setOrderStatusInterface(orderStatusInterface);
         final List<OrderDTO> orderDTOList=new ArrayList<>();
         DatabaseReference ref = firebaseDatabase.getReference().child("test").child("order");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                orderDTOList.clear();
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
                 {
+                    Log.d(TAG, "onDataChange: ");
                     OrderDTO orderDTO=dataSnapshot.getValue(OrderDTO.class);
                     orderDTOList.add(orderDTO);
 
                 }
 
-                mySharedPreferences.setOrderListInSharedPreference(orderDTOList);
+
+                if (source.equalsIgnoreCase("SharedPref")) {
+                    mySharedPreferences.setOrderListInSharedPreference(orderDTOList);
+                }else {
+                    setOrderListByCategoryType(category,orderDTOList);
+                }
 
             }
 
@@ -242,6 +238,21 @@ public class OrderDetailsServices {
     }
 
 
+    public void setOrderListByCategoryType(String category,List<OrderDTO> orderDTOList)
+    {
+
+        if (category.equalsIgnoreCase("Show All")) {
+            orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
+        }else {
+            List<OrderDTO> oList = new ArrayList<>();
+            for (OrderDTO orderDTO : orderDTOList) {
+                if (orderDTO.getOrderStatus().equalsIgnoreCase(category)) {
+                    oList.add(orderDTO);
+                }
+            }
+            orderStatusInterface.setOrderStatusAdaptor(oList);
+        }
+    }
 
     public void setOrderProgressDetails(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap,Map<String, View> viewMap)
     {
@@ -260,10 +271,10 @@ public class OrderDetailsServices {
 
         List<String> greenCircleTextList=new ArrayList<>();
         greenCircleTextList.add("placed_circle");
-        setCicleGreen(greenCircleTextList,cicleImageMap);
+        setCircleGreen(greenCircleTextList,cicleImageMap);
     }
 
-    private void setCicleGreen(List<String> greenCircleTextList,Map<String, ImageView> cicleImageMap) {
+    private void setCircleGreen(List<String> greenCircleTextList,Map<String, ImageView> cicleImageMap) {
         for (Map.Entry <String,ImageView> entry:cicleImageMap.entrySet())
         {
 
@@ -282,7 +293,19 @@ public class OrderDetailsServices {
         mySharedPreferences.setOrderStatusInterface(orderStatusInterface);
 
     }
+    public void  setOrderDashboardAutoUpdateOnOrOff(boolean auto_update,FirebaseDatabase firebaseDatabase,String category)
+    {
+        setMySharedPreferences(context);
+        mySharedPreferences.removeOrderListSharedPref();
+        if(auto_update) {
+            getOrderListFromFirebase(firebaseDatabase, "AutoUpdateOn",category);
+        }
+        else {
+            getOrderListByCategory(category,firebaseDatabase,"SharedPref",false);
+        }
 
+
+    }
 
 }
 

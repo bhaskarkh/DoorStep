@@ -45,7 +45,8 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
     RecyclerView order_dashboard_recyclerview;
     OrderDashBoardAdapter orderDashBoardAdapter;
     ProgressBar order_dashboard_progressbar;
-    Button order_refresh_btn;
+    Button order_refresh_btn,auto_update_on_off_btn;
+    boolean autoUpdate=false;
     private static final String TAG = "OrderDashboard";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
         order_dashboard_recyclerview=findViewById(R.id.order_dashboard_recyclerview);
         order_dashboard_progressbar=findViewById(R.id.order_dashboard_progressbar);
         order_refresh_btn=findViewById(R.id.order_refresh_btn);
+        auto_update_on_off_btn=findViewById(R.id.auto_update_on_off_btn);
         home=new Home(this);
         orderDetailsServices=new OrderDetailsServices(this);
         orderDetailsServices.setOrderStatusInterface(this);
@@ -65,9 +67,19 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
         order_refresh_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderDetailsServices.refreshOrderByCategory("Show All",firebaseDatabase);
+
+                if(!autoUpdate) {
+                    order_dashboard_progressbar.setVisibility(View.VISIBLE);
+                    orderDetailsServices.refreshOrderByCategory(firebaseDatabase, category,"SharedPref");
+                }
+                else {
+                    order_dashboard_progressbar.setVisibility(View.VISIBLE);
+                    orderDetailsServices.refreshOrderByCategory(firebaseDatabase, category,"AutoUpdateOn");
+                   }
             }
         });
+       // order_dashboard_cat.setAdapter();
+
         order_dashboard_cat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
@@ -87,13 +99,39 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
 
         });
 
+        auto_update_on_off_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setAutoUpdate();
+            }
+        });
 
+
+    }
+
+    private void setAutoUpdate() {
+        autoUpdate=!autoUpdate;
+        if (autoUpdate) {
+            auto_update_on_off_btn.setText("Auto Update On");
+        }
+        else {
+            auto_update_on_off_btn.setText("Auto Update Off");
+        }
+
+        orderDetailsServices.setOrderDashboardAutoUpdateOnOrOff(autoUpdate,firebaseDatabase,category);
     }
 
     private void fetchOrderByCategory(String category) {
 
         Log.d(TAG, "fetchOrderByCategory: category= "+category);
-        orderDetailsServices.getOrderListByCategory(category,firebaseDatabase);
+        Log.d(TAG, "fetchOrderByCategory: auto Update = "+autoUpdate);
+        if(autoUpdate) {
+
+            orderDetailsServices.getOrderListByCategory(category, firebaseDatabase, "AutoUpdateOn", autoUpdate);
+        }
+        else {
+            orderDetailsServices.getOrderListByCategory(category, firebaseDatabase, "SharedPref", autoUpdate);
+        }
     }
 
     private void setAllSpinnerValue() {
@@ -116,6 +154,7 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
         order_dashboard_recyclerview.setLayoutManager(layoutManager);
         order_dashboard_recyclerview.setItemAnimator(new DefaultItemAnimator());
         orderDashBoardAdapter =new OrderDashBoardAdapter(this,orderDTOList);
+        
         order_dashboard_recyclerview.setAdapter(orderDashBoardAdapter);
 
     }
@@ -123,9 +162,13 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
 
     @Override
     public void setOrderStatusAdaptor(List<OrderDTO> orderDTOList) {
+        Log.d(TAG, "setOrderStatusAdaptor:  called");
         if (orderDTOList.size()!=0)
          setCategoryRecycler(orderDTOList );
-        else
+        else {
+             setCategoryRecycler(orderDTOList );
             Toast.makeText(this, "No Order of That Category", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

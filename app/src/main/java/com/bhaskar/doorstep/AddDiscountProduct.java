@@ -86,6 +86,7 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
 
         }
         home.setSpinnerAdapterForTextOnly(newCatArray,add_discount_cat,false);
+
     }
 
     private void setCategoryRecycler(List<ProductDTO> productDTOList) {
