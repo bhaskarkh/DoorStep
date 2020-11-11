@@ -22,7 +22,7 @@ public class OrderStatusChange extends AppCompatActivity {
 
     private static final String TAG = "OrderStatusChange";
     Button select_start_end_date;
-    TextView selected_date_value;
+    TextView order_status_change_start_date,order_status_change_end_date;
     MaterialDatePicker materialDatePicker;
     Home home;
     @Override
@@ -30,7 +30,8 @@ public class OrderStatusChange extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_status_change);
         select_start_end_date=findViewById(R.id.select_start_end_date);
-        selected_date_value=findViewById(R.id.selected_date_value);
+        order_status_change_start_date=findViewById(R.id.order_status_change_start_date);
+        order_status_change_end_date=findViewById(R.id.order_status_change_end_date);
         home=new Home(this);
         setDatePickerBuilder();
         select_start_end_date.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +49,8 @@ public class OrderStatusChange extends AppCompatActivity {
                 Pair<Long,Long> selection= (Pair<Long, Long>) selection1;
                 Date firstDate=new Date(selection.first);
                 Date endDate=new Date(selection.second);
-                selected_date_value.setText(home.getDefaultDateInStringFormatFromDate(firstDate)+" - "+home.getDefaultDateInStringFormatFromDate(endDate));
+                order_status_change_start_date.setText(home.getDefaultDateInStringFormatFromDate(firstDate));
+                order_status_change_end_date.setText(home.getDefaultDateInStringFormatFromDate(endDate));
             }
 
         });

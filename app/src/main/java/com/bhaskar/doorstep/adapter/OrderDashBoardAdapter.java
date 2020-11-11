@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bhaskar.doorstep.OrderStatusChange;
 import com.bhaskar.doorstep.OrderStatusDetail;
 import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
@@ -64,7 +65,7 @@ public class OrderDashBoardAdapter extends RecyclerView.Adapter<OrderDashBoardAd
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "orderStatus Clicked", Toast.LENGTH_SHORT).show();
-                Intent intent=new Intent(context, OrderStatusDetail.class);
+                Intent intent=new Intent(context, OrderStatusChange.class);
                 intent.putExtra("OrderInfo",orderDTO);
                 context.startActivity(intent);
             }
