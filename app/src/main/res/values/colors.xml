@@ -18,6 +18,11 @@
     <color name="gps_blue">#0A36F9</color>
     <color name="primary_address">#C5C3C3</color>
     <color name="dark_white">#E2DFDE</color>
+    <color name="processing">#2196F3</color>
+    <color name="confirmed">#4CAF50</color>
+    <color name="completed">#9E9E9E</color>
+    <color name="cancelled">#FF5252</color>
+
 
 
 </resources>

@@ -245,27 +245,28 @@ public class Home {
         //Confirmed >> Green
         //Cancelled >> RED
         //Completed >> GRAY
+
         Log.d(TAG,"order status Value "+value);
         if (value.equals("Processing"))
         {
-            order_status.setTextColor(context.getResources().getColor(R.color.blue));
+            order_status.setTextColor(context.getResources().getColor(R.color.processing));
         }
         else  if (value.equals("Confirmed"))
         {
-            order_status.setTextColor(context.getResources().getColor(R.color.green));
+            order_status.setTextColor(context.getResources().getColor(R.color.confirmed));
 
         }
         else  if (value.equals("Cancelled"))
         {
-            order_status.setTextColor(context.getResources().getColor(R.color.red));
+            order_status.setTextColor(context.getResources().getColor(R.color.cancelled));
         }
         else  if (value.equals("Completed"))
         {
-            order_status.setTextColor(context.getResources().getColor(R.color.gray));
+            order_status.setTextColor(context.getResources().getColor(R.color.completed));
         }
         else {
 
-            order_status.setTextColor(context.getResources().getColor(R.color.blue));
+            order_status.setTextColor(context.getResources().getColor(R.color.processing));
         }
 
     }

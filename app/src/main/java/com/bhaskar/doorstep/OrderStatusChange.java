@@ -3,12 +3,14 @@ package com.bhaskar.doorstep;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bhaskar.doorstep.model.OrderDTO;
 import com.bhaskar.doorstep.services.Home;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.DateValidatorPointForward;
@@ -25,15 +27,18 @@ public class OrderStatusChange extends AppCompatActivity {
     TextView order_status_change_start_date,order_status_change_end_date;
     MaterialDatePicker materialDatePicker;
     Home home;
+    OrderDTO orderDTO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_status_change);
-        select_start_end_date=findViewById(R.id.select_start_end_date);
+        select_start_end_date=findViewById(R.id.order_status_change_select_start_end_date);
         order_status_change_start_date=findViewById(R.id.order_status_change_start_date);
         order_status_change_end_date=findViewById(R.id.order_status_change_end_date);
         home=new Home(this);
+        getALlIntentValue();
         setDatePickerBuilder();
+
         select_start_end_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,6 +59,13 @@ public class OrderStatusChange extends AppCompatActivity {
             }
 
         });
+
+    }
+
+    private void getALlIntentValue() {
+        Intent intent=getIntent();
+        orderDTO=intent.getParcelableExtra("OrderInfo");
+        Log.d(TAG, "getALlIntentValue: orderDTO= "+orderDTO.toString());
 
     }
 

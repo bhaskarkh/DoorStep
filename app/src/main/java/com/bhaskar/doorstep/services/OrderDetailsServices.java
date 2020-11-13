@@ -69,7 +69,7 @@ public class OrderDetailsServices {
         String orderId = generateOrderId();
         String orderDateTime = getCurrentDateAndTime();
         orderDTO.setOrderId(orderId);
-        orderDTO.setOrderStatus("pending"); //order status >>pending >>confirmed >>completed >>failed
+        orderDTO.setOrderStatus("Processing"); //order status >>pending >>confirmed >>completed >>failed
         orderDTO.setOrderDateTime(orderDateTime);
         orderDTO.setExpectedStartDateOfDelivery("ND"); //ND for not decided ,if order confirmed then agent will provide date and time
         orderDTO.setExpectedLastDateOfDelivery("ND");//same as above
