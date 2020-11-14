@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import com.bhaskar.doorstep.OrderSuccessOrFail;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.allinterface.OnOrderSubmissionListener;
 import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
+import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.OrderDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.ShippingDTO;
@@ -41,6 +44,7 @@ public class OrderDetailsServices {
     OnOrderSubmissionListener listener;
     OrderStatusInterface orderStatusInterface;
     MySharedPreferences mySharedPreferences;
+    AddressServices addressServices;
 
 
     public OrderDetailsServices(Context context) {
@@ -77,6 +81,13 @@ public class OrderDetailsServices {
         orderDTO.setCompleteDateTime("NC"); ////NC for not completed ,if order completed then agent will provide date and time
         orderDTO.setShippingDTO(generateShippingInfo(userDetailsFromSharedPreference, selectedProduct, orderId));
         Log.d(TAG, "userDetailsFromSharedPreference= " + userDetailsFromSharedPreference.toString());
+        //Store Only Primary address in order
+        addressServices=new AddressServices(context);
+        AddressDTO addressDTO=addressServices.getPrimaryAddress(userDetailsFromSharedPreference.getAddressDTOList());
+        List<AddressDTO> addressDTOList=new ArrayList<>();
+        addressDTOList.add(addressDTO);
+        userDetailsFromSharedPreference.setAddressDTOList(addressDTOList);
+
         orderDTO.setCustomerInfoDTO(userDetailsFromSharedPreference);
         orderDTO.setProductDTO(selectedProduct);
         orderDTO.setOrderConfirmed(false);
@@ -306,7 +317,7 @@ public class OrderDetailsServices {
 
 
     }
-    public void setStatusBtnAndBackground(TextView currentStatus,TextView updateTo,TextView cancelled,String statusFromOrder)
+    public void setStatusBtnAndBackground(TextView currentStatus, TextView updateTo, TextView cancelled, String statusFromOrder, Button shippingEditBtn, Button editDeliveryDate, EditText shippingName,EditText shippingMobile)
     {
         Log.d(TAG, "setStatusBtnAndBackground: statusFromOrder="+statusFromOrder);
         if(statusFromOrder.equalsIgnoreCase("Pending")||statusFromOrder.equalsIgnoreCase("Processing"))
@@ -323,9 +334,16 @@ public class OrderDetailsServices {
             Log.d(TAG, "Confirmed: ");
             currentStatus.setText(statusFromOrder);
             currentStatus.setBackgroundResource(R.drawable.current_status_box_confirmed_svg);
-
             updateTo.setBackgroundResource(R.drawable.current_status_box_completed_update_to_svg);
             updateTo.setText("Completed");
+
+           shippingName.setEnabled(false);
+            shippingName.setFocusable(false);
+           shippingMobile.setEnabled(false);
+            shippingMobile.setFocusable(false);
+            shippingEditBtn.setVisibility(View.VISIBLE);
+            editDeliveryDate.setText("Edit Delivery Date");
+
 
         }
         if(statusFromOrder.equalsIgnoreCase("Cancelled"))
@@ -334,8 +352,14 @@ public class OrderDetailsServices {
             currentStatus.setText(statusFromOrder);
             currentStatus.setBackgroundResource(R.drawable.current_status_box_cancelled_svg);
 
-            updateTo.setVisibility(View.GONE);
-            cancelled.setVisibility(View.GONE);
+            shippingName.setEnabled(false);
+            shippingName.setFocusable(false);
+            shippingMobile.setEnabled(false);
+            shippingMobile.setFocusable(false);
+
+            updateTo.setVisibility(View.INVISIBLE);
+            cancelled.setVisibility(View.INVISIBLE);
+
 
         }
         if(statusFromOrder.equalsIgnoreCase("Completed")||statusFromOrder.equalsIgnoreCase("Completed"))
@@ -343,12 +367,41 @@ public class OrderDetailsServices {
             Log.d(TAG, "Completed: ");
             currentStatus.setText(statusFromOrder);
             currentStatus.setBackgroundResource(R.drawable.current_status_box_completed_svg);
+            shippingName.setEnabled(false);
+            shippingName.setFocusable(false);
+            shippingMobile.setEnabled(false);
+            shippingMobile.setFocusable(false);
             updateTo.setVisibility(View.INVISIBLE);
             cancelled.setVisibility(View.INVISIBLE);
 
         }
 
 
+
+    }
+
+    public void updateOrderStatus(OrderDTO orderDTO,ShippingDTO shippingDTO,String btnClicked)
+    {
+        if(btnClicked.equalsIgnoreCase("Confirmed"))
+        {
+            Log.d(TAG, "updateOrderStatus: Confirmed clicked ");
+            orderDTO.setOrderStatus("Confirmed");
+            orderDTO.setShippingDTO(shippingDTO);
+
+
+
+
+        }
+
+        if (btnClicked.equalsIgnoreCase("Completed"))
+        {
+
+            Log.d(TAG, "updateOrderStatus: Completed clicked ");
+
+        }
+    }
+    public  void cancelOrder(OrderDTO orderDTO)
+    {
 
     }
 

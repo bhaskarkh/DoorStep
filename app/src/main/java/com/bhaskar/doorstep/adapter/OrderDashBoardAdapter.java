@@ -38,7 +38,7 @@ public class OrderDashBoardAdapter extends RecyclerView.Adapter<OrderDashBoardAd
     @Override
     public OrderDashBoardAdapter.OrderDashBoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.order_history_card_view, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.order_dashboard_card_view, parent, false);
         return new OrderDashBoardAdapter.OrderDashBoardViewHolder(view);
     }
 
@@ -87,13 +87,14 @@ public class OrderDashBoardAdapter extends RecyclerView.Adapter<OrderDashBoardAd
 
         public OrderDashBoardViewHolder(@NonNull View itemView) {
             super(itemView);
-            prod_name=itemView.findViewById(R.id.order_st_prod_name);
-            order_status=itemView.findViewById(R.id.order_st_status);
+
+            prod_name=itemView.findViewById(R.id.order_dashboard_st_prod_name);
+            order_status=itemView.findViewById(R.id.order_dashboard_st_status);
             // order_date=itemView.findViewById(R.id.order_st_date_time);
-            price=itemView.findViewById(R.id.order_st_price);
-            delivery_date=itemView.findViewById(R.id.order_st_delivery_date);
-            prod_image=itemView.findViewById(R.id.order_st_product_image);
-            order_st_layout=itemView.findViewById(R.id.order_st_layout);
+            price=itemView.findViewById(R.id.order_dashboard_st_price);
+            delivery_date=itemView.findViewById(R.id.order_dashboard_st_delivery_date);
+            prod_image=itemView.findViewById(R.id.order_dashboard_st_product_image);
+            order_st_layout=itemView.findViewById(R.id.order_dashboard_st_layout);
         }
     }
 }
