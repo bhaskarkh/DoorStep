@@ -306,6 +306,51 @@ public class OrderDetailsServices {
 
 
     }
+    public void setStatusBtnAndBackground(TextView currentStatus,TextView updateTo,TextView cancelled,String statusFromOrder)
+    {
+        Log.d(TAG, "setStatusBtnAndBackground: statusFromOrder="+statusFromOrder);
+        if(statusFromOrder.equalsIgnoreCase("Pending")||statusFromOrder.equalsIgnoreCase("Processing"))
+        {
+            Log.d(TAG, "Processing: ");
+            currentStatus.setText(statusFromOrder);
+            currentStatus.setBackgroundResource(R.drawable.current_status_box_processing_svg);
+            updateTo.setBackgroundResource(R.drawable.current_status_box_confirmed_update_to_svg);
+            updateTo.setText("Confirmed");
+
+        }
+        if(statusFromOrder.equalsIgnoreCase("Confirmed"))
+        {
+            Log.d(TAG, "Confirmed: ");
+            currentStatus.setText(statusFromOrder);
+            currentStatus.setBackgroundResource(R.drawable.current_status_box_confirmed_svg);
+
+            updateTo.setBackgroundResource(R.drawable.current_status_box_completed_update_to_svg);
+            updateTo.setText("Completed");
+
+        }
+        if(statusFromOrder.equalsIgnoreCase("Cancelled"))
+        {
+            Log.d(TAG, "Cancelled: ");
+            currentStatus.setText(statusFromOrder);
+            currentStatus.setBackgroundResource(R.drawable.current_status_box_cancelled_svg);
+
+            updateTo.setVisibility(View.GONE);
+            cancelled.setVisibility(View.GONE);
+
+        }
+        if(statusFromOrder.equalsIgnoreCase("Completed")||statusFromOrder.equalsIgnoreCase("Completed"))
+        {
+            Log.d(TAG, "Completed: ");
+            currentStatus.setText(statusFromOrder);
+            currentStatus.setBackgroundResource(R.drawable.current_status_box_completed_svg);
+            updateTo.setVisibility(View.INVISIBLE);
+            cancelled.setVisibility(View.INVISIBLE);
+
+        }
+
+
+
+    }
 
 }
 
