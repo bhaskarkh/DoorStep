@@ -90,7 +90,8 @@ public class AdminServices {
     }
 
     private boolean checkPassInput(String pass, EditText passvlaue) {
-        if(pass.length()<0)
+        Log.d(TAG, "checkPassInput: pass length=  "+pass.length());
+        if(pass.isEmpty())
         {
             passvlaue.setError("pass required");
             passvlaue.requestFocus();

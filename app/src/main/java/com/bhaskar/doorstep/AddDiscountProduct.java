@@ -52,9 +52,11 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
             @Override
             public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
 
-                category = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
-                Log.d(TAG, "onItemSelected: Scategory="+category);
-                fetchDiscountProduct(category);
+                if(v!=null) {
+                    category = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
+                    Log.d(TAG, "onItemSelected: Scategory=" + category);
+                    fetchDiscountProduct(category);
+                }
 
             }
 

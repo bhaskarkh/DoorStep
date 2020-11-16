@@ -125,9 +125,9 @@
                         android:layout_marginBottom="11dp"
                         android:layout_toEndOf="@+id/order_status_change_big_image"
                         android:layout_toRightOf="@+id/order_status_change_big_image"
-                        android:text="TX08112020184309255"
+                        android:text="TX16112020211547939"
                         android:textColor="#070707"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
 
 
                 </RelativeLayout>
@@ -421,22 +421,21 @@
 
             <TextView
                 android:id="@+id/order_dashboard_address_full"
-                android:layout_width="215dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginLeft="2dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="16dp"
                 android:text="naya address,topa g.m office,Orla,Orla,Jharkhand-825330  ja skdjhdf fdjfhjfa hjfajk jhfkjhfjkf fkjfhkjfhjkfhfkjf fh fkjfhkjf fdjfhjfa hjfajk jhfkjhf kfj fkfk kkf jkf"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider11"
-                app:layout_constraintEnd_toEndOf="@+id/order_std_address_name"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/order_status_change_edit_shipping_details_btn"
                 app:layout_constraintTop_toBottomOf="@+id/divider13"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.15" />
 
             <TextView
                 android:id="@+id/order_status_change_mobile"

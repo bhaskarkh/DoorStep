@@ -167,9 +167,19 @@ public class MySharedPreferences {
         
     }
 
+    public void setOrderListInSharedPreferenceAndShowInAdapter(List<OrderDTO> orderDTOList)
+    {
+        setOrderListInSharedPreference(orderDTOList);
+        orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
+
+    }
+    public void setOrderListInSharedPreferenceFromOrderStatusChange(List<OrderDTO> orderDTOList) {
+        setOrderListInSharedPreference(orderDTOList);
+        orderStatusInterface.orderStatusChange();
+    }
     public void setOrderListInSharedPreference(List<OrderDTO> orderDTOList)
     {
-        Log.d(TAG, "setOrderListInSharedPreference: ");
+        Log.d(TAG, "setOrderListInSharedPreferenceAndShowInAdapter: ");
         SharedPreferences mPrefs = this.context.getSharedPreferences("orderListSharedPref", MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
         Gson gson = new Gson();
@@ -177,8 +187,6 @@ public class MySharedPreferences {
         Log.d(TAG, "orderListJson= " + orderListJson);
         prefsEditor.putString("orderListPref", orderListJson);
         prefsEditor.commit();
-        orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
-
     }
     public List<OrderDTO> getAllOrderListFromSharedPreference()
     {
@@ -240,6 +248,38 @@ public class MySharedPreferences {
         setProductListInSharedPreference(productDTOList);
 
     }
+
+    public  void changeValueofOrder(OrderDTO orderDTO)
+    {
+        List<OrderDTO> orderDTOList=getAllOrderListFromSharedPreference();
+        for (OrderDTO orderDTO1:orderDTOList)
+        {
+
+            if(orderDTO1.getOrderId().equalsIgnoreCase(orderDTO.getOrderId()))
+            {
+
+                orderDTO1.setShippingDTO(orderDTO.getShippingDTO());
+                orderDTO1.setOrderStatus(orderDTO.getOrderStatus());
+                orderDTO1.setExpectedStartDateOfDelivery(orderDTO.getExpectedStartDateOfDelivery());
+                orderDTO1.setExpectedLastDateOfDelivery(orderDTO.getExpectedLastDateOfDelivery());
+                orderDTO1.setOrderCancelDate(orderDTO.getOrderCancelDate());
+                orderDTO1.setCompleteDateTime(orderDTO.getCompleteDateTime());
+                orderDTO1.setOrderConfirmed(orderDTO.isOrderConfirmed());
+                orderDTO1.setOrderCanceled(orderDTO.isOrderCanceled());
+                orderDTO1.setOrderConfirmDate(orderDTO.getOrderConfirmDate());
+
+                break;
+            }
+
+        }
+        Log.d(TAG, "changeValueofOrder: OrderList size= "+orderDTOList.size());
+
+        setOrderListInSharedPreferenceFromOrderStatusChange(orderDTOList);
+
+    }
+
+
+
     public  void changeValueofRecentlyViewProduct(ProductDTO productDTO)
     {
         List<ProductDTO> productDTOList=getAllProductListFromSharedPreference();

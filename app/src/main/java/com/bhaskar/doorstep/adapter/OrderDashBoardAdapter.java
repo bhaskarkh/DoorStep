@@ -64,7 +64,6 @@ public class OrderDashBoardAdapter extends RecyclerView.Adapter<OrderDashBoardAd
         holder.order_st_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "orderStatus Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent=new Intent(context, OrderStatusChange.class);
                 intent.putExtra("OrderInfo",orderDTO);
                 context.startActivity(intent);

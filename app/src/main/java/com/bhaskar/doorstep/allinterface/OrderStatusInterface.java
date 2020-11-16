@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface OrderStatusInterface {
     public void setOrderStatusAdaptor(List<OrderDTO> orderDTOList);
+    public void orderStatusChange();
 }

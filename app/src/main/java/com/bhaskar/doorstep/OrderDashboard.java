@@ -84,9 +84,11 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
             @Override
             public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
 
-                category = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
-                Log.d(TAG, "onItemSelected: Scategory="+category);
-                fetchOrderByCategory(category);
+                if(v!=null) {
+                    category = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
+                    Log.d(TAG, "onItemSelected: Scategory=" + category);
+                    fetchOrderByCategory(category);
+                }
 
             }
 
@@ -169,6 +171,11 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
              setCategoryRecycler(orderDTOList );
             Toast.makeText(this, "No Order of That Category", Toast.LENGTH_SHORT).show();
         }
+
+    }
+
+    @Override
+    public void orderStatusChange() {
 
     }
 }

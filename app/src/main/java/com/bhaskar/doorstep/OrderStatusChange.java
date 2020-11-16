@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bhaskar.doorstep.allinterface.AdminInterface;
+import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
 import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.OrderDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
@@ -31,14 +32,17 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-public class OrderStatusChange extends AppCompatActivity  implements AdminInterface {
+public class OrderStatusChange extends AppCompatActivity  implements AdminInterface, OrderStatusInterface {
 
     private static final String TAG = "OrderStatusChange";
     Button select_start_end_date;
     MaterialDatePicker materialDatePicker;
     JustifiedTextView order_status_change_productName;
     Home home;
+    boolean isShippingDetailsEdited=false;
+    boolean isDeliveryDateEdited=false;
     OrderDTO orderDTO;
     OrderDetailsServices orderDetailsServices;
     AddressServices addressServices;
@@ -56,7 +60,7 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
             order_dashboard_address_full,
             order_status_change_pincode,
             order_status_change_mobile;
-    ImageView order_status_change_big_image,order_status_change_edit_shipping_details_btn;
+    ImageView order_status_change_big_image,order_status_change_edit_shipping_details_btn,order_status_change_back_btn;
     EditText order_status_change_shipping_boy_name,order_status_change_shipping_boy_mobile;
 
     @Override
@@ -80,6 +84,7 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
         order_dashboard_address_full=findViewById(R.id.order_dashboard_address_full);
         order_status_change_pincode=findViewById(R.id.order_status_change_pincode);
         order_status_change_mobile=findViewById(R.id.order_status_change_mobile);
+        order_status_change_back_btn=findViewById(R.id.order_status_change_back_btn);
 
 
 
@@ -91,9 +96,20 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
         getALlIntentValueAndInitialize();
         setDatePickerBuilder();
 
+        order_status_change_back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(OrderStatusChange.this, OrderDashboard.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                finish();
+            }
+        });
         order_status_change_edit_shipping_details_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isShippingDetailsEdited=true;
                 adminServices.ShowAdminConfirmationDialog("editShippingDetails");
 
             }
@@ -120,6 +136,8 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
                         userRegistrationDTO.setUserName(shiipingBoyName);
                         userRegistrationDTO.setRmn(shippingBoyMobile);
                         shippingDTO.setShippingPersonDTO(userRegistrationDTO);
+                        orderDTO.setExpectedStartDateOfDelivery(startDate);
+                        orderDTO.setExpectedLastDateOfDelivery(endDate);
                         orderDetailsServices.updateOrderStatus(orderDTO,shippingDTO,"Confirmed");
 
                     }
@@ -129,8 +147,25 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
                 }
               if(orderStatus!=null&&orderStatus.equalsIgnoreCase("Confirmed"))
                 {
-                    Log.d(TAG, "onClick: Completed clicked");
-                    orderDetailsServices.updateOrderStatus(orderDTO,orderDTO.getShippingDTO(),"Completed");
+                    Log.d(TAG, "onClick: Completed clicked ");
+                    if (isShippingDetailsEdited ||isDeliveryDateEdited) {
+                        Log.d(TAG, "onClick: ");
+                        if(checkShippingBoyInput())
+                        {
+                            ShippingDTO shippingDTO=orderDTO.getShippingDTO();
+                            UserRegistrationDTO userRegistrationDTO=new UserRegistrationDTO();
+                            userRegistrationDTO.setUserName(shiipingBoyName);
+                            userRegistrationDTO.setRmn(shippingBoyMobile);
+                            shippingDTO.setShippingPersonDTO(userRegistrationDTO);
+                            orderDTO.setExpectedStartDateOfDelivery(startDate);
+                            orderDTO.setExpectedLastDateOfDelivery(endDate);
+                            orderDetailsServices.updateOrderStatus(orderDTO,shippingDTO,"Completed");
+
+                        }
+                    }
+                    else {
+                        orderDetailsServices.updateOrderStatus(orderDTO, orderDTO.getShippingDTO(), "Completed");
+                    }
                 }
             }
         });
@@ -138,6 +173,7 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
         select_start_end_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isDeliveryDateEdited=true;
                 String dateBtn=select_start_end_date.getText().toString();
                 Log.d(TAG, "onClick: dateBtn= "+dateBtn);
                 if(dateBtn.equalsIgnoreCase("Set Delivery Date")) {
@@ -216,6 +252,7 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
             Log.d(TAG, "getALlIntentValueAndInitialize: "+productDTO.toString());
             home.loadImageInGlide(order_status_change_big_image,productDTO.getImage());
             order_status_change_productName.setText(productDTO.getName());
+            Log.d(TAG, "getALlIntentValueAndInitialize: orderId= "+orderDTO.getOrderId());
             order_status_change_txn_id.setText(orderDTO.getOrderId());
             order_status_change_prodPrice_new.setText(String.valueOf(productDTO.getPrice()));
             if(orderDTO.getShippingDTO().getShippingPersonDTO()!=null)
@@ -292,5 +329,19 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
     public void afterAdminVerificationFailed(String callingSource) {
 
         Toast.makeText(this, "Verification Failed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setOrderStatusAdaptor(List<OrderDTO> orderDTOList) {
+
+    }
+
+    @Override
+    public void orderStatusChange() {
+        Intent i = new Intent(OrderStatusChange.this, OrderDashboard.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+        finish();
     }
 }

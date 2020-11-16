@@ -143,13 +143,16 @@ public class OrderDetailsServices {
     }
 
     public String getCurrentDateAndTime() {
-        String currentDateTime = "";
+       /* String currentDateTime = "";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DDMMYYYY Hmm");
         Date date = new Date();
         currentDateTime = simpleDateFormat.format(date);
 
         Log.d(TAG, "generated CurrentDateTime =" + currentDateTime);
-        return currentDateTime;
+        return currentDateTime;*/
+        Home home=new Home(context);
+       return home.getDefaultDateAndTimeInStringFormatFromDate(new Date());
+
     }
 
     public void getOrderListByUserId(final String fuid, FirebaseDatabase firebaseDatabase)
@@ -234,7 +237,7 @@ public class OrderDetailsServices {
 
 
                 if (source.equalsIgnoreCase("SharedPref")) {
-                    mySharedPreferences.setOrderListInSharedPreference(orderDTOList);
+                    mySharedPreferences.setOrderListInSharedPreferenceAndShowInAdapter(orderDTOList);
                 }else {
                     setOrderListByCategoryType(category,orderDTOList);
                 }
@@ -393,21 +396,57 @@ public class OrderDetailsServices {
             Log.d(TAG, "updateOrderStatus: Confirmed clicked ");
             orderDTO.setOrderStatus("Confirmed");
             orderDTO.setShippingDTO(shippingDTO);
-
-
-
+            orderDTO.setOrderConfirmed(true);
+            orderDTO.setOrderConfirmDate(getCurrentDateAndTime());
+            changeOrderStatusToFireBaseAndSharedpref(orderDTO);
 
         }
 
         if (btnClicked.equalsIgnoreCase("Completed"))
         {
+            Log.d(TAG, "updateOrderStatus: Confirmed clicked ");
+            orderDTO.setOrderStatus("Completed");
+            orderDTO.setShippingDTO(shippingDTO);
+            orderDTO.setCompleteDateTime(getCurrentDateAndTime());
+            changeOrderStatusToFireBaseAndSharedpref(orderDTO);
 
             Log.d(TAG, "updateOrderStatus: Completed clicked ");
 
         }
     }
+
+    private void changeOrderStatusToFireBaseAndSharedpref(OrderDTO orderDTO) {
+        MySharedPreferences mySharedPreferences=new MySharedPreferences(context);
+        mySharedPreferences.setOrderStatusInterface(orderStatusInterface);
+
+
+            Log.d(TAG, "changeOrderStatusToFireBaseAndSharedpref: ");
+            DatabaseReference fireDataBaseReference = FirebaseDatabase.getInstance().getReference();
+
+            fireDataBaseReference.child("test").child("order").child(orderDTO.getOrderId()).setValue(orderDTO)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "onSuccess: order stats change  Updated in firebase");
+
+                            mySharedPreferences.changeValueofOrder(orderDTO);
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(context, "Failed To change status of order try again", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onFailure: Failed To change status of order try again msg= "+e.getMessage());
+                }
+            });
+
+
+    }
+
     public  void cancelOrder(OrderDTO orderDTO)
     {
+
+        Toast.makeText(context, "Updated SuccessFully", Toast.LENGTH_SHORT).show();
 
     }
 
