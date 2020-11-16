@@ -317,14 +317,14 @@ public class OrderDetailsServices {
 
 
     }
-    public void setStatusBtnAndBackground(TextView currentStatus, TextView updateTo, TextView cancelled, String statusFromOrder, Button shippingEditBtn, Button editDeliveryDate, EditText shippingName,EditText shippingMobile)
+    public void setStatusBtnAndBackground(TextView currentStatus, TextView updateTo, TextView cancelled, String statusFromOrder, ImageView shippingEditBtn, Button editDeliveryDate, EditText shippingName,EditText shippingMobile)
     {
         Log.d(TAG, "setStatusBtnAndBackground: statusFromOrder="+statusFromOrder);
         if(statusFromOrder.equalsIgnoreCase("Pending")||statusFromOrder.equalsIgnoreCase("Processing"))
         {
             Log.d(TAG, "Processing: ");
             currentStatus.setText(statusFromOrder);
-            currentStatus.setBackgroundResource(R.drawable.current_status_box_processing_svg);
+            currentStatus.setBackgroundColor(getColorFromResource(R.color.processing));
             updateTo.setBackgroundResource(R.drawable.current_status_box_confirmed_update_to_svg);
             updateTo.setText("Confirmed");
 
@@ -333,13 +333,13 @@ public class OrderDetailsServices {
         {
             Log.d(TAG, "Confirmed: ");
             currentStatus.setText(statusFromOrder);
-            currentStatus.setBackgroundResource(R.drawable.current_status_box_confirmed_svg);
+            currentStatus.setBackgroundColor(getColorFromResource(R.color.confirmed));
             updateTo.setBackgroundResource(R.drawable.current_status_box_completed_update_to_svg);
             updateTo.setText("Completed");
 
-           shippingName.setEnabled(false);
+            shippingName.setEnabled(false);
             shippingName.setFocusable(false);
-           shippingMobile.setEnabled(false);
+            shippingMobile.setEnabled(false);
             shippingMobile.setFocusable(false);
             shippingEditBtn.setVisibility(View.VISIBLE);
             editDeliveryDate.setText("Edit Delivery Date");
@@ -350,7 +350,8 @@ public class OrderDetailsServices {
         {
             Log.d(TAG, "Cancelled: ");
             currentStatus.setText(statusFromOrder);
-            currentStatus.setBackgroundResource(R.drawable.current_status_box_cancelled_svg);
+            /*currentStatus.setBackgroundResource(R.drawable.current_status_box_cancelled_svg);*/
+            currentStatus.setBackgroundColor(getColorFromResource(R.color.cancelled));
 
             shippingName.setEnabled(false);
             shippingName.setFocusable(false);
@@ -366,7 +367,7 @@ public class OrderDetailsServices {
         {
             Log.d(TAG, "Completed: ");
             currentStatus.setText(statusFromOrder);
-            currentStatus.setBackgroundResource(R.drawable.current_status_box_completed_svg);
+            currentStatus.setBackgroundColor(getColorFromResource(R.color.completed));
             shippingName.setEnabled(false);
             shippingName.setFocusable(false);
             shippingMobile.setEnabled(false);
@@ -378,6 +379,11 @@ public class OrderDetailsServices {
 
 
 
+    }
+
+    public  int getColorFromResource(int color)
+    {
+        return context.getResources().getColor(color);
     }
 
     public void updateOrderStatus(OrderDTO orderDTO,ShippingDTO shippingDTO,String btnClicked)

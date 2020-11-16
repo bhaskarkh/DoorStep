@@ -109,6 +109,7 @@
         android:layout_marginTop="16dp"
         android:text="Auto Update Off"
         android:textSize="8sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_dashboard_cat" />
 

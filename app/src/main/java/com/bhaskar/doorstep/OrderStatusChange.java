@@ -13,11 +13,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhaskar.doorstep.allinterface.AdminInterface;
+import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.OrderDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.ShippingDTO;
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
 import com.bhaskar.doorstep.services.AddressServices;
+import com.bhaskar.doorstep.services.AdminServices;
 import com.bhaskar.doorstep.services.Home;
 import com.bhaskar.doorstep.services.OrderDetailsServices;
 import com.codesgood.views.JustifiedTextView;
@@ -29,16 +32,17 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import java.util.Calendar;
 import java.util.Date;
 
-public class OrderStatusChange extends AppCompatActivity {
+public class OrderStatusChange extends AppCompatActivity  implements AdminInterface {
 
     private static final String TAG = "OrderStatusChange";
-    Button select_start_end_date,order_status_change_edit_shipping_details_btn;
+    Button select_start_end_date;
     MaterialDatePicker materialDatePicker;
     JustifiedTextView order_status_change_productName;
     Home home;
     OrderDTO orderDTO;
     OrderDetailsServices orderDetailsServices;
     AddressServices addressServices;
+    AdminServices adminServices;
     String shiipingBoyName,shippingBoyMobile,orderStatus,startDate,endDate;
     TextView
             order_status_change_txn_id,
@@ -49,8 +53,10 @@ public class OrderStatusChange extends AppCompatActivity {
             order_status_change_cancelled_text,
             order_status_change_completed_or_confirmed_text,
             order_dashboard_address_name,
-            order_dashboard_address_full;
-    ImageView order_status_change_big_image;
+            order_dashboard_address_full,
+            order_status_change_pincode,
+            order_status_change_mobile;
+    ImageView order_status_change_big_image,order_status_change_edit_shipping_details_btn;
     EditText order_status_change_shipping_boy_name,order_status_change_shipping_boy_mobile;
 
     @Override
@@ -72,21 +78,23 @@ public class OrderStatusChange extends AppCompatActivity {
         order_status_change_edit_shipping_details_btn=findViewById(R.id.order_status_change_edit_shipping_details_btn);
         order_dashboard_address_name=findViewById(R.id.order_dashboard_address_name);
         order_dashboard_address_full=findViewById(R.id.order_dashboard_address_full);
+        order_status_change_pincode=findViewById(R.id.order_status_change_pincode);
+        order_status_change_mobile=findViewById(R.id.order_status_change_mobile);
+
 
 
         home=new Home(this);
         orderDetailsServices=new OrderDetailsServices(this);
         addressServices=new AddressServices(this);
+        adminServices=new AdminServices(this);
+        adminServices.setAdminInterface(this);
         getALlIntentValueAndInitialize();
         setDatePickerBuilder();
 
         order_status_change_edit_shipping_details_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                order_status_change_shipping_boy_name.setEnabled(true);
-                order_status_change_shipping_boy_name.setFocusableInTouchMode(true);
-                order_status_change_shipping_boy_mobile.setEnabled(true);
-                order_status_change_shipping_boy_mobile.setFocusableInTouchMode(true);
+                adminServices.ShowAdminConfirmationDialog("editShippingDetails");
 
             }
         });
@@ -137,6 +145,7 @@ public class OrderStatusChange extends AppCompatActivity {
                 }
                 if (dateBtn.equalsIgnoreCase("Edit Delivery Date"))
                 {
+                    adminServices.ShowAdminConfirmationDialog("editDate");
                     Log.d(TAG, "onClick: Edit Btn");
 
                 }
@@ -202,7 +211,8 @@ public class OrderStatusChange extends AppCompatActivity {
             orderStatus=orderDTO.getOrderStatus();
             ProductDTO productDTO=orderDTO.getProductDTO();
             order_dashboard_address_name.setText(orderDTO.getCustomerInfoDTO().getUserName());
-            order_dashboard_address_full.setText(addressServices.getFullAddress(addressServices.getPrimaryAddress(orderDTO.getCustomerInfoDTO().getAddressDTOList())));
+            AddressDTO addressDTO=addressServices.getPrimaryAddress(orderDTO.getCustomerInfoDTO().getAddressDTOList());
+            addressServices.getCustomAddressPinMobileAndAddress(order_status_change_pincode,order_status_change_mobile,order_dashboard_address_full,addressDTO);
             Log.d(TAG, "getALlIntentValueAndInitialize: "+productDTO.toString());
             home.loadImageInGlide(order_status_change_big_image,productDTO.getImage());
             order_status_change_productName.setText(productDTO.getName());
@@ -258,5 +268,29 @@ public class OrderStatusChange extends AppCompatActivity {
         materialDatePicker= builder.build();
 
 
+    }
+
+    @Override
+    public void afterAdminVerificationSuccess(String callingSource) {
+        Toast.makeText(this, "Verified Successfully", Toast.LENGTH_SHORT).show();
+
+        if(callingSource.equalsIgnoreCase("editDate"))
+        {
+            materialDatePicker.show(getSupportFragmentManager(), "DATE_PICKER");
+
+        }
+        if (callingSource.equalsIgnoreCase("editShippingDetails"))
+        {
+            order_status_change_shipping_boy_name.setEnabled(true);
+            order_status_change_shipping_boy_name.setFocusableInTouchMode(true);
+            order_status_change_shipping_boy_mobile.setEnabled(true);
+            order_status_change_shipping_boy_mobile.setFocusableInTouchMode(true);
+        }
+    }
+
+    @Override
+    public void afterAdminVerificationFailed(String callingSource) {
+
+        Toast.makeText(this, "Verification Failed", Toast.LENGTH_SHORT).show();
     }
 }

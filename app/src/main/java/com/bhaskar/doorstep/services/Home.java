@@ -410,6 +410,10 @@ public class Home {
         return date;
 
     }
+    public float pixelsToSp(float px) {
+        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
+        return px/scaledDensity;
+    }
 
 
 }

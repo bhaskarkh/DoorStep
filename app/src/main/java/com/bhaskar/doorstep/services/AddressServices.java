@@ -3,12 +3,14 @@ package com.bhaskar.doorstep.services;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.bhaskar.doorstep.AddressList;
 import com.bhaskar.doorstep.MainActivity;
+import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.allinterface.SetAddresListInAdapterInterface;
 import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
@@ -65,6 +67,16 @@ public class AddressServices {
 
 
         return  str;
+    }
+    public String getAddressWithoutPinAndMobile(AddressDTO addressDTO)
+    {
+        String str="No Address Founf";
+        if (addressDTO!=null)
+        {
+            str=firstLineAddress(addressDTO)+","+addressDTO.getCity()+","+addressDTO.getState();
+        }
+
+        return str;
     }
 
     public String getFullAddress(AddressDTO addressDTO)
@@ -281,4 +293,31 @@ public class AddressServices {
 
     }
 
+    public void getCustomAddressPinMobileAndAddress(TextView order_status_change_pincode, TextView order_status_change_mobile, TextView order_dashboard_address_full,AddressDTO addressDTO) {
+       Home home=new Home(context);
+       String full_address=getAddressWithoutPinAndMobile(addressDTO);
+       order_dashboard_address_full.setText(full_address);
+       if(full_address.length()<=60)
+       {
+           order_dashboard_address_full.setTextSize(home.pixelsToSp(context.getResources().getDimension(R.dimen.text16sp)));
+       }
+       else if(full_address.length()>60 &&full_address.length()<=100)
+        {
+            order_dashboard_address_full.setTextSize(home.pixelsToSp(context.getResources().getDimension(R.dimen.text14sp)));
+        }
+       else if(full_address.length()>100 &&full_address.length()<=180)
+       {
+           order_dashboard_address_full.setTextSize(home.pixelsToSp(context.getResources().getDimension(R.dimen.text12sp)));
+
+       }
+       else {
+
+           home.limitCharacterInView(order_dashboard_address_full,165,full_address);
+           order_dashboard_address_full.setTextSize(home.pixelsToSp(context.getResources().getDimension(R.dimen.text12sp)));
+       }
+
+        order_status_change_pincode.setText("Pincode: "+addressDTO.getPincode());
+       order_status_change_mobile.setText(addressDTO.getDeliveryMobileNo());
+
+    }
 }

@@ -153,18 +153,22 @@
                         android:layout_marginRight="0dp">
 
                         <TextView
-                            android:id="@+id/order_status_change_pd_off_percent"
+                            android:id="@+id/order_status_change_current_status_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="5dp"
                             android:layout_marginEnd="26dp"
                             android:layout_marginRight="26dp"
-                            android:layout_marginBottom="0dp"
-                            android:text="99% off"
-                            android:textColor="#3DA841"
-                            android:textSize="18sp" />
+                            android:background="@color/processing"
+                            android:gravity="center_horizontal"
+                            android:padding="3dp"
+                            android:text="Processing"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
                     </RelativeLayout>
 
 
@@ -242,21 +246,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:text="Shipping Details"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/divider11"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_dashboard_address_full"
+                app:layout_constraintTop_toBottomOf="@+id/order_status_change_mobile"
                 app:layout_constraintVertical_bias="1.0" />
 
-            <Button
+            <ImageView
                 android:id="@+id/order_status_change_edit_shipping_details_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginBottom="2dp"
                 android:backgroundTint="#F6F4F4"
                 android:text="Edit Shipping Details"
                 android:textAllCaps="false"
@@ -264,7 +269,8 @@
                 android:textSize="8sp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toTopOf="@+id/divider11"
-                app:layout_constraintStart_toEndOf="@+id/textView21" />
+                app:layout_constraintStart_toEndOf="@+id/textView21"
+                app:srcCompat="@drawable/ic_edit" />
 
             <View
                 android:id="@+id/divider11"
@@ -339,22 +345,6 @@
                 app:layout_constraintBottom_toBottomOf="@+id/order_status_change_select_start_end_date"
                 app:layout_constraintStart_toStartOf="@+id/selected_date_value" />
 
-
-            <TextView
-                android:id="@+id/order_status_change_current_status_text"
-                android:layout_width="80dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="2dp"
-                android:background="@drawable/current_status_box_processing_svg"
-                android:gravity="center_horizontal"
-                android:paddingTop="8dp"
-                android:text="Processing"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/divider13"
-                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/order_status_change_cancelled_text"
@@ -433,10 +423,40 @@
                 android:id="@+id/order_dashboard_address_full"
                 android:layout_width="215dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="naya address,topa g.m office,Orla,Orla,Jharkhand-825330(8093150506)"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:text="naya address,topa g.m office,Orla,Orla,Jharkhand-825330  ja skdjhdf fdjfhjfa hjfajk jhfkjhfjkf fkjfhkjfhjkfhfkjf fh fkjfhkjf fdjfhjfa hjfajk jhfkjhf kfj fkfk kkf jkf"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/divider11"
                 app:layout_constraintEnd_toEndOf="@+id/order_std_address_name"
                 app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/order_status_change_edit_shipping_details_btn"
+                app:layout_constraintTop_toBottomOf="@+id/divider13"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/order_status_change_mobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="8093150506"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/order_dashboard_address_name"
+                app:layout_constraintTop_toBottomOf="@+id/order_status_change_pincode" />
+
+            <TextView
+                android:id="@+id/order_status_change_pincode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Pincode: 825330"
+                android:textSize="14sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/order_dashboard_address_name"
                 app:layout_constraintTop_toBottomOf="@+id/order_dashboard_address_name" />
 
