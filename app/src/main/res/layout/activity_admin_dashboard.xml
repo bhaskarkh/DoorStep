@@ -21,11 +21,11 @@
 
             <TextView
                 android:id="@+id/admin_title_text"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="18dp"
                 android:layout_marginStart="112dp"
                 android:layout_marginLeft="112dp"
-                android:text="TextView"
+                android:text="Admin Dashboard"
                 app:layout_constraintBottom_toBottomOf="@+id/admin_back_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.022"

@@ -459,6 +459,47 @@
                 app:layout_constraintStart_toStartOf="@+id/order_dashboard_address_name"
                 app:layout_constraintTop_toBottomOf="@+id/order_dashboard_address_name" />
 
+            <TextView
+                android:id="@+id/order_status_change_confirm_order_date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="16dp"
+                android:text="Confirm Order Date"
+                app:layout_constraintStart_toStartOf="@+id/order_status_change_select_start_end_date"
+                app:layout_constraintTop_toBottomOf="@+id/order_status_change_select_start_end_date" />
+
+            <TextView
+                android:id="@+id/order_status_change_confirm_order_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginLeft="24dp"
+                android:text="10 Jul 2020"
+                app:layout_constraintBottom_toBottomOf="@+id/order_status_change_confirm_order_date_text"
+                app:layout_constraintStart_toEndOf="@+id/order_status_change_confirm_order_date_text"
+                app:layout_constraintTop_toBottomOf="@+id/order_status_change_select_start_end_date"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/order_status_change_cancel_or_completed_date_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Completed Date"
+                app:layout_constraintStart_toStartOf="@+id/order_status_change_confirm_order_date_text"
+                app:layout_constraintTop_toBottomOf="@+id/order_status_change_confirm_order_date_text" />
+
+            <TextView
+                android:id="@+id/order_status_change_cancel_or_completed_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 Jul 2020"
+                app:layout_constraintBottom_toBottomOf="@+id/order_status_change_cancel_or_completed_date_text"
+                app:layout_constraintStart_toStartOf="@+id/order_status_change_confirm_order_date"
+                app:layout_constraintTop_toTopOf="@+id/order_status_change_cancel_or_completed_date_text" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -320,7 +320,7 @@ public class OrderDetailsServices {
 
 
     }
-    public void setStatusBtnAndBackground(TextView currentStatus, TextView updateTo, TextView cancelled, String statusFromOrder, ImageView shippingEditBtn, Button editDeliveryDate, EditText shippingName,EditText shippingMobile)
+    public void setStatusBtnAndBackground(TextView currentStatus, TextView updateTo, TextView cancelled, String statusFromOrder, ImageView shippingEditBtn, Button editDeliveryDate, EditText shippingName,EditText shippingMobile,TextView confirmDateText,TextView confirmDate,TextView cancelOrCompletedDatetext,TextView cancelOrCompletedDate,OrderDTO orderDTO)
     {
         Log.d(TAG, "setStatusBtnAndBackground: statusFromOrder="+statusFromOrder);
         if(statusFromOrder.equalsIgnoreCase("Pending")||statusFromOrder.equalsIgnoreCase("Processing"))
@@ -330,6 +330,11 @@ public class OrderDetailsServices {
             currentStatus.setBackgroundColor(getColorFromResource(R.color.processing));
             updateTo.setBackgroundResource(R.drawable.current_status_box_confirmed_update_to_svg);
             updateTo.setText("Confirmed");
+            confirmDateText.setVisibility(View.INVISIBLE);
+           confirmDate.setVisibility(View.INVISIBLE);
+           cancelOrCompletedDatetext.setVisibility(View.INVISIBLE);
+           cancelOrCompletedDate.setVisibility(View.INVISIBLE);
+
 
         }
         if(statusFromOrder.equalsIgnoreCase("Confirmed"))
@@ -346,6 +351,11 @@ public class OrderDetailsServices {
             shippingMobile.setFocusable(false);
             shippingEditBtn.setVisibility(View.VISIBLE);
             editDeliveryDate.setText("Edit Delivery Date");
+            confirmDateText.setVisibility(View.VISIBLE);
+            confirmDate.setVisibility(View.VISIBLE);
+            confirmDate.setText(orderDTO.getOrderConfirmDate());
+            cancelOrCompletedDatetext.setVisibility(View.INVISIBLE);
+            cancelOrCompletedDate.setVisibility(View.INVISIBLE);
 
 
         }
@@ -361,8 +371,25 @@ public class OrderDetailsServices {
             shippingMobile.setEnabled(false);
             shippingMobile.setFocusable(false);
 
+
             updateTo.setVisibility(View.INVISIBLE);
             cancelled.setVisibility(View.INVISIBLE);
+
+            if(orderDTO.isOrderConfirmed()) {
+                editDeliveryDate.setText("Expected Delivery Date");
+                confirmDateText.setVisibility(View.VISIBLE);
+                confirmDate.setVisibility(View.VISIBLE);
+                confirmDate.setText(orderDTO.getOrderConfirmDate());
+            }else {
+                confirmDateText.setVisibility(View.INVISIBLE);
+                confirmDate.setVisibility(View.INVISIBLE);
+            }
+            editDeliveryDate.setEnabled(false);
+
+            cancelOrCompletedDatetext.setVisibility(View.VISIBLE);
+            cancelOrCompletedDate.setVisibility(View.VISIBLE);
+            cancelOrCompletedDatetext.setText("Cancelled Date");
+            cancelOrCompletedDate.setText(orderDTO.getOrderCancelDate());
 
 
         }
@@ -377,6 +404,15 @@ public class OrderDetailsServices {
             shippingMobile.setFocusable(false);
             updateTo.setVisibility(View.INVISIBLE);
             cancelled.setVisibility(View.INVISIBLE);
+            editDeliveryDate.setText("Expected Delivery Date");
+            editDeliveryDate.setEnabled(false);
+
+            confirmDateText.setVisibility(View.VISIBLE);
+            confirmDate.setVisibility(View.VISIBLE);
+            cancelOrCompletedDatetext.setVisibility(View.VISIBLE);
+            cancelOrCompletedDate.setVisibility(View.VISIBLE);
+            cancelOrCompletedDatetext.setText("Completed Date");
+            cancelOrCompletedDate.setText(orderDTO.getCompleteDateTime());
 
         }
 
@@ -415,7 +451,7 @@ public class OrderDetailsServices {
         }
     }
 
-    private void changeOrderStatusToFireBaseAndSharedpref(OrderDTO orderDTO) {
+    public void changeOrderStatusToFireBaseAndSharedpref(OrderDTO orderDTO) {
         MySharedPreferences mySharedPreferences=new MySharedPreferences(context);
         mySharedPreferences.setOrderStatusInterface(orderStatusInterface);
 
@@ -445,8 +481,11 @@ public class OrderDetailsServices {
 
     public  void cancelOrder(OrderDTO orderDTO)
     {
-
-        Toast.makeText(context, "Updated SuccessFully", Toast.LENGTH_SHORT).show();
+        Home home=new Home(context);
+        orderDTO.setOrderStatus("Cancelled");
+        orderDTO.setOrderCanceled(true);
+        orderDTO.setOrderCancelDate(home.getDefaultDateAndTimeInStringFormatFromDate(new Date()));
+        changeOrderStatusToFireBaseAndSharedpref(orderDTO);
 
     }
 

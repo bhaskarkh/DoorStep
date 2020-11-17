@@ -59,7 +59,11 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
             order_dashboard_address_name,
             order_dashboard_address_full,
             order_status_change_pincode,
-            order_status_change_mobile;
+            order_status_change_mobile,
+            order_status_change_confirm_order_date,
+            order_status_change_confirm_order_date_text,
+            order_status_change_cancel_or_completed_date,
+            order_status_change_cancel_or_completed_date_text;
     ImageView order_status_change_big_image,order_status_change_edit_shipping_details_btn,order_status_change_back_btn;
     EditText order_status_change_shipping_boy_name,order_status_change_shipping_boy_mobile;
 
@@ -85,6 +89,10 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
         order_status_change_pincode=findViewById(R.id.order_status_change_pincode);
         order_status_change_mobile=findViewById(R.id.order_status_change_mobile);
         order_status_change_back_btn=findViewById(R.id.order_status_change_back_btn);
+        order_status_change_confirm_order_date=findViewById(R.id.order_status_change_confirm_order_date);
+        order_status_change_confirm_order_date_text=findViewById(R.id.order_status_change_confirm_order_date_text);
+        order_status_change_cancel_or_completed_date=findViewById(R.id.order_status_change_cancel_or_completed_date);
+         order_status_change_cancel_or_completed_date_text=findViewById(R.id.order_status_change_cancel_or_completed_date_text);
 
 
 
@@ -120,9 +128,23 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
             @Override
             public void onClick(View v) {
 
+                adminServices.ShowAdminConfirmationDialog("orderStatusChangeCancelled");
+               
+
                 Log.d(TAG, "onClick: Canceled Clicked");
             }
         });
+
+        order_status_change_completed_or_confirmed_text.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+                Log.d(TAG, "onClick: Confirm or Cancelled Clicked");
+                adminServices.ShowAdminConfirmationDialog("orderStatusChangeConfirmOrComplete");
+            }
+        });
+        
+        /*
         order_status_change_completed_or_confirmed_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +168,7 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
                         Toast.makeText(OrderStatusChange.this, "Fill all input", Toast.LENGTH_SHORT).show();
                     }
                 }
-              if(orderStatus!=null&&orderStatus.equalsIgnoreCase("Confirmed"))
+                if(orderStatus!=null&&orderStatus.equalsIgnoreCase("Confirmed"))
                 {
                     Log.d(TAG, "onClick: Completed clicked ");
                     if (isShippingDetailsEdited ||isDeliveryDateEdited) {
@@ -169,8 +191,9 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
                     }
                 }
             }
-        });
+        });*/
 
+        
         select_start_end_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,7 +291,12 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
                 order_status_change_start_date.setText(orderDTO.getExpectedStartDateOfDelivery());
             if (orderDTO.getExpectedLastDateOfDelivery()!=null)
                 order_status_change_end_date.setText(orderDTO.getExpectedLastDateOfDelivery());
-            orderDetailsServices.setStatusBtnAndBackground(order_status_change_current_status_text,order_status_change_completed_or_confirmed_text,order_status_change_cancelled_text,orderStatus,order_status_change_edit_shipping_details_btn,select_start_end_date,order_status_change_shipping_boy_name,order_status_change_shipping_boy_mobile);
+            orderDetailsServices.setStatusBtnAndBackground(order_status_change_current_status_text
+                    ,order_status_change_completed_or_confirmed_text,order_status_change_cancelled_text,orderStatus
+                    ,order_status_change_edit_shipping_details_btn,select_start_end_date
+                    ,order_status_change_shipping_boy_name,order_status_change_shipping_boy_mobile
+                    ,order_status_change_confirm_order_date_text,order_status_change_confirm_order_date
+                    ,order_status_change_cancel_or_completed_date_text,order_status_change_cancel_or_completed_date,orderDTO);
 
 
 
@@ -308,6 +336,52 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
 
     }
 
+    public void updateStatus()
+    {
+        Log.d(TAG, "onClick: order_status_change_completed_or_confirmed_text");
+
+        if(orderStatus!=null&&orderStatus.equalsIgnoreCase("Processing")||orderStatus.equalsIgnoreCase("Pending")) {
+            Log.d(TAG, "onClick: Confirmed clicked");
+            if(checkShippingBoyInput())
+            {
+                ShippingDTO shippingDTO=orderDTO.getShippingDTO();
+                UserRegistrationDTO userRegistrationDTO=new UserRegistrationDTO();
+                userRegistrationDTO.setUserName(shiipingBoyName);
+                userRegistrationDTO.setRmn(shippingBoyMobile);
+                shippingDTO.setShippingPersonDTO(userRegistrationDTO);
+                orderDTO.setExpectedStartDateOfDelivery(startDate);
+                orderDTO.setExpectedLastDateOfDelivery(endDate);
+                orderDetailsServices.updateOrderStatus(orderDTO,shippingDTO,"Confirmed");
+
+            }
+            else {
+                Toast.makeText(OrderStatusChange.this, "Fill all input", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if(orderStatus!=null&&orderStatus.equalsIgnoreCase("Confirmed"))
+        {
+            Log.d(TAG, "onClick: Completed clicked ");
+            if (isShippingDetailsEdited ||isDeliveryDateEdited) {
+                Log.d(TAG, "onClick: ");
+                if(checkShippingBoyInput())
+                {
+                    ShippingDTO shippingDTO=orderDTO.getShippingDTO();
+                    UserRegistrationDTO userRegistrationDTO=new UserRegistrationDTO();
+                    userRegistrationDTO.setUserName(shiipingBoyName);
+                    userRegistrationDTO.setRmn(shippingBoyMobile);
+                    shippingDTO.setShippingPersonDTO(userRegistrationDTO);
+                    orderDTO.setExpectedStartDateOfDelivery(startDate);
+                    orderDTO.setExpectedLastDateOfDelivery(endDate);
+                    orderDetailsServices.updateOrderStatus(orderDTO,shippingDTO,"Completed");
+
+                }
+            }
+            else {
+                orderDetailsServices.updateOrderStatus(orderDTO, orderDTO.getShippingDTO(), "Completed");
+            }
+        }
+    }
+
     @Override
     public void afterAdminVerificationSuccess(String callingSource) {
         Toast.makeText(this, "Verified Successfully", Toast.LENGTH_SHORT).show();
@@ -324,12 +398,32 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
             order_status_change_shipping_boy_mobile.setEnabled(true);
             order_status_change_shipping_boy_mobile.setFocusableInTouchMode(true);
         }
+        if(callingSource.equalsIgnoreCase("orderStatusChangeConfirmOrComplete"))
+        { if(orderDTO!=null) {
+            updateStatus();
+        }else {
+            Log.d(TAG, "afterAdminVerificationSuccess: orderDTO is Null");
+        }
+        }
+        if(callingSource.equalsIgnoreCase("orderStatusChangeCancelled"))
+        {
+            if(orderDTO!=null)
+            {
+                orderDetailsServices.cancelOrder(orderDTO);
+
+            }
+        }
+
+        
     }
+    
+  
 
     @Override
     public void afterAdminVerificationFailed(String callingSource) {
 
         Toast.makeText(this, "Verification Failed", Toast.LENGTH_SHORT).show();
+       
     }
 
     @Override

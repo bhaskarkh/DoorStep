@@ -40,12 +40,11 @@
                 android:id="@+id/profile_pic"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/textView"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/main_cart"
                 app:layout_constraintEnd_toStartOf="@+id/main_cart2"
-                app:layout_constraintHorizontal_bias="0.87"
-                app:layout_constraintStart_toEndOf="@+id/textView"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/main_cart"
                 app:srcCompat="@drawable/ic_cart_black" />
 
             <ImageView
