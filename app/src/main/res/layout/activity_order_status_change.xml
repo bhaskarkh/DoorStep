@@ -125,9 +125,9 @@
                         android:layout_marginBottom="11dp"
                         android:layout_toEndOf="@+id/order_status_change_big_image"
                         android:layout_toRightOf="@+id/order_status_change_big_image"
-                        android:text="TX16112020211547939"
+                        android:text="TX1611202021154793912"
                         android:textColor="#070707"
-                        android:textSize="13sp" />
+                        android:textSize="12sp" />
 
 
                 </RelativeLayout>

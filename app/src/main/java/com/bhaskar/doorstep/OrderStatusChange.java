@@ -144,54 +144,6 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
             }
         });
         
-        /*
-        order_status_change_completed_or_confirmed_text.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: order_status_change_completed_or_confirmed_text");
-
-                if(orderStatus!=null&&orderStatus.equalsIgnoreCase("Processing")||orderStatus.equalsIgnoreCase("Pending")) {
-                    Log.d(TAG, "onClick: Confirmed clicked");
-                    if(checkShippingBoyInput())
-                    {
-                        ShippingDTO shippingDTO=orderDTO.getShippingDTO();
-                        UserRegistrationDTO userRegistrationDTO=new UserRegistrationDTO();
-                        userRegistrationDTO.setUserName(shiipingBoyName);
-                        userRegistrationDTO.setRmn(shippingBoyMobile);
-                        shippingDTO.setShippingPersonDTO(userRegistrationDTO);
-                        orderDTO.setExpectedStartDateOfDelivery(startDate);
-                        orderDTO.setExpectedLastDateOfDelivery(endDate);
-                        orderDetailsServices.updateOrderStatus(orderDTO,shippingDTO,"Confirmed");
-
-                    }
-                    else {
-                        Toast.makeText(OrderStatusChange.this, "Fill all input", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                if(orderStatus!=null&&orderStatus.equalsIgnoreCase("Confirmed"))
-                {
-                    Log.d(TAG, "onClick: Completed clicked ");
-                    if (isShippingDetailsEdited ||isDeliveryDateEdited) {
-                        Log.d(TAG, "onClick: ");
-                        if(checkShippingBoyInput())
-                        {
-                            ShippingDTO shippingDTO=orderDTO.getShippingDTO();
-                            UserRegistrationDTO userRegistrationDTO=new UserRegistrationDTO();
-                            userRegistrationDTO.setUserName(shiipingBoyName);
-                            userRegistrationDTO.setRmn(shippingBoyMobile);
-                            shippingDTO.setShippingPersonDTO(userRegistrationDTO);
-                            orderDTO.setExpectedStartDateOfDelivery(startDate);
-                            orderDTO.setExpectedLastDateOfDelivery(endDate);
-                            orderDetailsServices.updateOrderStatus(orderDTO,shippingDTO,"Completed");
-
-                        }
-                    }
-                    else {
-                        orderDetailsServices.updateOrderStatus(orderDTO, orderDTO.getShippingDTO(), "Completed");
-                    }
-                }
-            }
-        });*/
 
         
         select_start_end_date.setOnClickListener(new View.OnClickListener() {

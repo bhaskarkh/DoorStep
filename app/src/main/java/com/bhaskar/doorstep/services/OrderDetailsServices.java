@@ -237,7 +237,18 @@ public class OrderDetailsServices {
 
 
                 if (source.equalsIgnoreCase("SharedPref")) {
-                    mySharedPreferences.setOrderListInSharedPreferenceAndShowInAdapter(orderDTOList);
+                    if (category.equalsIgnoreCase("Show All")) {
+                        mySharedPreferences.setOrderListInSharedPreferenceAndShowInAdapter(orderDTOList);
+                    }else {
+                        List<OrderDTO> oList = new ArrayList<>();
+                        for (OrderDTO orderDTO : orderDTOList) {
+                            if (orderDTO.getOrderStatus().equalsIgnoreCase(category)) {
+                                oList.add(orderDTO);
+                            }
+                        }
+                        mySharedPreferences.setOrderListInSharedPreferenceAndShowInAdapter(oList);
+                    }
+
                 }else {
                     setOrderListByCategoryType(category,orderDTOList);
                 }
@@ -270,34 +281,298 @@ public class OrderDetailsServices {
 
     public void setOrderProgressDetails(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap,Map<String, View> viewMap)
     {
-        if (orderDTO.getOrderStatus().equalsIgnoreCase("pending"))
+        if (orderDTO.getOrderStatus().equalsIgnoreCase("Processing"))
         {
 
-            designForPending(orderDTO,textViewMap,imageViewMap,cicleImageMap,viewMap);
+            designForProcessing(orderDTO,textViewMap,imageViewMap,cicleImageMap,viewMap);
 
 
 
         }
+        if(orderDTO.getOrderStatus().equalsIgnoreCase("Confirmed"))
+        {
+            designForConfirmed(orderDTO,textViewMap,imageViewMap,cicleImageMap,viewMap);
+        }
+        if(orderDTO.getOrderStatus().equalsIgnoreCase("Completed"))
+        {
+            designForCompleted(orderDTO,textViewMap,imageViewMap,cicleImageMap,viewMap);
+        }
+        if(orderDTO.getOrderStatus().equalsIgnoreCase("Cancelled"))
+        {
+            designForCancelled(orderDTO,textViewMap,imageViewMap,cicleImageMap,viewMap);
+        }
 
     }
 
-    private void designForPending(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap, Map<String, View> viewMap) {
+    private void designForProcessing(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap, Map<String, View> viewMap) {
 
+        setLineValue("Processing",orderDTO,viewMap);
+        setCircleValue("Processing",orderDTO,cicleImageMap);
+        setTextValue("Processing",orderDTO,textViewMap);
+        setImageValue("Processing",orderDTO,imageViewMap);
+
+
+    }
+
+
+
+    private void designForConfirmed(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap, Map<String, View> viewMap) {
+
+        setLineValue("Confirmed",orderDTO,viewMap);
+        setCircleValue("Confirmed",orderDTO,cicleImageMap);
+        setTextValue("Confirmed",orderDTO,textViewMap);
+        setImageValue("Confirmed",orderDTO,imageViewMap);
+
+
+    }
+    private void designForCompleted(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap, Map<String, View> viewMap) {
+
+        setLineValue("Completed",orderDTO,viewMap);
+        setCircleValue("Completed",orderDTO,cicleImageMap);
+        setTextValue("Completed",orderDTO,textViewMap);
+        setImageValue("Completed",orderDTO,imageViewMap);
+
+
+    }
+    private void designForCancelled(OrderDTO orderDTO, Map<String, TextView> textViewMap, Map<String, ImageView> imageViewMap, Map<String, ImageView> cicleImageMap, Map<String, View> viewMap) {
+
+        setLineValue("Cancelled",orderDTO,viewMap);
+        setCircleValue("Cancelled",orderDTO,cicleImageMap);
+        setTextValue("Cancelled",orderDTO,textViewMap);
+        setImageValue("Cancelled",orderDTO,imageViewMap);
+
+
+    }
+    private void setLineValue(String orderStatus, OrderDTO orderDTO, Map<String, View> viewMap) {
+
+
+        List<String> greenLineList=new ArrayList<>();
+
+        if(orderStatus.equalsIgnoreCase("Confirmed"))
+        {
+            greenLineList.add("placed_to_confirmed_line");
+        }
+        if(orderStatus.equalsIgnoreCase("Completed"))
+        {
+            greenLineList.add("placed_to_confirmed_line");
+            greenLineList.add("confirmed_to_completed_or_cancel");
+        }
+        if(orderStatus.equalsIgnoreCase("Cancelled"))
+        {
+            if (orderDTO.isOrderConfirmed())
+            {
+                greenLineList.add("placed_to_confirmed_line");
+                greenLineList.add("confirmed_to_completed_or_cancel");
+
+            }
+            else {
+                greenLineList.add("placed_to_confirmed_line");
+            }
+
+        }
+        setLineGreen(greenLineList,viewMap,orderDTO);
+    }
+
+    private void setCircleValue(String orderStatus, OrderDTO orderDTO, Map<String, ImageView> cicleImageMap) {
         List<String> greenCircleTextList=new ArrayList<>();
         greenCircleTextList.add("placed_circle");
-        setCircleGreen(greenCircleTextList,cicleImageMap);
+        if(orderStatus.equalsIgnoreCase("Confirmed"))
+        {
+            greenCircleTextList.add("confirmed_circle");
+        }
+        if(orderStatus.equalsIgnoreCase("Completed"))
+        {
+            greenCircleTextList.add("confirmed_circle");
+            greenCircleTextList.add("completed_or_cancelled_circle");
+        }
+        if(orderStatus.equalsIgnoreCase("Cancelled"))
+        {
+
+            if (orderDTO.isOrderConfirmed())
+            {
+                greenCircleTextList.add("confirmed_circle");
+                greenCircleTextList.add("completed_or_cancelled_circle");
+            }
+            else {
+                greenCircleTextList.add("confirmed_circle");
+            }
+        }
+
+        setCircleGreen(greenCircleTextList,cicleImageMap,orderDTO);
+    }
+    /* if(orderStatus.equalsIgnoreCase("Processing"))
+    {}
+        if(orderStatus.equalsIgnoreCase("Confirmed"))
+    {}
+        if(orderStatus.equalsIgnoreCase("Completed"))
+    {}
+        if(orderStatus.equalsIgnoreCase("Cancelled"))
+    {}*/
+
+    private void setImageValue(String orderStatus,OrderDTO orderDTO, Map<String, ImageView> imageViewMap) {
+         for (Map.Entry<String, ImageView> entry : imageViewMap.entrySet()) {
+
+                if(orderStatus.equalsIgnoreCase("Cancelled"))
+                {
+                    if(!orderDTO.isOrderConfirmed()) {
+                        if (entry.getKey().equalsIgnoreCase("order_completed_or_cancelled_image"))
+                            entry.getValue().setVisibility(View.INVISIBLE);
+                        if (entry.getKey().equalsIgnoreCase("order_confirmed_image"))
+                            entry.getValue().setImageResource(R.drawable.ic_order_cancelled);
+                    }
+                    else {
+                        if (entry.getKey().equalsIgnoreCase("order_completed_or_cancelled_image"))
+                            entry.getValue().setImageResource(R.drawable.ic_order_cancelled);
+                    }
+
+
+                }
+
+        }
+
+
+
     }
 
-    private void setCircleGreen(List<String> greenCircleTextList,Map<String, ImageView> cicleImageMap) {
+    private void setTextValue(String orderStatus, OrderDTO orderDTO, Map<String, TextView> textViewMap) {
+        if(orderStatus.equalsIgnoreCase("Processing"))
+        {
+            for(Map.Entry<String,TextView> entry:textViewMap.entrySet())
+            {
+                if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
+                  entry.getValue().setText(orderDTO.getOrderDateTime());
+                if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
+                    entry.getValue().setVisibility(View.INVISIBLE);
+                if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date"))
+                    entry.getValue().setVisibility(View.INVISIBLE);
+
+
+
+            }
+
+        }
+        if(orderStatus.equalsIgnoreCase("Confirmed"))
+        {
+            for(Map.Entry<String,TextView> entry:textViewMap.entrySet())
+            {
+                if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
+                    entry.getValue().setText(orderDTO.getOrderDateTime());
+                if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
+                    entry.getValue().setText(orderDTO.getOrderConfirmDate());
+                if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date"))
+                    entry.getValue().setVisibility(View.INVISIBLE);
+
+
+
+            }
+
+        }
+        if(orderStatus.equalsIgnoreCase("Completed"))
+        {
+            for(Map.Entry<String,TextView> entry:textViewMap.entrySet())
+            {
+                if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
+                    entry.getValue().setText(orderDTO.getOrderDateTime());
+                if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
+                    entry.getValue().setText(orderDTO.getOrderConfirmDate());
+                if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date"))
+                    entry.getValue().setText(orderDTO.getCompleteDateTime());
+
+
+
+            }
+
+        }
+        if(orderStatus.equalsIgnoreCase("Cancelled"))
+        {
+          if(orderDTO.isOrderConfirmed()) {
+              for (Map.Entry<String, TextView> entry : textViewMap.entrySet()) {
+                  if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
+                      entry.getValue().setText(orderDTO.getOrderDateTime());
+                  if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
+                      entry.getValue().setText(orderDTO.getOrderConfirmDate());
+                  if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date")) {
+                      entry.getValue().setText(orderDTO.getOrderCancelDate());
+                  }
+                  if (entry.getKey().equalsIgnoreCase("order_std_completed_txt1")) {
+                      entry.getValue().setText("Order Cancelled");
+                  }
+                  if (entry.getKey().equalsIgnoreCase("order_std_completed_txt2")) {
+                      entry.getValue().setText("Your Order is Cancelled");
+                  }
+
+
+              }
+          }
+          else {
+                 for (Map.Entry<String, TextView> entry : textViewMap.entrySet()) {
+
+                     if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
+                         entry.getValue().setText(orderDTO.getOrderDateTime());
+                     if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt1"))
+                         entry.getValue().setText("Order Cancelled");
+                     if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt2"))
+                         entry.getValue().setText("Your Order is Cancelled");
+                     if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
+                         entry.getValue().setText(orderDTO.getOrderCancelDate());
+                     if (entry.getKey().equalsIgnoreCase("order_std_completed_txt1"))
+                         entry.getValue().setVisibility(View.INVISIBLE);
+                     if (entry.getKey().equalsIgnoreCase("order_std_completed_txt2"))
+                         entry.getValue().setVisibility(View.INVISIBLE);
+                     if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date"))
+                         entry.getValue().setVisibility(View.INVISIBLE);
+
+
+              }
+
+          }
+
+        }
+    }
+
+    private void setCircleGreen(List<String> greenCircleTextList,Map<String, ImageView> cicleImageMap,OrderDTO orderDTO) {
+
         for (Map.Entry <String,ImageView> entry:cicleImageMap.entrySet())
         {
 
-            if (greenCircleTextList.contains(entry.getKey()))
+            if (orderDTO.getOrderStatus().equalsIgnoreCase("Cancelled")&& !orderDTO.isOrderConfirmed())
             {
-                entry.getValue().setImageResource(R.drawable.oval_shape_green);
+                if(entry.getKey().equalsIgnoreCase("completed_or_cancelled_circle"))
+                    entry.getValue().setVisibility(View.INVISIBLE);
+                if(entry.getKey().equalsIgnoreCase("confirmed_circle"))
+                    entry.getValue().setImageResource(R.drawable.oval_shape_green);
+
+
             }
             else {
-                entry.getValue().setImageResource(R.drawable.oval_shape_gray);
+                if (greenCircleTextList.contains(entry.getKey())) {
+
+                    entry.getValue().setImageResource(R.drawable.oval_shape_green);
+                } else {
+                    entry.getValue().setImageResource(R.drawable.oval_shape_gray);
+                }
+            }
+
+        }
+    }
+    private void setLineGreen(List<String> greenLineList,Map<String, View> viewMap,OrderDTO orderDTO) {
+
+        for (Map.Entry <String,View> entry:viewMap.entrySet())
+        {
+            if (orderDTO.getOrderStatus().equalsIgnoreCase("Cancelled")&& !orderDTO.isOrderConfirmed())
+            {
+                if(entry.getKey().equalsIgnoreCase("confirmed_to_completed_or_cancel"))
+                    entry.getValue().setVisibility(View.INVISIBLE);
+                if(entry.getKey().equalsIgnoreCase("placed_to_confirmed_line"))
+                    entry.getValue().setBackgroundResource(R.color.green);
+            }
+
+            else {
+                if (greenLineList.contains(entry.getKey())) {
+                    entry.getValue().setBackgroundResource(R.color.green);
+                } else {
+                    entry.getValue().setBackgroundResource(R.color.gray);
+                }
             }
 
         }

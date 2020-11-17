@@ -12,30 +12,25 @@ import android.widget.TextView;
 
 import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.OrderDTO;
-import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.services.AddressServices;
 import com.bhaskar.doorstep.services.Home;
 import com.bhaskar.doorstep.services.OrderDetailsServices;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class OrderStatusDetail extends AppCompatActivity {
 
     View     placed_to_confirmed_line,
-            confirmed_to_delivering,
-            delivering_to_complet_or_cancel;
+            confirmed_to_completed_or_cancel;
 
     ImageView order_std_back_btn,
             confirmed_circle,
             placed_circle,
-            delivering_circle,
             completed_or_cancelled_circle,
             order_std_prodImage,
             order_placed_image,
             order_confirmed_image,
-            order_delivering_image,
             order_completed_or_cancelled_image;
 
     TextView order_std_arrival_date,
@@ -46,9 +41,6 @@ public class OrderStatusDetail extends AppCompatActivity {
             order_std_confirmed_txt2,
             order_std_confirmed_txt3_date,
             order_std_transaction_id,
-            order_std_delivering_txt1,
-            order_std_delivering_txt2,
-            order_std_delivering_txt3_date,
             order_std_completed_txt1,
             order_std_completed_txt2,
             order_std_completed_txt3_date,
@@ -80,9 +72,6 @@ public class OrderStatusDetail extends AppCompatActivity {
         order_std_confirmed_txt2=findViewById(R.id.order_std_confirmed_txt2);
         order_std_confirmed_txt3_date=findViewById(R.id.order_std_confirmed_txt3_date);
         order_std_transaction_id=findViewById(R.id.order_std_transaction_id);
-        order_std_delivering_txt1=findViewById(R.id.order_std_delivering_txt1);
-        order_std_delivering_txt2=findViewById(R.id.order_std_delivering_txt2);
-        order_std_delivering_txt3_date=findViewById(R.id.order_std_delivering_txt3_date);
         order_std_completed_txt1=findViewById(R.id.order_std_completed_txt1);
         order_std_completed_txt2=findViewById(R.id.order_std_completed_txt2);
         order_std_completed_txt3_date=findViewById(R.id.order_std_completed_txt3_date);
@@ -92,14 +81,11 @@ public class OrderStatusDetail extends AppCompatActivity {
         placed_circle=findViewById(R.id.placed_circle);
                 placed_to_confirmed_line=findViewById(R.id.placed_to_confirmed_line);
                 confirmed_circle=findViewById(R.id.confirmed_circle);
-                confirmed_to_delivering=findViewById(R.id.confirmed_to_delivering);
-                delivering_circle=findViewById(R.id.delivering_circle);
-                delivering_to_complet_or_cancel=findViewById(R.id.delivering_to_complet_or_cancel);
+                confirmed_to_completed_or_cancel=findViewById(R.id.confirmed_to_completed_or_cancel);
                 completed_or_cancelled_circle=findViewById(R.id.completed_or_cancelled_circle);
 
         order_placed_image=findViewById(R.id.order_placed_image);
                 order_confirmed_image=findViewById(R.id.order_confirmed_image);
-                order_delivering_image=findViewById(R.id.order_delivering_image);
                 order_completed_or_cancelled_image=findViewById(R.id.order_completed_or_cancelled_image);
 
 
@@ -161,9 +147,6 @@ public class OrderStatusDetail extends AppCompatActivity {
         textViewMap.put("order_std_confirmed_txt2",order_std_confirmed_txt2);
         textViewMap.put("order_std_confirmed_txt3_date",order_std_confirmed_txt3_date);
         textViewMap.put("order_std_transaction_id",order_std_transaction_id);
-        textViewMap.put("order_std_delivering_txt1",order_std_delivering_txt1);
-        textViewMap.put("order_std_delivering_txt2",order_std_delivering_txt2);
-        textViewMap.put("order_std_delivering_txt3_date",order_std_delivering_txt3_date);
         textViewMap.put("order_std_completed_txt1",order_std_completed_txt1);
         textViewMap.put("order_std_completed_txt2",order_std_completed_txt2);
         textViewMap.put("order_std_completed_txt3_date",order_std_completed_txt3_date);
@@ -171,11 +154,9 @@ public class OrderStatusDetail extends AppCompatActivity {
     private void setAllImageView() {
         imageViewMap.put("order_placed_image",order_placed_image);
         imageViewMap.put("order_confirmed_image",order_confirmed_image);
-        imageViewMap.put("order_delivering_image",order_delivering_image);
         imageViewMap.put("order_completed_or_cancelled_image",order_completed_or_cancelled_image);
         circleImageMap.put("placed_circle",placed_circle);
         circleImageMap.put("confirmed_circle",confirmed_circle);
-        circleImageMap.put("delivering_circle",delivering_circle);
         circleImageMap.put("completed_or_cancelled_circle",completed_or_cancelled_circle);
 
     }
@@ -184,8 +165,7 @@ public class OrderStatusDetail extends AppCompatActivity {
     private void setAllView() {
 
         viewMap.put("placed_to_confirmed_line",placed_to_confirmed_line);
-       viewMap.put("confirmed_to_delivering",confirmed_to_delivering);
-      viewMap.put("delivering_to_complet_or_cancel",delivering_to_complet_or_cancel);
+       viewMap.put("confirmed_to_completed_or_cancel",confirmed_to_completed_or_cancel);
 
     }
 
