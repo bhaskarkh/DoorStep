@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
             switch (i)
             {
                 case 0:
-                    sliderItem.setImageUrl("https://images.freekaamaal.com/post_images/1576047645.png");
+                    sliderItem.setImageUrl("https://firebasestorage.googleapis.com/v0/b/doorstep-a5714.appspot.com/o/slider%2Foffer1_red.jpg?alt=media&token=f111f801-e441-4792-9acc-cf73ee3f64a9");
                     sliderItem.setDescription("slide 0");
                     break;
                 case 1:
@@ -415,11 +415,12 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
                     sliderItem.setDescription("slide 2");
                     break;
                 case 3:
-                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+                    sliderItem.setImageUrl("https://firebasestorage.googleapis.com/v0/b/doorstep-a5714.appspot.com/o/slider%2Foffer1_red_high.jpg?alt=media&token=f287911b-b9f9-4038-b294-5e9bf5e6e767");
                     sliderItem.setDescription("slide 3");
                     break;
                 case 4:
-                    sliderItem.setImageUrl("https://images.pexels.com/photos/929778/pexels-photo-929778.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+
+                    sliderItem.setImageUrl("https://images.freekaamaal.com/post_images/1576047645.png");
                     sliderItem.setDescription("slide 4");
                     break;
 

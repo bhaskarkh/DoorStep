@@ -16,7 +16,9 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.bhaskar.doorstep.AddProductInDb;
 import com.bhaskar.doorstep.AddressList;
+import com.bhaskar.doorstep.AdminDashboard;
 import com.bhaskar.doorstep.MainActivity;
 import com.bhaskar.doorstep.ProductDetails;
 import com.bhaskar.doorstep.R;
@@ -197,6 +199,7 @@ public class Home {
         }
         return src;
     }
+
 
 
     public void setSpinnerAdapterForTextOnly(String[] stringList, Spinner spinner,Boolean isTextOnly)
@@ -416,4 +419,11 @@ public class Home {
     }
 
 
+    public void IntentActivityStart(Class<AdminDashboard> adminDashboardClass) {
+
+        Intent i=new Intent(context,adminDashboardClass);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    }
 }

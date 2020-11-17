@@ -90,6 +90,7 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
 
         home=new Home(this);
         orderDetailsServices=new OrderDetailsServices(this);
+        orderDetailsServices.setOrderStatusInterface(this);
         addressServices=new AddressServices(this);
         adminServices=new AdminServices(this);
         adminServices.setAdminInterface(this);

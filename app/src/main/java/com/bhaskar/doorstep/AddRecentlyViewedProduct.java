@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ public class AddRecentlyViewedProduct extends AppCompatActivity implements Produ
     RecyclerView productRecyclerView;
     AddDiscountRecentlyProductAdapter addDiscountRecentlyProductAdapter;
     ProgressBar add_discount_product_progressbar;
+    ImageView add_recebtly_view_back_btn;
     private static final String TAG = "AddDiscountProduct";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class AddRecentlyViewedProduct extends AppCompatActivity implements Produ
         setContentView(R.layout.activity_add_recently_viewed_product);
         add_discount_cat=findViewById(R.id.add_recently_view_cat);
         productRecyclerView=findViewById(R.id.add_recently_view_recyclerview);
+        add_recebtly_view_back_btn=findViewById(R.id.add_recebtly_view_back_btn);
         add_discount_product_progressbar=findViewById(R.id.add_recently_view_progressbar);
         add_discount_product_progressbar.setVisibility(View.VISIBLE);
 
@@ -49,13 +52,27 @@ public class AddRecentlyViewedProduct extends AppCompatActivity implements Produ
 
         setAllSpinnerValue();
 
+        add_recebtly_view_back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                home.IntentActivityStart(AdminDashboard.class);
+            }
+        });
+
         add_discount_cat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
 
-                category = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
-                Log.d(TAG, "onItemSelected: Scategory="+category);
-                fetchDiscountProduct(category);
+                if(v!=null) {
+                    category = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
+                    Log.d(TAG, "onItemSelected: Scategory=" + category);
+                    fetchDiscountProduct(category);
+                }
+                else
+                {
+                    fetchDiscountProduct("All Category");
+
+                }
 
             }
 

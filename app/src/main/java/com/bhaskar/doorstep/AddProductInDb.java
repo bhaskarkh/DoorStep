@@ -116,8 +116,13 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
             @Override
             public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
 
-                Scategory = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
-                Log.d(TAG, "onItemSelected: Scategory="+Scategory);
+                if(v!=null) {
+                    Scategory = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
+                    Log.d(TAG, "onItemSelected: Scategory=" + Scategory);
+                }
+                else {
+                    Scategory="Electrical";
+                }
             }
 
             @Override
@@ -158,7 +163,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hm.gotToHome();
+                hm.IntentActivityStart(AdminDashboard.class);
             }
         });
 

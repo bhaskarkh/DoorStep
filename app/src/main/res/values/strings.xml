@@ -11,7 +11,7 @@
     <string name="back_btn">back btn</string>
     <string name="running_shoes">Kedo running Shoes from Addidas</string>
     <string-array name="order_category_array">
-        <item>Pending</item>
+        <item>Processing</item>
         <item>Confirmed</item>
         <item>Cancelled</item>
         <item>Completed</item>

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
     ProgressBar order_dashboard_progressbar;
     Button order_refresh_btn,auto_update_on_off_btn;
     boolean autoUpdate=false;
+    ImageView order_dashboard_back_btn;
     private static final String TAG = "OrderDashboard";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +60,21 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
         order_dashboard_progressbar=findViewById(R.id.order_dashboard_progressbar);
         order_refresh_btn=findViewById(R.id.order_refresh_btn);
         auto_update_on_off_btn=findViewById(R.id.auto_update_on_off_btn);
+        order_dashboard_back_btn=findViewById(R.id.order_dashboard_back_btn);
+        order_dashboard_recyclerview.setNestedScrollingEnabled(false);
         home=new Home(this);
         orderDetailsServices=new OrderDetailsServices(this);
         orderDetailsServices.setOrderStatusInterface(this);
         firebaseDatabase=FirebaseDatabase.getInstance();
 
         setAllSpinnerValue();
+        order_dashboard_back_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                home.IntentActivityStart(AdminDashboard.class);
+
+            }
+        });
         order_refresh_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +99,11 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
                     category = ((TextView) v.findViewById(R.id.spinner_name)).getText().toString();
                     Log.d(TAG, "onItemSelected: Scategory=" + category);
                     fetchOrderByCategory(category);
+                }else
+                {
+                    setAllSpinnerValue();
+                    fetchOrderByCategory("Show All");
+
                 }
 
             }
