@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -45,10 +46,13 @@ public class OrderDetailsServices {
     OrderStatusInterface orderStatusInterface;
     MySharedPreferences mySharedPreferences;
     AddressServices addressServices;
+    Home home;
 
 
     public OrderDetailsServices(Context context) {
         this.context = context;
+        home=new Home(context);
+
     }
 
     public Context getContext() {
@@ -150,7 +154,7 @@ public class OrderDetailsServices {
 
         Log.d(TAG, "generated CurrentDateTime =" + currentDateTime);
         return currentDateTime;*/
-        Home home=new Home(context);
+
        return home.getDefaultDateAndTimeInStringFormatFromDate(new Date());
 
     }
@@ -435,16 +439,19 @@ public class OrderDetailsServices {
     }
 
     private void setTextValue(String orderStatus, OrderDTO orderDTO, Map<String, TextView> textViewMap) {
+       // order_std_arrival_date
         if(orderStatus.equalsIgnoreCase("Processing"))
         {
             for(Map.Entry<String,TextView> entry:textViewMap.entrySet())
             {
                 if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
-                  entry.getValue().setText(orderDTO.getOrderDateTime());
+                  entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderDateTime()));
                 if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
                     entry.getValue().setVisibility(View.INVISIBLE);
                 if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date"))
                     entry.getValue().setVisibility(View.INVISIBLE);
+                if (entry.getKey().equalsIgnoreCase("order_std_arrival_date"))
+                    entry.getValue().setText("We are Processing your request");
 
 
 
@@ -453,14 +460,21 @@ public class OrderDetailsServices {
         }
         if(orderStatus.equalsIgnoreCase("Confirmed"))
         {
+            String expectedDate=getExpectedDateofDelivery(orderDTO.getExpectedStartDateOfDelivery(),orderDTO.getExpectedLastDateOfDelivery(),"date");
+
             for(Map.Entry<String,TextView> entry:textViewMap.entrySet())
             {
+
                 if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
-                    entry.getValue().setText(orderDTO.getOrderDateTime());
+                    entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderDateTime()));
                 if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
-                    entry.getValue().setText(orderDTO.getOrderConfirmDate());
-                if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date"))
-                    entry.getValue().setVisibility(View.INVISIBLE);
+                    entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderConfirmDate()));
+                if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date")) {
+                    entry.getValue().setText(expectedDate);
+                }
+                if (entry.getKey().equalsIgnoreCase("order_std_arrival_date"))
+                {  entry.getValue().setText("Arriving on "+expectedDate);
+                }
 
 
 
@@ -472,13 +486,13 @@ public class OrderDetailsServices {
             for(Map.Entry<String,TextView> entry:textViewMap.entrySet())
             {
                 if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
-                    entry.getValue().setText(orderDTO.getOrderDateTime());
+                    entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderDateTime()));
                 if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
-                    entry.getValue().setText(orderDTO.getOrderConfirmDate());
+                    entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderConfirmDate()));
                 if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date"))
-                    entry.getValue().setText(orderDTO.getCompleteDateTime());
-
-
+                    entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getCompleteDateTime()));
+                if (entry.getKey().equalsIgnoreCase("order_std_arrival_date"))
+                   entry.getValue().setText("Order Completed on "+home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getCompleteDateTime()));
 
             }
 
@@ -488,11 +502,11 @@ public class OrderDetailsServices {
           if(orderDTO.isOrderConfirmed()) {
               for (Map.Entry<String, TextView> entry : textViewMap.entrySet()) {
                   if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
-                      entry.getValue().setText(orderDTO.getOrderDateTime());
+                      entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderDateTime()));
                   if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
-                      entry.getValue().setText(orderDTO.getOrderConfirmDate());
+                      entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderConfirmDate()));
                   if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date")) {
-                      entry.getValue().setText(orderDTO.getOrderCancelDate());
+                      entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderCancelDate()));
                   }
                   if (entry.getKey().equalsIgnoreCase("order_std_completed_txt1")) {
                       entry.getValue().setText("Order Cancelled");
@@ -500,6 +514,8 @@ public class OrderDetailsServices {
                   if (entry.getKey().equalsIgnoreCase("order_std_completed_txt2")) {
                       entry.getValue().setText("Your Order is Cancelled");
                   }
+                  if (entry.getKey().equalsIgnoreCase("order_std_arrival_date"))
+                      entry.getValue().setText("Order Cancelled on "+home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderCancelDate()));
 
 
               }
@@ -508,19 +524,21 @@ public class OrderDetailsServices {
                  for (Map.Entry<String, TextView> entry : textViewMap.entrySet()) {
 
                      if (entry.getKey().equalsIgnoreCase("order_std_placed_txt3_date"))
-                         entry.getValue().setText(orderDTO.getOrderDateTime());
+                         entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderDateTime()));
                      if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt1"))
                          entry.getValue().setText("Order Cancelled");
                      if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt2"))
                          entry.getValue().setText("Your Order is Cancelled");
                      if (entry.getKey().equalsIgnoreCase("order_std_confirmed_txt3_date"))
-                         entry.getValue().setText(orderDTO.getOrderCancelDate());
+                         entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderCancelDate()));
                      if (entry.getKey().equalsIgnoreCase("order_std_completed_txt1"))
                          entry.getValue().setVisibility(View.INVISIBLE);
                      if (entry.getKey().equalsIgnoreCase("order_std_completed_txt2"))
                          entry.getValue().setVisibility(View.INVISIBLE);
                      if (entry.getKey().equalsIgnoreCase("order_std_completed_txt3_date"))
                          entry.getValue().setVisibility(View.INVISIBLE);
+                     if (entry.getKey().equalsIgnoreCase("order_std_arrival_date"))
+                         entry.getValue().setText("Order Cancelled on "+home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getOrderCancelDate()));
 
 
               }
@@ -528,6 +546,17 @@ public class OrderDetailsServices {
           }
 
         }
+    }
+
+    private String getExpectedDateofDelivery(String expectedStartDateOfDelivery, String expectedLastDateOfDelivery,String source) {
+        String expectedDate="";
+        String firstDate=expectedStartDateOfDelivery.substring(0,2);
+
+         expectedDate=firstDate+"-"+home.getDateToShowInStringFromStringDayAndMonthOnly(expectedLastDateOfDelivery);
+
+
+
+        return expectedDate;
     }
 
     private void setCircleGreen(List<String> greenCircleTextList,Map<String, ImageView> cicleImageMap,OrderDTO orderDTO) {
@@ -756,7 +785,7 @@ public class OrderDetailsServices {
 
     public  void cancelOrder(OrderDTO orderDTO)
     {
-        Home home=new Home(context);
+
         orderDTO.setOrderStatus("Cancelled");
         orderDTO.setOrderCanceled(true);
         orderDTO.setOrderCancelDate(home.getDefaultDateAndTimeInStringFormatFromDate(new Date()));

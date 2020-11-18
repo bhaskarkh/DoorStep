@@ -40,6 +40,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -412,6 +413,15 @@ public class Home {
 
         return date;
 
+    }
+    public String getDateToShowInStringFromStringDayAndMonthOnly(String givenDate)
+    {
+        Date date=getDateAndTimeFromString(givenDate);
+      SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd MMMM", Locale.US);
+      givenDate=simpleDateFormat.format(date);
+
+
+        return givenDate;
     }
     public float pixelsToSp(float px) {
         float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
