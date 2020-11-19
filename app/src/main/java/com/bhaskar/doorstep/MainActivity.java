@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -16,7 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,6 +48,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.database.FirebaseDatabase;
@@ -67,7 +73,7 @@ import static com.bhaskar.doorstep.R.drawable.ic_home_fish;
 import static com.bhaskar.doorstep.R.drawable.ic_home_fruits;
 import static com.bhaskar.doorstep.R.drawable.ic_home_veggies;
 
-public class MainActivity extends AppCompatActivity implements ProductInterface {
+public class MainActivity extends AppCompatActivity implements ProductInterface, NavigationView.OnNavigationItemSelectedListener {
 
     RecyclerView discountRecyclerView, categoryRecyclerView, recentlyViewedRecycler;
     DiscountedProductAdapter discountedProductAdapter;
@@ -96,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
     String Loginsource;
     Home home;
     ProductServices productServices;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    Toolbar toolbar;
 
 
     @Override
@@ -116,6 +125,10 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
         profile_pic=findViewById(R.id.profile_pic);
         main_cart=findViewById(R.id.main_cart);
         sliderView=findViewById(R.id.imageSlider);
+
+        toolbar=findViewById(R.id.main_toolbar);
+        drawerLayout=findViewById(R.id.main_drawer_layout);
+        navigationView=findViewById(R.id.main_navigation_view);
         discount_list_progressbar=findViewById(R.id.discount_list_progressbar);
         discount_list_progressbar.setVisibility(View.VISIBLE);
 
@@ -139,9 +152,17 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
         sliderView.setScrollTimeInSec(4); //set scroll delay in seconds :
         sliderView.startAutoCycle();
 
-        renewItems();
-        //slider
+        //Tool Bar
+        setSupportActionBar(toolbar);
+        //Navigation Drawer Menu
+        navigationView.bringToFront();
+        ActionBarDrawerToggle toogle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open_drawer,R.string.close_drawer);
+        drawerLayout.addDrawerListener(toogle);
+        toogle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
 
+        //slider
+        renewItems();
        Loginsource=mySharedPreferences.getLoginSourceToSharedPreference();
 
        if(Loginsource.equals("google")) {
@@ -324,6 +345,11 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
 
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return true;
+    }
+
 /*
 
  public GoogleSignInDTO getUserDetailFromGoogle()
@@ -446,30 +472,36 @@ public class MainActivity extends AppCompatActivity implements ProductInterface 
     @Override
     public void onBackPressed() {
 
-        Dialog epicDialog=new Dialog(this);
-        epicDialog.setContentView(R.layout.exit_layout);
-        ImageView btnYes=epicDialog.findViewById(R.id.yesIdOnExit);
-        ImageView btnNo=epicDialog.findViewById(R.id.noIdOnExit);
-        epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        epicDialog.show();
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Toast.makeText(FragmentMain.this,"Yes",Toast.LENGTH_SHORT).show();
-                epicDialog.dismiss();
-                finish();
+        if(drawerLayout.isDrawerOpen(GravityCompat.START))
+        {
 
-            }
-        });
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Toast.makeText(FragmentMain.this,"No",Toast.LENGTH_SHORT).show();
-                epicDialog.dismiss();
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+            Dialog epicDialog = new Dialog(this);
+            epicDialog.setContentView(R.layout.exit_layout);
+            ImageView btnYes = epicDialog.findViewById(R.id.yesIdOnExit);
+            ImageView btnNo = epicDialog.findViewById(R.id.noIdOnExit);
+            epicDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            epicDialog.show();
+            btnYes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Toast.makeText(FragmentMain.this,"Yes",Toast.LENGTH_SHORT).show();
+                    epicDialog.dismiss();
+                    finish();
 
-            }
-        });
+                }
+            });
+            btnNo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Toast.makeText(FragmentMain.this,"No",Toast.LENGTH_SHORT).show();
+                    epicDialog.dismiss();
 
+                }
+            });
+        }
     }
 
     @Override

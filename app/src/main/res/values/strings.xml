@@ -51,4 +51,6 @@
     <string name="gps_image">gps_image</string>
     <string name="set_as_default_address">Set as default address</string>
     <string name="vertical_ellipsis">&#8942;</string>
+    <string name="open_drawer">Open navigation drawer</string>
+    <string name="close_drawer">Close navigation drawer</string>
 </resources>
