@@ -21,6 +21,7 @@ import com.bhaskar.doorstep.AddressList;
 import com.bhaskar.doorstep.AdminDashboard;
 import com.bhaskar.doorstep.MainActivity;
 import com.bhaskar.doorstep.ProductDetails;
+import com.bhaskar.doorstep.Profile;
 import com.bhaskar.doorstep.R;
 import com.bhaskar.doorstep.SingleCategory;
 import com.bhaskar.doorstep.adapter.SpinnerViewAdapter;
@@ -115,7 +116,13 @@ public class Home {
                     context.startActivity(i);
                     ((Activity)context).finish();
 
-            }else {
+            } else if(comingSource!=null && sourceComing!=null && comingSource.equals("profile"))
+            {
+                Log.d(TAG, "backButton: addressList profile");
+                context.startActivity(new Intent(context, Profile.class));
+
+            }
+                else {
                 Log.d(TAG, "AddressList : comingSource= is null");
                 gotToHome();
             }
@@ -134,6 +141,17 @@ public class Home {
                     i.putExtra("cat_name", intent.getStringExtra("cat_name"));
                     i.putExtra("source",intent.getStringExtra("source"));
                     i.putExtra("selected_product",(ProductDTO)intent.getParcelableExtra("selected_product"));
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(i);
+                    ((Activity)context).finish();
+                }
+                if(comingSource.equals("profile"))
+                {
+                    Log.d(TAG, "backButton: addrese change profile");
+                    Intent i = new Intent(context, AddressList.class);
+                    i.putExtra("source","profile");
+                    i.putExtra("source_to_product_details","profile");
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(i);

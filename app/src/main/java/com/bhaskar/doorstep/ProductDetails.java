@@ -1,5 +1,6 @@
 package com.bhaskar.doorstep;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -83,7 +85,7 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
 
 
 
-        setValueInAddress(address_userName,address_pincode,address_full_address,deliver_to_text);
+        setValueInAddress(address_userName,address_pincode,address_full_address,deliver_to_text,change_address_button);
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +102,12 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
             @Override
             public void onClick(View v) {
                 place_order_progressbar.setVisibility(View.VISIBLE);
-                PlaceOrder();
+                if(isValidOrder()) {
+                    PlaceOrder();
+                }else {
+                    place_order_progressbar.setVisibility(View.GONE);
+                }
+
                 Log.d(TAG,"Afterplaceorder onclick method");
             }
         });
@@ -121,7 +128,27 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
 
     }
 
-    private void setValueInAddress(TextView address_userName, TextView address_pincode, TextView address_full_address, TextView deliver_to_text) {
+
+    private boolean isValidOrder() {
+        UserRegistrationDTO userRegistrationDTO=mySharedPreferences.getUserDetailsFromSharedPreference();
+
+
+        if(userRegistrationDTO.getAddressDTOList()==null) {
+            address_full_address.setVisibility(View.VISIBLE);
+            address_full_address.setTextColor(getResources().getColor(R.color.red));
+            address_full_address.setText("Kindly add Address to Place the order");
+
+            Toast.makeText(this, "Kindly add Addres before Placing the order", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+
+
+        return true;
+    }
+
+    private void setValueInAddress(TextView address_userName, TextView address_pincode, TextView address_full_address, TextView deliver_to_text, Button change_address_button) {
         UserRegistrationDTO userRegistrationDTO=mySharedPreferences.getUserDetailsFromSharedPreference();
         if(userRegistrationDTO.getAddressDTOList()!=null)
         {
@@ -140,6 +167,11 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
 
         }
         else {
+            deliver_to_text.setText("No Address Added");
+            address_userName.setVisibility(View.INVISIBLE);
+            address_pincode.setVisibility(View.INVISIBLE);
+            address_full_address.setVisibility(View.INVISIBLE);
+            change_address_button.setText("Add");
             Log.d(TAG, "setValueInAddress: userRegistrationDTO.getAddressDTOList() is null");
 
 

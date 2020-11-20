@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,15 +31,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bhaskar.doorstep.adapter.CategoryAdapter;
 import com.bhaskar.doorstep.adapter.DiscountedProductAdapter;
 import com.bhaskar.doorstep.adapter.RecentlyViewedAdapter;
-import com.bhaskar.doorstep.adapter.SingleCategoryAdapter;
 import com.bhaskar.doorstep.adapter.SliderAdapterExample;
 import com.bhaskar.doorstep.allinterface.ProductInterface;
 import com.bhaskar.doorstep.model.Category;
-import com.bhaskar.doorstep.model.DiscountedProducts;
 import com.bhaskar.doorstep.model.GoogleSignInDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
 import com.bhaskar.doorstep.model.SliderItem;
+import com.bhaskar.doorstep.model.UserRegistrationDTO;
 import com.bhaskar.doorstep.services.Home;
 import com.bhaskar.doorstep.services.MySharedPreferences;
 import com.bhaskar.doorstep.services.ProductServices;
@@ -50,7 +50,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
 import com.smarteist.autoimageslider.SliderAnimations;
@@ -67,11 +67,8 @@ import static com.bhaskar.doorstep.R.drawable.card1;
 import static com.bhaskar.doorstep.R.drawable.card2;
 import static com.bhaskar.doorstep.R.drawable.card3;
 import static com.bhaskar.doorstep.R.drawable.card4;
-import static com.bhaskar.doorstep.R.drawable.discountbrocoli;
-import static com.bhaskar.doorstep.R.drawable.discountmeat;
-import static com.bhaskar.doorstep.R.drawable.ic_home_fish;
-import static com.bhaskar.doorstep.R.drawable.ic_home_fruits;
-import static com.bhaskar.doorstep.R.drawable.ic_home_veggies;
+import static maes.tech.intentanim.CustomIntent.customType;
+
 
 public class MainActivity extends AppCompatActivity implements ProductInterface, NavigationView.OnNavigationItemSelectedListener {
 
@@ -88,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
     List<ProductDTO> productDTOList;
 
     TextView allCategory;
-    ImageView account_setting,profile_pic,main_cart;
+    ImageView profile_pic;
     private GoogleSignInClient mGoogleSignInClient;
     GoogleSignInDTO googleSignInDTO;
     FirebaseAuth fAuth;
@@ -105,13 +102,16 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    boolean issueLoggedIn=false;
+    UserRegistrationDTO userRegistrationDTO;
+
+
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         discountRecyclerView = findViewById(R.id.discountedRecycler);
         categoryRecyclerView = findViewById(R.id.categoryRecycler);
         recentlyViewedRecycler = findViewById(R.id.recently_item);
@@ -121,9 +121,8 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
         recentlyViewedRecycler.setNestedScrollingEnabled(false);
 
         allCategory = findViewById(R.id.allCategoryImage);
-        account_setting=findViewById(R.id.account_setting);
+
         profile_pic=findViewById(R.id.profile_pic);
-        main_cart=findViewById(R.id.main_cart);
         sliderView=findViewById(R.id.imageSlider);
 
         toolbar=findViewById(R.id.main_toolbar);
@@ -133,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
         discount_list_progressbar.setVisibility(View.VISIBLE);
 
         fAuth=FirebaseAuth.getInstance();
+        checkUserLogin();
         firebaseDatabase=FirebaseDatabase.getInstance();
         home=new Home(this);
         mySharedPreferences=new MySharedPreferences(this);
@@ -160,6 +160,33 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_home);
+        Menu menu=navigationView.getMenu();
+        userRegistrationDTO=mySharedPreferences.getUserDetailsFromSharedPreference();
+        Log.d(TAG, "onCreate: userRegistrationDTO= "+userRegistrationDTO.toString());
+
+        Log.d(TAG, "onCreate: issueLoggedIn= "+issueLoggedIn);
+        if(issueLoggedIn)
+        {
+            menu.findItem(R.id.nav_login_logout).setTitle("Logout");
+           if(userRegistrationDTO.getRole().equalsIgnoreCase("Admin"))
+            {
+                menu.findItem(R.id.nav_admin_dashboard).setVisible(true);
+            }else {
+                menu.findItem(R.id.nav_admin_dashboard).setVisible(false);
+            }
+
+
+        }else
+        {   menu.findItem(R.id.nav_profile).setVisible(false);
+            menu.findItem(R.id.nav_admin_dashboard).setVisible(false);
+
+            menu.findItem(R.id.nav_login_logout).setTitle("Login");
+
+
+        }
+
+
 
         //slider
         renewItems();
@@ -169,19 +196,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
            createGoogleSignInRequest();
        }
 
-    Glide.with(MainActivity.this).load(mySharedPreferences.getUserDetailsFromSharedPreference().getUserPhoto()).circleCrop().into(profile_pic);
-
-
-
-        account_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "onClick: ");
-               CheckLoginSourceAndSignOut();
-            }
-        });
-
-
+    Glide.with(MainActivity.this).load(userRegistrationDTO.getUserPhoto()).circleCrop().into(profile_pic);
 
 
         allCategory.setOnClickListener(new View.OnClickListener() {
@@ -192,13 +207,6 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
             }
         });
 
-        main_cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this,AdminDashboard.class);
-                startActivity(i);
-            }
-        });
 
         // adding data to model
 
@@ -227,6 +235,8 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
     }
 
     private void CheckLoginSourceAndSignOut() {
+        mySharedPreferences.removeUserDetailsFromSharedPref();
+
         Log.d(TAG, "CheckLoginSourceAndSignOut: Loginsource= "+Loginsource);
         if(Loginsource.equals("google")) {
             Log.d(TAG, "CheckLoginSourceAndSignOut: google login");
@@ -263,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
             finish();
 
         }
+
 
     }
 
@@ -345,10 +356,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
 
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return true;
-    }
+
 
 /*
 
@@ -508,7 +516,6 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
     protected void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy: Called MainActivity");
-        Toast.makeText(this, "onDestroy Called", Toast.LENGTH_SHORT).show();
         mySharedPreferences.removeProductListSharedPref();
         mySharedPreferences.removeOrderListSharedPref();
 
@@ -554,8 +561,70 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
 
 
     }
+/* Animation
+    *left-to-right
+*right-to-left
+*bottom-to-up
+*up-to-bottom
+*fadein-to-fadeout
+*rotateout-to-rotatein*/
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.nav_your_order:
+                startActivity(new Intent(this,YourOrder.class));
+                customType(this,"left-to-right");
+                break;
+            case R.id.nav_home:
+                break;
+            case R.id.nav_profile:
+                startActivity(new Intent(this,Profile.class));
+                customType(this,"left-to-right");
+                break;
+            case R.id.nav_contact_us:
+                startActivity(new Intent(this,ContactUs.class));
+                customType(this,"left-to-right");
+                break;
+            case R.id.nav_share_app:
+                Toast.makeText(this, "Share app", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_rate_app:
+                Toast.makeText(this, "Rate App", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_login_logout:
+                if(issueLoggedIn) {
+                    Log.d(TAG, "onNavigationItemSelected: Logged Out Clicked");
+                    CheckLoginSourceAndSignOut();
+
+                }
+                else
+                {
+                    Toast.makeText(this, "Login Clicked", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.nav_admin_dashboard:
+                Intent i = new Intent(this, AdminDashboard.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                customType(this,"left-to-right");
+                finish();
+
+                break;
+
+        }
+        return true;
+    }
 
 
 
-
+    private void checkUserLogin() {
+        FirebaseUser user=fAuth.getCurrentUser();
+        if(user!=null)
+        {
+            Log.d(TAG, "user!null");
+            issueLoggedIn=true;
+        }
+    }
 }

@@ -377,7 +377,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
 
         }
         id= String.valueOf(System.currentTimeMillis());
-        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1,isDiscount,false) ;
+        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1,isDiscount,false,"author") ;
         productServices.setProductInterface(this);
         productServices.addProductInDb(productDTO,firebaseDatabase);
 

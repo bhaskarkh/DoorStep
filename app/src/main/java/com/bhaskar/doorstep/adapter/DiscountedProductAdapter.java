@@ -21,6 +21,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import static maes.tech.intentanim.CustomIntent.customType;
+
 public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedProductAdapter.DiscountedProductViewHolder> {
 
     Context context;
@@ -53,6 +55,7 @@ public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedPro
                 i.putExtra("selected_product",productDTO);
                 i.putExtra("source_to_product_details","Home");
                 context.startActivity(i);
+                customType(context,"right-to-left");
             }
         });
 

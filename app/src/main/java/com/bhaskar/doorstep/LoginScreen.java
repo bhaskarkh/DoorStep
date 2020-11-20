@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.bhaskar.doorstep.allinterface.UserRegistrationDetailsInterface;
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
 import com.bhaskar.doorstep.services.MySharedPreferences;
-import com.bhaskar.doorstep.services.UsersMethod;
+import com.bhaskar.doorstep.services.UserServices;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -206,7 +206,8 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
         else
         {
             Log.d(TAG,"Old User");
-            if(mySharedPreferences.checkSharedPrefernceExistorNot("userDTOsharedPrefernce"))
+            saveUserDetailsToSharedPreferenceFromFireBase(user,LoginScreen.this,source);
+           /* if(mySharedPreferences.checkSharedPrefernceExistorNot("userDTOsharedPrefernce"))
             {
                 saveUserDetailsToSharedPreferenceFromFireBase(user,LoginScreen.this,source);
             }
@@ -221,9 +222,9 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
                     saveEmailUserDetailsToSharedPreference(user,LoginScreen.this);
 
                 }
-            }
-            Intent intent=new Intent(LoginScreen.this, MainActivity.class);
-            startActivity(intent);
+            }*/
+           /* Intent intent=new Intent(LoginScreen.this, MainActivity.class);
+            startActivity(intent);*/
         }
 
     }
@@ -250,16 +251,12 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
     }
     private void saveUserDetailsToSharedPreferenceFromFireBase(FirebaseUser user, Context context,String source) {
         Log.d(TAG," inside Login saveUserDetailsToSharedPreference");
-        UsersMethod usersMethod=new UsersMethod(this);
+        UserServices userServices=new UserServices(this);
         mySharedPreferences.saveLoginSourceToSharedPreference(source);
-        usersMethod.setUserRegistrationDetailsInterface(this);
+        userServices.setUserRegistrationDetailsInterface(this);
 
         Log.d(TAG, "saveUserDetailsToSharedPreferenceFromFireBase: mAuth="+mAuth.getCurrentUser().getUid());
-        usersMethod.getUserRegistrationFromFireBase(database,mAuth);
-
-
-
-
+        userServices.getUserRegistrationFromFireBase(database,mAuth);
     }
 
 
@@ -346,13 +343,16 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
 
     @Override
     public void saveToSharedPref(UserRegistrationDTO userRegistrationDTO) {
-        Log.d(TAG, "saveToSharedPref: ");
+       /* Log.d(TAG, "saveToSharedPref: ");
         if (userRegistrationDTO!=null)
         { mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);}
         else 
         {
             Log.d(TAG, "saveToSharedPref: userRegistrationDTO is null");
-        }
+        }*/
+        Log.d(TAG, "saveToSharedPref: ");
+        startActivity(new Intent(this,MainActivity.class));
+
     }
 
 

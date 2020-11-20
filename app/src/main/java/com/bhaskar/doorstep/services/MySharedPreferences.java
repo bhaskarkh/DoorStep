@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
 import com.bhaskar.doorstep.allinterface.ProductInterface;
+import com.bhaskar.doorstep.allinterface.UserRegistrationDetailsInterface;
 import com.bhaskar.doorstep.model.OrderDTO;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
@@ -32,6 +33,11 @@ public class MySharedPreferences {
     private static final String TAG = "MySharedPreferences";
     ProductInterface productInterface;
     OrderStatusInterface orderStatusInterface;
+    UserRegistrationDetailsInterface userRegistrationDetailsInterface;
+
+    public void setUserRegistrationDetailsInterface(UserRegistrationDetailsInterface userRegistrationDetailsInterface) {
+        this.userRegistrationDetailsInterface = userRegistrationDetailsInterface;
+    }
 
     public void setOrderStatusInterface(OrderStatusInterface orderStatusInterface) {
         this.orderStatusInterface = orderStatusInterface;
@@ -91,10 +97,13 @@ public class MySharedPreferences {
         Log.d(TAG,"userRegistrationDTOjson= "+userRegistrationDTOjson);
         prefsEditor.putString("userRegistrationDTO", userRegistrationDTOjson);
         prefsEditor.commit();
+        userRegistrationDetailsInterface.saveToSharedPref(userRegistrationDTO);
+
 
     }
     public UserRegistrationDTO getUserDetailsFromSharedPreference()
     {
+        Log.d(TAG, "getUserDetailsFromSharedPreference: ");
         SharedPreferences mPrefs = this.context.getSharedPreferences("userDTOsharedPrefernce",MODE_PRIVATE);
         UserRegistrationDTO userRegistrationDTO=new UserRegistrationDTO();
         Gson gson = new Gson();
@@ -103,6 +112,20 @@ public class MySharedPreferences {
         Log.d(TAG,"userRegistrationDTO in getSharedPref= "+userRegistrationDTO.toString());
 
        return userRegistrationDTO;
+    }
+    public void removeUserDetailsFromSharedPref()
+    {
+        Log.d(TAG, "removeUserDetailsFromSharedPref:");
+
+        if(checkSharedPrefExistsOrNot("userDTOsharedPrefernce","userRegistrationDTO")) {
+            Log.d(TAG, "removeUserDetailsFromSharedPref: shared Pref  exist removing");
+            SharedPreferences mPrefs = this.context.getSharedPreferences("userDTOsharedPrefernce", MODE_PRIVATE);
+            mPrefs.edit().remove("userRegistrationDTO").commit();
+        }
+        else {
+            Log.d(TAG, "removeUserDetailsFromSharedPref: shared Pref Does not exist");
+        }
+
     }
     public  void  saveAllProductListFromFirebase(List<ProductDTO> productDTOList)
     {

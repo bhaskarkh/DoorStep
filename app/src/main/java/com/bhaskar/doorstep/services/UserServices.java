@@ -19,13 +19,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class UsersMethod {
+public class UserServices {
     Context context;
     UserRegistrationDetailsInterface userRegistrationDetailsInterface;
+    MySharedPreferences mySharedPreferences;
     private static final String TAG = "UsersMethod";
 
-    public UsersMethod(Context context) {
+    public UserServices(Context context) {
         this.context = context;
+        mySharedPreferences=new MySharedPreferences(context);
     }
 
     public Context getContext() {
@@ -61,7 +63,8 @@ public class UsersMethod {
         }
         final UserRegistrationDTO[] userRegistrationDTO = {new UserRegistrationDTO()};
         DatabaseReference databaseReference=firebaseDatabase.getReference().child("test").child("user").child("user_registration");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
@@ -72,7 +75,10 @@ public class UsersMethod {
                         userRegistrationDTO[0] =dataSnapshot.getValue(UserRegistrationDTO.class);
                     }
                 }
-                userRegistrationDetailsInterface.saveToSharedPref(userRegistrationDTO[0]);
+                mySharedPreferences.setUserRegistrationDetailsInterface(userRegistrationDetailsInterface);
+                mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO[0]);
+
+
 
             }
 
@@ -81,6 +87,11 @@ public class UsersMethod {
 
             }
         });
+    }
+
+    public  void saveUserDetailsFromFirebaseToSharedPref()
+    {
+
     }
 
 }

@@ -21,12 +21,13 @@ public class ProductDTO implements Parcelable {
     private int quantity;
     private boolean isDiscountProduct;
     private boolean isRecentlyViewProduct;
+    private String addedBy;
 
 
     public ProductDTO()
     {}
 
-    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId, int amountAvailable, double myPrice, double mrpPrice, boolean showCost, int quantity, boolean isDiscountProduct, boolean isRecentlyViewProduct) {
+    public ProductDTO(String id, String name, String category, String productTypeId, String description, String image, String quantityType, boolean isDelevieryPersonRequired, String supplierName, String supplierId, int amountAvailable, double myPrice, double mrpPrice, boolean showCost, int quantity, boolean isDiscountProduct, boolean isRecentlyViewProduct,String addedBy) {
         this.id = id;
         this.name = name;
         this.category = category;
@@ -44,6 +45,7 @@ public class ProductDTO implements Parcelable {
         this.quantity = quantity;
         this.isDiscountProduct = isDiscountProduct;
         this.isRecentlyViewProduct = isRecentlyViewProduct;
+        this.addedBy=addedBy;
     }
 
     protected ProductDTO(Parcel in) {
@@ -64,6 +66,7 @@ public class ProductDTO implements Parcelable {
         quantity = in.readInt();
         isDiscountProduct=in.readByte() != 0;
         isRecentlyViewProduct=in.readByte() != 0;
+        addedBy = in.readString();
 
     }
 
@@ -223,6 +226,14 @@ public class ProductDTO implements Parcelable {
         isRecentlyViewProduct = recentlyViewProduct;
     }
 
+    public String getAddedBy() {
+        return addedBy;
+    }
+
+    public void setAddedBy(String addedBy) {
+        this.addedBy = addedBy;
+    }
+
     @Override
     public String toString() {
         return "ProductDTO{" +
@@ -243,6 +254,7 @@ public class ProductDTO implements Parcelable {
                 ", quantity=" + quantity +
                 ", isDiscountProduct=" + isDiscountProduct +
                 ", isRecentlyViewProduct=" + isRecentlyViewProduct +
+                ", addedBy='" + addedBy + '\'' +
                 '}';
     }
 
@@ -292,5 +304,6 @@ public class ProductDTO implements Parcelable {
         dest.writeInt(quantity);
         dest.writeByte((byte) (isDiscountProduct ? 1 : 0));
         dest.writeByte((byte) (isRecentlyViewProduct ? 1 : 0));
+        dest.writeString(addedBy);
     }
 }

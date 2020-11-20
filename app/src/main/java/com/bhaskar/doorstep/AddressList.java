@@ -116,6 +116,10 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
            productDTO=intentForSource.getParcelableExtra("selected_product");
 
         }
+       else if(src.equalsIgnoreCase("profile"))
+       {
+           source="profile";
+       }
 
     }
 

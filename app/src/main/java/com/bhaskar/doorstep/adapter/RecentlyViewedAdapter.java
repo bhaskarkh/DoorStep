@@ -25,6 +25,8 @@ import com.bumptech.glide.request.transition.Transition;
 
 import java.util.List;
 
+import static maes.tech.intentanim.CustomIntent.customType;
+
 public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAdapter.RecentlyViewedViewHolder> {
 
     Context context;
@@ -75,6 +77,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
                 i.putExtra("source_to_product_details","Home");
 
                 context.startActivity(i);
+
 
             }
         });

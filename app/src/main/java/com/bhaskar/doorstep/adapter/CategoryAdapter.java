@@ -20,6 +20,7 @@ import com.bhaskar.doorstep.model.Category;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
+import static maes.tech.intentanim.CustomIntent.customType;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
@@ -59,6 +60,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
+                customType(context,"left-to-right");
+
+                /* Animation
+                 *left-to-right
+                 *right-to-left
+                 *bottom-to-up
+                 *up-to-bottom
+                 *fadein-to-fadeout
+                 *rotateout-to-rotatein*/
             }
         });
 
