@@ -62,4 +62,5 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828' //for largeSize Image
     implementation 'com.google.android.material:material:1.2.1' //For Date Picker
     implementation 'com.github.hajiyevelnur92:intentanimation:1.0' //for activity intent animation
+    implementation 'com.karumi:dexter:6.2.2' //For Runtime Permission
 }

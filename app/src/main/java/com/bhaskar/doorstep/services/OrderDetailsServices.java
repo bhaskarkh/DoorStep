@@ -2,7 +2,14 @@ package com.bhaskar.doorstep.services;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
 import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +38,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,6 +57,7 @@ public class OrderDetailsServices {
     MySharedPreferences mySharedPreferences;
     AddressServices addressServices;
     Home home;
+
 
 
     public OrderDetailsServices(Context context) {
@@ -792,6 +803,67 @@ public class OrderDetailsServices {
         changeOrderStatusToFireBaseAndSharedpref(orderDTO);
 
     }
+    
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void generatePdfFromOrderValue(OrderDTO orderDTO) {
+        int width = 1200;
+        int height = 2000;
+        Bitmap gridbmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.gridimage);
+        Bitmap gridscaledbmp = Bitmap.createScaledBitmap(gridbmp, width-1, height-1, false);
+        Bitmap headerImage=BitmapFactory.decodeResource(context.getResources(), R.drawable.invoice_heade_imager);
+        Bitmap hedaerscaledbmp = Bitmap.createScaledBitmap(headerImage, width-50, 621, false);
+
+        Log.d(TAG, "generatePdfFromOrderValue: ");
+        PdfDocument pdfDocument = new PdfDocument();
+        Paint myPaint = new Paint();
+        Paint titlePaint = new Paint();
+        PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(width, height, 1).create();
+        PdfDocument.Page myPage1 = pdfDocument.startPage(myPageInfo1);
+        Canvas canvas = myPage1.getCanvas();
+        canvas.drawBitmap(gridscaledbmp, 0, 0, myPaint);
+        canvas.drawBitmap(hedaerscaledbmp,50,50,myPaint);
+        titlePaint.setTextAlign(Paint.Align.CENTER);
+        titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        titlePaint.setTextSize(70);
+        canvas.drawText("DoorStep", width / 2, 300, titlePaint);
+        pdfDocument.finishPage(myPage1);
+
+        String extr = Environment.getExternalStorageDirectory().toString();
+        File fileDir = new File(extr + "/DoorStep/invoice");
+
+        if (!fileDir.exists()) {
+            Log.d(TAG, "generatePdfFromOrderValue: fileDir not exist");
+            fileDir.mkdirs();
+            Log.d(TAG, "generatePdfFromOrderValue: after mkdir");
+            CreateFile(fileDir,pdfDocument);
+        } else {
+            Log.d(TAG, "generatePdfFromOrderValue: path exist");
+            CreateFile(fileDir,pdfDocument);
+        }
+
+       
+
+
+    }
+    
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void CreateFile(File fileDir, PdfDocument pdfDocument){
+        Log.d(TAG, "CreateFile: ");
+        File pdfFile = new File(fileDir.getAbsolutePath(), "bhaskardoorstep.pdf");
+
+        try {
+            Log.d(TAG, "generatePdfFromOrderValue: ");
+            pdfDocument.writeTo(new FileOutputStream(pdfFile));
+            Toast.makeText(context, "File Saved", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Log.d(TAG, "generatePdfFromOrderValue: IOException " + e.getMessage());
+        } finally {
+            Log.d(TAG, "CreateFile: finnaly close");
+            pdfDocument.close();
+        }
+
+    }
+        
 
 }
 
