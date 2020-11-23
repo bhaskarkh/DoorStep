@@ -15,15 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true">
-        <activity android:name=".SplashScreen"></activity>
+        <activity android:name=".SplashScreen"/>
         <activity android:name=".Profile" />
         <activity android:name=".ContactUs" />
-        <activity
-            android:name=".OrderStatusChange"
-            android:theme="@style/MaterialTheme" />
-        <activity
-            android:name=".OrderDashboard"
-            android:theme="@style/MaterialTheme" />
         <activity android:name=".AddRecentlyViewedProduct" />
         <activity android:name=".AddDiscountProduct" />
         <activity android:name=".DiscountProductDetails" />
@@ -53,6 +47,8 @@
         <activity android:name=".ProductDetails" />
         <activity android:name=".AllCategory" />
         <activity android:name=".SingleCategory" />
+        <activity android:name=".OrderStatusChange"/>
+        <activity android:name=".OrderDashboard"/>
 
         <meta-data
             android:name="preloaded_fonts"

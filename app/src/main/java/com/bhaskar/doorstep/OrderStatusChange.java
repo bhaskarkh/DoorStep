@@ -48,7 +48,7 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
     AddressServices addressServices;
     AdminServices adminServices;
     String shiipingBoyName,shippingBoyMobile,orderStatus,startDate,endDate;
-    TextView
+    TextView header_title,
             order_status_change_txn_id,
             order_status_change_prodPrice_new,
             order_status_change_start_date,
@@ -88,7 +88,9 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
         order_dashboard_address_full=findViewById(R.id.order_dashboard_address_full);
         order_status_change_pincode=findViewById(R.id.order_status_change_pincode);
         order_status_change_mobile=findViewById(R.id.order_status_change_mobile);
-        order_status_change_back_btn=findViewById(R.id.order_status_change_back_btn);
+        order_status_change_back_btn=findViewById(R.id.header_back_btn_image);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("Change Order Status");
         order_status_change_confirm_order_date=findViewById(R.id.order_status_change_confirm_order_date);
         order_status_change_confirm_order_date_text=findViewById(R.id.order_status_change_confirm_order_date_text);
         order_status_change_cancel_or_completed_date=findViewById(R.id.order_status_change_cancel_or_completed_date);

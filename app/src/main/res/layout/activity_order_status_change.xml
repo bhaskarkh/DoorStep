@@ -5,45 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".OrderStatusChange">
-    <LinearLayout
-        android:id="@+id/order_status_change_layout"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+    <include layout="@layout/back_btn_and_tittle_layout"
+        android:id="@+id/header_order_status_change"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/order_status_change_title_text"
-                android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:layout_marginStart="90dp"
-                android:layout_marginLeft="90dp"
-                android:text="Order Status Change"
-                app:layout_constraintBottom_toBottomOf="@+id/order_status_change_back_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.022"
-                app:layout_constraintStart_toEndOf="@+id/order_status_change_back_btn"
-                app:layout_constraintTop_toTopOf="@+id/order_status_change_back_btn"
-                app:layout_constraintVertical_bias="0.833" />
-
-            <ImageView
-                android:id="@+id/order_status_change_back_btn"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginLeft="30dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -57,7 +23,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/order_status_change_layout">
+        app:layout_constraintTop_toBottomOf="@+id/header_order_status_change">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

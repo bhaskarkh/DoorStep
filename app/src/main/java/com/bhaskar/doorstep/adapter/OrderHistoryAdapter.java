@@ -55,7 +55,12 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
         holder.order_status.setText(orderDTOList.get(position).getOrderStatus());
         hm.changeColorOfTextView(holder.order_status,orderDTOList.get(position).getOrderStatus(),"order_status");
         holder.price.setText(hm.appendRuppeSymbol(String.valueOf(productDTO.getMyPrice())));
-        holder.delivery_date.setText(orderDTOList.get(position).getExpectedLastDateOfDelivery());
+        String getExcpectedDate=orderDTOList.get(position).getExpectedLastDateOfDelivery();
+        if (getExcpectedDate.equalsIgnoreCase("ND"))
+            holder.delivery_date.setText("Processing order");
+        else
+        holder.delivery_date.setText(getExcpectedDate);
+
         hm.loadImageInGlide(holder.prod_image,productDTO.getImage());
        // holder.prod_image.setImageResource(R.drawable.ic_home_fish);
         holder.order_st_layout.setOnClickListener(new View.OnClickListener() {

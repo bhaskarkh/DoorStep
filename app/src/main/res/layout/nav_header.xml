@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="120dp"
-    android:background="@drawable/nav_header_background">
+    android:background="@color/primary">
 
     <TextView
         android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="8dp"
         android:text="Header"
-        android:textColor="#101010"
+        android:textColor="@color/icons"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textView20"
@@ -28,7 +28,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="16dp"
         android:text="Small Text Here "
-        android:textColor="#000000"
+        android:textColor="@color/icons"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

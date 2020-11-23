@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,9 @@ import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.model.RecentlyViewed;
 import com.bhaskar.doorstep.services.Home;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -53,18 +57,27 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
         ProductDTO productDTO=recentlyViewedList.get(position);
         Log.d(TAG, "onBindViewHolder: productDTO= "+productDTO.getName());
         holder.name.setText(productDTO.getName());
-        holder.description.setText(productDTO.getDescription());
         holder.price.setText(String.valueOf(productDTO.getPrice()));
-        holder.unit.setText(productDTO.getQuantityType());
+
        // home.loadImageInGlide(holder.bg,productDTO.getImage());
-        Glide.with(context).load(productDTO.getImage()).into(new SimpleTarget<Drawable>() {
+        /*Glide.with(context).load(productDTO.getImage()).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     holder.bg.setBackground(resource); 
                 }
             }
-        });
+        });*/
+        Log.d(TAG, "loadImageInGlide: ");
+        RequestOptions options = new RequestOptions()
+                .placeholder(R.drawable.ic_no_image_available)
+                .error(R.drawable.ic_no_image_available)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.NORMAL);
+
+        Glide.with(context).load(productDTO.getImage())
+                .apply(options)
+                .into(holder.image);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -91,17 +104,16 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
 
     public  static class RecentlyViewedViewHolder extends RecyclerView.ViewHolder{
 
-        TextView name, description, price, qty, unit;
-        ConstraintLayout bg;
+        TextView name,price;
+        ImageView image;
 
         public RecentlyViewedViewHolder(@NonNull View itemView) {
             super(itemView);
 
             name = itemView.findViewById(R.id.product_name);
-            description = itemView.findViewById(R.id.description);
             price = itemView.findViewById(R.id.price);
-            unit = itemView.findViewById(R.id.unit);
-            bg = itemView.findViewById(R.id.recently_layout);
+            image=itemView.findViewById(R.id.recnetly_view_prod_image);
+
 
         }
     }

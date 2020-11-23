@@ -29,7 +29,7 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
 
     ImageView img, back;
     TextView proName, proPrice, proDesc, proQty, proUnit;
-    TextView address_userName,address_pincode,address_full_address,deliver_to_text;
+    TextView address_userName,address_pincode,address_full_address,deliver_to_text,header_tittle;
     MySharedPreferences mySharedPreferences;
     AddressServices addressServices;
     Home home;
@@ -55,14 +55,16 @@ public class ProductDetails extends AppCompatActivity implements OnOrderSubmissi
         proDesc = findViewById(R.id.prodDesc);
         proPrice = findViewById(R.id.prodPrice_new);
         img = findViewById(R.id.big_image);
-        back = findViewById(R.id.product_details_back_btn);
+        back = findViewById(R.id.header_back_btn_image);
         change_address_button=findViewById(R.id.change_address_button);
         address_userName=findViewById(R.id.prod_address_user_name);
         address_pincode=findViewById(R.id.prod_address_pincode);
         address_full_address=findViewById(R.id.prod_address_full_address);
         deliver_to_text=findViewById(R.id.prod_deliver_to_text);
         buy_btn=findViewById(R.id.buy_btn);
+        header_tittle=findViewById(R.id.header_title);
         place_order_progressbar=findViewById(R.id.place_order_progressbar);
+        header_tittle.setText("Product Details");
         firebaseDatabase=FirebaseDatabase.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         mySharedPreferences=new MySharedPreferences(ProductDetails.this);

@@ -21,7 +21,7 @@ public class OrderSuccessOrFail extends AppCompatActivity {
     ImageView order_success_back_btn;
     Button order_success_home_btn;
     Home hm;
-    TextView justifiedTextView;
+    TextView justifiedTextView,header_title;
     private String TAG="OrderSuccessOrFail";
 
     @Override
@@ -32,7 +32,9 @@ public class OrderSuccessOrFail extends AppCompatActivity {
         String thankyou_msg="we are currently processing your order.You can find updated to your order under Your Order";
                 //this.getResources().getString(R.string.thank_you_for_your_order);
 
-        order_success_back_btn=findViewById(R.id.order_success_back_btn);
+        order_success_back_btn=findViewById(R.id.header_back_btn_image);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("Order summary");
         order_success_home_btn=findViewById(R.id.order_success_home_btn);
         justifiedTextView=findViewById(R.id.tv_justified_paragraph);
         hm=new Home(OrderSuccessOrFail.this);

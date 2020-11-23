@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bhaskar.doorstep.services.Home;
 
@@ -15,6 +16,7 @@ public class AdminDashboard extends AppCompatActivity {
     Button admin_add_product_btn,admin_slider_btn,admin_discount_btn,admin_recently_btn,admin_order_status_btn,admin_order_progresss_btn;
     ImageView admin_back_btn;
     Home home;
+    TextView header_title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +24,9 @@ public class AdminDashboard extends AppCompatActivity {
         admin_add_product_btn=findViewById(R.id.admin_add_product_btn);
         admin_slider_btn=findViewById(R.id.admin_slider_btn);
         admin_discount_btn=findViewById(R.id.admin_discount_btn);
-        admin_back_btn=findViewById(R.id.admin_back_btn);
+        admin_back_btn=findViewById(R.id.header_back_btn_image);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("Admin Dashboard");
         admin_recently_btn=findViewById(R.id.admin_recently_btn);
         admin_order_status_btn=findViewById(R.id.admin_order_status_btn);
         admin_order_progresss_btn=findViewById(R.id.admin_order_progresss_btn);

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:padding="2dp"
+    android:background="@color/primary"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
@@ -10,16 +11,12 @@
         android:id="@+id/header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:fontFamily="@font/open_sans_bold"
         android:text="Daily Groceries"
-        android:textColor="@android:color/background_dark"
+        android:textColor="@color/icons"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/profile_pic"
+        app:layout_constraintEnd_toStartOf="@+id/header_profile_pic"
         app:layout_constraintStart_toEndOf="@+id/header_back_btn_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.592" />
@@ -45,7 +42,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.48000002"
-        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
+        app:srcCompat="@drawable/ic_back_arrow_white" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

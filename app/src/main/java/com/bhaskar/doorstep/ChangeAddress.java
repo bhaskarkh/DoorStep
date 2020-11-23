@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bhaskar.doorstep.model.AddressDTO;
@@ -60,6 +61,7 @@ public class ChangeAddress extends AppCompatActivity implements LocationListener
     Intent intentForSource;
     AddressDTO sentAddresForEdit;
     ImageView change_address_back_btn;
+    TextView header_title;
     TextInputLayout address_pincode, address_house_no, address_area_colony, address_city, address_state, address_user_name, address_delivery_mobile_number;
 
     TextInputEditText address_pincode_et, address_house_no_et, address_area_colony_et, address_city_et, address_state_et, address_user_name_et, address_delivery_mobile_number_et;
@@ -89,7 +91,9 @@ public class ChangeAddress extends AppCompatActivity implements LocationListener
         address_user_name=findViewById(R.id.address_user_name);
         address_delivery_mobile_number=findViewById(R.id.address_delivery_mobile_number);
         primary_address_checkbox=findViewById(R.id.set_default_address_checkbox);
-        change_address_back_btn=findViewById(R.id.change_address_back_btn);
+        change_address_back_btn=findViewById(R.id.header_back_btn_image);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("Add Address");
         firebaseDatabase=FirebaseDatabase.getInstance();
 
         intentForSource= getIntent();

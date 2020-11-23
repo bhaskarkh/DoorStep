@@ -49,6 +49,7 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
     Button order_refresh_btn,auto_update_on_off_btn;
     boolean autoUpdate=false;
     ImageView order_dashboard_back_btn;
+    TextView header_title;
     private static final String TAG = "OrderDashboard";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,9 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
         order_dashboard_progressbar=findViewById(R.id.order_dashboard_progressbar);
         order_refresh_btn=findViewById(R.id.order_refresh_btn);
         auto_update_on_off_btn=findViewById(R.id.auto_update_on_off_btn);
-        order_dashboard_back_btn=findViewById(R.id.order_dashboard_back_btn);
+        order_dashboard_back_btn=findViewById(R.id.header_back_btn_image);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("Order Dasboard");
         order_dashboard_recyclerview.setNestedScrollingEnabled(false);
         home=new Home(this);
         orderDetailsServices=new OrderDetailsServices(this);

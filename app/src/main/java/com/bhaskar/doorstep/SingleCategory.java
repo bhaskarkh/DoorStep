@@ -46,9 +46,9 @@ public class SingleCategory extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_category);
 
-        singleCategoryBack=findViewById(R.id.singleCategoryBack);
+        singleCategoryBack=findViewById(R.id.header_back_btn_image);
         singleCategoryRecycler=findViewById(R.id.single_category);
-        singleCategoryTitle=findViewById(R.id.singleCategoryTitle);
+        singleCategoryTitle=findViewById(R.id.header_title);
         single_category_progressBar=findViewById(R.id.single_category_progressBar);
         firebaseDatabase=FirebaseDatabase.getInstance();
         singleCategoryRecycler.setNestedScrollingEnabled(false);

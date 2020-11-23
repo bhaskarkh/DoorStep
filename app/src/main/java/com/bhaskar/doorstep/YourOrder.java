@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bhaskar.doorstep.adapter.OrderHistoryAdapter;
@@ -33,14 +34,17 @@ public class YourOrder extends AppCompatActivity  implements OrderStatusInterfac
     ProgressBar progressBar;
     Home hm;
     ImageView your_order_list_back_btn;
-
+    TextView header_title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_order);
         your_order_recylcerview=findViewById(R.id.order_st_recylerview);
         progressBar=findViewById(R.id.your_order_status_progressbar);
-        your_order_list_back_btn=findViewById(R.id.your_order_list_back_btn);
+        your_order_list_back_btn=findViewById(R.id.header_back_btn_image);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("Your order");
+
         firebaseDatabase=FirebaseDatabase.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         progressBar.setVisibility(View.VISIBLE);

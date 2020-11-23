@@ -42,7 +42,7 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
     ProductDTO productDTO;
     String source;
     RelativeLayout add_address_layout;
-    TextView number_saved_address;
+    TextView number_saved_address,header_title;
     String categorySource;
     ImageView back_btn;
     private static final String TAG = "AddressList";
@@ -57,7 +57,9 @@ public class AddressList extends AppCompatActivity implements SetAddresListInAda
         addresListRecycler=findViewById(R.id.addresslist_recyclerview);
         add_address_layout=findViewById(R.id.add_address_layout);
         number_saved_address=findViewById(R.id.number_saved_address);
-        back_btn=findViewById(R.id.addres_list_back_btn);
+        back_btn=findViewById(R.id.header_back_btn_image);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("All address list");
 
         intentForSource=getIntent();
         addressListProgressBar.setVisibility(View.VISIBLE);

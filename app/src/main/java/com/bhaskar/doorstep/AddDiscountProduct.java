@@ -33,6 +33,7 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
     AddDiscountRecentlyProductAdapter addDiscountRecentlyProductAdapter;
     ProgressBar add_discount_product_progressbar;
     ImageView add_discount_product_back_btn;
+    TextView header_title;
     private static final String TAG = "AddDiscountProduct";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,10 @@ public class AddDiscountProduct extends AppCompatActivity implements ProductInte
         setContentView(R.layout.activity_add_discount_product);
         add_discount_cat=findViewById(R.id.add_discount_cat);
         productRecyclerView=findViewById(R.id.add_discount_prod_recyclerview);
-        add_discount_product_back_btn=findViewById(R.id.add_discount_product_back_btn);
+        add_discount_product_back_btn=findViewById(R.id.header_back_btn_image);
         add_discount_product_progressbar=findViewById(R.id.add_discount_product_progressbar);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("Add Discount Product");
 
         add_discount_product_progressbar.setVisibility(View.VISIBLE);
         

@@ -76,8 +76,9 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
         description=findViewById(R.id.add_product_description);
         quantityType=findViewById(R.id.add_product_quantity_type);
         isRequired=findViewById(R.id.add_product_isrequired);
-        title=findViewById(R.id.add_product_title);
-        back_btn=findViewById(R.id.add_product_back_btn);
+        title=findViewById(R.id.header_title);
+        title.setText("Add Product");
+        back_btn=findViewById(R.id.header_back_btn_image);
         add_product_btn=findViewById(R.id.add_product_button);
         upload_product_image_btn=findViewById(R.id.upload_product_image_btn);
         upload_image_preview=findViewById(R.id.upload_image_preview);

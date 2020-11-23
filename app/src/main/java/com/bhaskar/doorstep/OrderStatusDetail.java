@@ -65,7 +65,8 @@ public class OrderStatusDetail extends AppCompatActivity {
             order_std_completed_txt3_date,
             order_std_address_name,
             order_std_primary_address_full,
-            download_invoice;
+            download_invoice,
+            header_title;
     OrderDTO orderDTOInfo;
     Home home;
     AddressServices addressServices;
@@ -83,7 +84,9 @@ public class OrderStatusDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_status_detail);
         placed_to_confirmed_line=findViewById(R.id.placed_to_confirmed_line);
-        order_std_back_btn=findViewById(R.id.order_std_back_btn);
+        order_std_back_btn=findViewById(R.id.header_back_btn_image);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("All address list");
         order_std_prodImage=findViewById(R.id.order_std_prodImage);
         order_std_arrival_date=findViewById(R.id.order_std_arrival_date);
         order_std_placed_txt1=findViewById(R.id.order_std_placed_txt1);

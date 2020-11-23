@@ -7,43 +7,25 @@
     tools:context=".ChangeAddress"
    >
 
-
-    <ImageView
-        android:id="@+id/change_address_back_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
+    <include layout="@layout/back_btn_and_tittle_layout"
+        android:id="@+id/header_address_change"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
-
-    <TextView
-        android:id="@+id/address_change_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Add New Address"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:fillViewport="true"
-        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toBottomOf="@id/header_address_change"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address_change_title">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            >
+            android:layout_marginBottom="50dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView_location_btn"
@@ -51,17 +33,16 @@
                 android:layout_height="55dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginLeft="24dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginRight="24dp"
-                android:layout_marginTop="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                >
+                app:layout_constraintTop_toTopOf="parent">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                  >
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/gps_image_id"
@@ -93,18 +74,17 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
             </androidx.cardview.widget.CardView>
+
             <TextView
                 android:id="@+id/auto_fill_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/tap_to_auto_fill_the_address_fields"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cardView_location_btn"
-                android:text="@string/tap_to_auto_fill_the_address_fields"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardView_location_btn" />
 
             <View
                 android:id="@+id/divider7"
@@ -115,6 +95,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/auto_fill_text" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/address_pincode"
                 android:layout_width="match_parent"
@@ -128,12 +109,12 @@
                 app:layout_constraintTop_toTopOf="@+id/divider7">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_pincode_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/pincode"
                     android:inputType="number"
-                    android:maxLength="6"
-                    android:id="@+id/address_pincode_et"/>
+                    android:maxLength="6" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -149,11 +130,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/address_pincode">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_house_no_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/house_no_building_name"
-                    android:inputType="text"
-                    android:id="@+id/address_house_no_et"/>
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -168,11 +149,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/address_house_no">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_area_colony_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/road_name_area_colony"
-                    android:inputType="text"
-                    android:id="@+id/address_area_colony_et"/>
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -189,11 +170,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/address_area_colony">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_city_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/city"
-                    android:inputType="text"
-                    android:id="@+id/address_city_et"/>
+                    android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -210,11 +191,11 @@
                 app:layout_constraintTop_toTopOf="@+id/address_city">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_state_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/state"
-                    android:inputType="text"
-                    android:id="@+id/address_state_et"/>
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <View
@@ -239,11 +220,11 @@
                 app:layout_constraintTop_toBottomOf="@id/divider4">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_user_name_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/name"
-                    android:inputType="text"
-                    android:id="@+id/address_user_name_et"/>
+                    android:inputType="text" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -260,12 +241,12 @@
                 app:layout_constraintTop_toBottomOf="@id/address_user_name">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/address_delivery_mobile_number_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/mobile_number"
                     android:inputType="number"
-                    android:maxLength="10"
-                    android:id="@+id/address_delivery_mobile_number_et"/>
+                    android:maxLength="10" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <CheckBox
@@ -305,13 +286,11 @@
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:visibility="gone"/>
-
-
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

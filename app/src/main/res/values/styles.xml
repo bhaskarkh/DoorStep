@@ -4,20 +4,24 @@
     <!--Theme.AppCompat.Light.NoActionBar-->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">#25000000</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/primary_text</item>
+
     </style>
     <style name="MaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorIncompleted</item>
-        <item name="colorPrimaryDark">#25000000</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@color/primary_text</item>
     </style>
     <style name="FullScreenTheme"  parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
+
 
     <style name="mytoast">
         <item name="stTextBold">true</item>

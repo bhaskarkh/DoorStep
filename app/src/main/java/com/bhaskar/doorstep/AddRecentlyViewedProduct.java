@@ -34,6 +34,7 @@ public class AddRecentlyViewedProduct extends AppCompatActivity implements Produ
     AddDiscountRecentlyProductAdapter addDiscountRecentlyProductAdapter;
     ProgressBar add_discount_product_progressbar;
     ImageView add_recebtly_view_back_btn;
+    TextView header_title;
     private static final String TAG = "AddDiscountProduct";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,10 @@ public class AddRecentlyViewedProduct extends AppCompatActivity implements Produ
         setContentView(R.layout.activity_add_recently_viewed_product);
         add_discount_cat=findViewById(R.id.add_recently_view_cat);
         productRecyclerView=findViewById(R.id.add_recently_view_recyclerview);
-        add_recebtly_view_back_btn=findViewById(R.id.add_recebtly_view_back_btn);
+        add_recebtly_view_back_btn=findViewById(R.id.header_back_btn_image);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("Add Recently view Product");
+        header_title.setTextSize(14);
         add_discount_product_progressbar=findViewById(R.id.add_recently_view_progressbar);
         add_discount_product_progressbar.setVisibility(View.VISIBLE);
 
