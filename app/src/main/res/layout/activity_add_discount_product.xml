@@ -6,15 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".AddDiscountProduct">
 
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Discount Product"
-        app:layout_constraintBottom_toBottomOf="@+id/add_discount_product_back_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/add_discount_product_back_btn"
-        app:layout_constraintTop_toTopOf="@+id/add_discount_product_back_btn" />
+    <include layout="@layout/back_btn_and_tittle_layout"
+        android:id="@+id/header_add_discount_product"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <Spinner
         android:id="@+id/add_discount_cat"
@@ -22,12 +18,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginLeft="50dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintTop_toBottomOf="@id/header_add_discount_product" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/add_discount_prod_recyclerview"
@@ -56,14 +52,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/add_discount_prod_recyclerview" />
 
-    <ImageView
-        android:id="@+id/add_discount_product_back_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package com.bhaskar.doorstep;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +26,8 @@ public class Profile extends AppCompatActivity {
     Home home;
     AddressServices addressServices;
     ImageView profile_image, profile_edit_btn,header_back_btn_image;
-    TextView profile_name, profile_mobile, profile_email, profile_address_full, profile_address_view_more, profile_view_all_order;
+    TextView header_title,profile_name, profile_mobile, profile_email, profile_address_full, profile_address_view_more, profile_view_all_order;
+    ConstraintLayout header_layout_color;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,14 @@ public class Profile extends AppCompatActivity {
         profile_image = findViewById(R.id.profile_image);
         profile_edit_btn = findViewById(R.id.profile_edit_btn);
         header_back_btn_image=findViewById(R.id.header_back_btn_image);
+        header_layout_color=findViewById(R.id.header_constraint_layout);
+        header_layout_color.setBackgroundResource(R.color.icons);
+        header_back_btn_image.setImageResource(R.drawable.ic_arrow_back_black_24dp);
+        header_title=findViewById(R.id.header_title);
+        header_title.setText("Profile");
+        header_title.setTextColor(getResources().getColor(R.color.primary_text));
+
+
 
         setValueInProfilePage();
         profile_view_all_order.setOnClickListener(new View.OnClickListener() {
