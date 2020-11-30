@@ -26,6 +26,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
 
     Context context;
     List<ProductDTO> recentlyViewedList;
+    public boolean showShimmer=true;
     private static final String TAG = "RecentlyViewedAdapter";
 
     public RecentlyViewedAdapter(Context context, List<ProductDTO> recentlyViewedList) {
@@ -53,13 +55,28 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
     @Override
     public void onBindViewHolder(@NonNull RecentlyViewedViewHolder holder, final int position) {
 
-        Home home=new Home(context);
-        ProductDTO productDTO=recentlyViewedList.get(position);
-        Log.d(TAG, "onBindViewHolder: productDTO= "+productDTO.getName());
-        holder.name.setText(productDTO.getName());
-        holder.price.setText(String.valueOf(productDTO.getPrice()));
+        if (showShimmer)
+        {
+            holder.shimmerFrameLayout.startShimmer();
+        }
+        else {
+            holder.shimmerFrameLayout.stopShimmer();
+            holder.shimmerFrameLayout.setShimmer(null);
+            holder.image.setBackground(null);
+            holder.name.setBackground(null);
+            holder.name.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            holder.name.requestLayout();
+            holder.price.setBackground(null);
+            holder.price.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
+            holder.price.requestLayout();
 
-       // home.loadImageInGlide(holder.bg,productDTO.getImage());
+            Home home = new Home(context);
+            ProductDTO productDTO = recentlyViewedList.get(position);
+            Log.d(TAG, "onBindViewHolder: productDTO= " + productDTO.getName());
+            holder.name.setText(productDTO.getName());
+            holder.price.setText(String.valueOf(productDTO.getPrice()));
+
+            // home.loadImageInGlide(holder.bg,productDTO.getImage());
         /*Glide.with(context).load(productDTO.getImage()).into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
@@ -68,44 +85,48 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
                 }
             }
         });*/
-        Log.d(TAG, "loadImageInGlide: ");
-        RequestOptions options = new RequestOptions()
-                .placeholder(R.drawable.ic_no_image_available)
-                .error(R.drawable.ic_no_image_available)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .priority(Priority.NORMAL);
+            Log.d(TAG, "loadImageInGlide: ");
+            RequestOptions options = new RequestOptions()
+                    .placeholder(R.drawable.ic_no_image_available)
+                    .error(R.drawable.ic_no_image_available)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .priority(Priority.NORMAL);
 
-        Glide.with(context).load(productDTO.getImage())
-                .apply(options)
-                .into(holder.image);
-
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent i=new Intent(context, ProductDetails.class);
-                i.putExtra("cat_name", productDTO.getCategory());
-                i.putExtra("selected_product",productDTO);
-                i.putExtra("source_to_product_details","Home");
-
-                context.startActivity(i);
+            Glide.with(context).load(productDTO.getImage())
+                    .apply(options)
+                    .into(holder.image);
 
 
-            }
-        });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent i = new Intent(context, ProductDetails.class);
+                    i.putExtra("cat_name", productDTO.getCategory());
+                    i.putExtra("selected_product", productDTO);
+                    i.putExtra("source_to_product_details", "Home");
+
+                    context.startActivity(i);
+
+
+                }
+            });
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return recentlyViewedList.size();
+        int SHIMMER_ITEM_ITEM=4;
+
+        return showShimmer? SHIMMER_ITEM_ITEM : recentlyViewedList.size();
     }
 
     public  static class RecentlyViewedViewHolder extends RecyclerView.ViewHolder{
 
         TextView name,price;
         ImageView image;
+        ShimmerFrameLayout shimmerFrameLayout;
 
         public RecentlyViewedViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,6 +134,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
             name = itemView.findViewById(R.id.product_name);
             price = itemView.findViewById(R.id.price);
             image=itemView.findViewById(R.id.recnetly_view_prod_image);
+            shimmerFrameLayout=itemView.findViewById(R.id.recently_layout_shimmer);
 
 
         }

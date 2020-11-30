@@ -63,4 +63,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1' //For Date Picker
     implementation 'com.github.hajiyevelnur92:intentanimation:1.0' //for activity intent animation
     implementation 'com.karumi:dexter:6.2.2' //For Runtime Permission
+    implementation 'com.facebook.shimmer:shimmer:0.5.0' //shimmer loading
+    implementation 'com.github.bhaskarkh:ShareAndRate:1.0.5' //to share and rate app from playstore
 }

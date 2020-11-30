@@ -1,6 +1,7 @@
 package com.bhaskar.doorstep;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import com.bhaskar.doorstep.services.Home;
 
 public class AdminDashboard extends AppCompatActivity {
 
-    Button admin_add_product_btn,admin_slider_btn,admin_discount_btn,admin_recently_btn,admin_order_status_btn,admin_order_progresss_btn;
+    CardView admin_add_product_btn,admin_slider_btn,admin_discount_btn,admin_recently_btn,admin_order_progresss_btn;
     ImageView admin_back_btn;
     Home home;
     TextView header_title;
@@ -28,7 +29,7 @@ public class AdminDashboard extends AppCompatActivity {
         header_title=findViewById(R.id.header_title);
         header_title.setText("Admin Dashboard");
         admin_recently_btn=findViewById(R.id.admin_recently_btn);
-        admin_order_status_btn=findViewById(R.id.admin_order_status_btn);
+        //admin_order_status_btn=findViewById(R.id.admin_order_status_btn);
         admin_order_progresss_btn=findViewById(R.id.admin_order_progresss_btn);
         home=new Home(this);
 
@@ -56,12 +57,12 @@ public class AdminDashboard extends AppCompatActivity {
                 startActivity(new Intent(AdminDashboard.this,AddRecentlyViewedProduct.class));
             }
         });
-        admin_order_status_btn.setOnClickListener(new View.OnClickListener() {
+        /*admin_order_status_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AdminDashboard.this,YourOrder.class));
             }
-        });
+        });*/
 
         admin_order_progresss_btn.setOnClickListener(new View.OnClickListener() {
             @Override

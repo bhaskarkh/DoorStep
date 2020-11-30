@@ -9,7 +9,7 @@
             android:icon="@drawable/ic_baseline_home_24"/>
         <item android:id="@+id/nav_your_order"
             android:title="Your Order"
-            android:icon="@drawable/ic_baseline_home_24"/>
+            android:icon="@drawable/ic_order_icon"/>
 
     </group>
 
@@ -17,13 +17,13 @@
                android:checkableBehavior="single">
            <item android:id="@+id/nav_profile"
                android:title="Your Account"
-               android:icon="@drawable/ic_baseline_home_24"/>
+               android:icon="@drawable/ic_profile"/>
            <item android:id="@+id/nav_login_logout"
                android:title="Login"
-               android:icon="@drawable/ic_baseline_home_24"/>
+               android:icon="@drawable/ic_login_24"/>
                <item android:id="@+id/nav_admin_dashboard"
                    android:title="Admin Dashboard"
-                   android:icon="@drawable/ic_baseline_home_24"/>
+                   android:icon="@drawable/ic_admin"/>
            </group>
 
 
@@ -32,13 +32,13 @@
                 android:checkableBehavior="single">
                 <item android:id="@+id/nav_contact_us"
                     android:title="Contact us"
-                    android:icon="@drawable/ic_baseline_home_24"/>
+                    android:icon="@drawable/ic_contact_us"/>
                 <item android:id="@+id/nav_share_app"
                     android:title="Share app"
-                    android:icon="@drawable/ic_baseline_home_24"/>
+                    android:icon="@drawable/ic_share"/>
                 <item android:id="@+id/nav_rate_app"
                     android:title="Rate app"
-                    android:icon="@drawable/ic_baseline_home_24"/>
+                    android:icon="@drawable/ic_star_rate"/>
             </group>
 
 </menu>

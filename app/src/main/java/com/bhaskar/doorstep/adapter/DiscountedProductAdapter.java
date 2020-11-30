@@ -18,6 +18,7 @@ import com.bhaskar.doorstep.model.DiscountedProducts;
 import com.bhaskar.doorstep.model.ProductDTO;
 import com.bhaskar.doorstep.services.Home;
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedPro
 
     Context context;
     List<ProductDTO> discountedProductsList;
+    public boolean showShimmer=true;
 
     public DiscountedProductAdapter(Context context, List<ProductDTO> discountedProductsList) {
         this.context = context;
@@ -37,16 +39,26 @@ public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedPro
     @Override
     public DiscountedProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.discounted_row_items, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.main_discount_loading_layout, parent, false);
         return new DiscountedProductViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DiscountedProductViewHolder holder, int position) {
+        if (showShimmer)
+        {
+            holder.shimmerFrameLayout.startShimmer();
+        }
+        else
+        {
+            holder.shimmerFrameLayout.stopShimmer();
+            holder.shimmerFrameLayout.setShimmer(null);
+            holder.discountImageView.setBackground(null);
+
         Home home=new Home(context);
         ProductDTO productDTO=discountedProductsList.get(position);
         home.loadImageInGlide(holder.discountImageView,productDTO.getImage());
-        holder.title.setText(productDTO.getName());
+       // holder.title.setText(productDTO.getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +70,7 @@ public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedPro
                 customType(context,"right-to-left");
             }
         });
+        }
 
 
 
@@ -65,21 +78,25 @@ public class DiscountedProductAdapter extends RecyclerView.Adapter<DiscountedPro
 
     @Override
     public int getItemCount() {
-        return discountedProductsList.size();
+        int SHIMMER_ITEM_ITEM=5;
+
+        return showShimmer? SHIMMER_ITEM_ITEM : discountedProductsList.size();
     }
 
     public static class DiscountedProductViewHolder extends  RecyclerView.ViewHolder{
 
         ImageView discountImageView;
-        TextView title;
+        ShimmerFrameLayout shimmerFrameLayout;
 
 
         public DiscountedProductViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            discountImageView = itemView.findViewById(R.id.discountImage);
 
-            title=itemView.findViewById(R.id.title_text);
+            discountImageView = itemView.findViewById(R.id.discountImage);
+            shimmerFrameLayout=itemView.findViewById(R.id.main_discount_shimmer);
+
+           // title=itemView.findViewById(R.id.title_text);
         }
     }
 }

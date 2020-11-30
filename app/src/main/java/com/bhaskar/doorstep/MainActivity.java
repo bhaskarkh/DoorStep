@@ -42,6 +42,7 @@ import com.bhaskar.doorstep.model.UserRegistrationDTO;
 import com.bhaskar.doorstep.services.Home;
 import com.bhaskar.doorstep.services.MySharedPreferences;
 import com.bhaskar.doorstep.services.ProductServices;
+import com.bhaskar.shareandrateapp.ShareAndRateApp;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
 
     RecyclerView discountRecyclerView, categoryRecyclerView, recentlyViewedRecycler;
     DiscountedProductAdapter discountedProductAdapter;
-    List<ProductDTO> discountedProductsList;
+
 
     CategoryAdapter categoryAdapter;
     List<Category> categoryList;
@@ -83,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
     List<RecentlyViewed> recentlyViewedList;
     SliderAdapterExample sadapter;
     List<ProductDTO> productDTOList;
+    List<ProductDTO> discountproductDTOList=new ArrayList<>();
+    List<ProductDTO> recentlyViewproductDTOList=new ArrayList<>();
+
 
     TextView allCategory;
     ImageView profile_pic;
@@ -102,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    boolean issueLoggedIn=false;
+    boolean isUserLoggedIn=false;
     UserRegistrationDTO userRegistrationDTO;
 
 
@@ -129,7 +133,8 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
         drawerLayout=findViewById(R.id.main_drawer_layout);
         navigationView=findViewById(R.id.main_navigation_view);
         discount_list_progressbar=findViewById(R.id.discount_list_progressbar);
-        discount_list_progressbar.setVisibility(View.VISIBLE);
+        discount_list_progressbar.setVisibility(View.GONE);
+
 
         fAuth=FirebaseAuth.getInstance();
         checkUserLogin();
@@ -139,6 +144,16 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
         mySharedPreferences.setProductInterface(this);
         productServices=new ProductServices(this);
         productServices.setProductInterface(this);
+        setDiscountedRecycler(discountproductDTOList);
+        setRecentlyViewedRecycler(recentlyViewproductDTOList);
+
+
+
+
+
+
+
+
         //slider
         Log.d(TAG,"fuid in main= "+fAuth.getCurrentUser().getUid());
         productServices.getDiscountandRecentlyViewProductList(firebaseDatabase);
@@ -162,13 +177,18 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_home);
         Menu menu=navigationView.getMenu();
+        MenuItem login_logout_item = menu.findItem(R.id.nav_login_logout);
         userRegistrationDTO=mySharedPreferences.getUserDetailsFromSharedPreference();
         Log.d(TAG, "onCreate: userRegistrationDTO= "+userRegistrationDTO.toString());
 
-        Log.d(TAG, "onCreate: issueLoggedIn= "+issueLoggedIn);
-        if(issueLoggedIn)
+        Log.d(TAG, "onCreate: issueLoggedIn= "+isUserLoggedIn);
+        if(isUserLoggedIn)
         {
-            menu.findItem(R.id.nav_login_logout).setTitle("Logout");
+
+            login_logout_item.setTitle("Logout");
+            login_logout_item.setIcon(R.drawable.ic_logout);
+
+
            if(userRegistrationDTO.getRole().equalsIgnoreCase("Admin"))
             {
                 menu.findItem(R.id.nav_admin_dashboard).setVisible(true);
@@ -178,7 +198,8 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
 
 
         }else
-        {   menu.findItem(R.id.nav_profile).setVisible(false);
+        {   login_logout_item.setIcon(R.drawable.ic_login_24);
+            menu.findItem(R.id.nav_profile).setVisible(false);
             menu.findItem(R.id.nav_admin_dashboard).setVisible(false);
 
             menu.findItem(R.id.nav_login_logout).setTitle("Login");
@@ -231,6 +252,8 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
         getCategoryList();
 
        //setRecentlyViewedRecycler(recentlyViewedList);
+        ///seting data for shimmer Effect
+
 
     }
 
@@ -307,11 +330,13 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
 
 
     private void setDiscountedRecycler(List<ProductDTO> dataList) {
-        discount_list_progressbar.setVisibility(View.GONE);
+        //discount_list_progressbar.setVisibility(View.GONE);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         discountRecyclerView.setLayoutManager(layoutManager);
         discountedProductAdapter = new DiscountedProductAdapter(this,dataList);
         discountRecyclerView.setAdapter(discountedProductAdapter);
+
     }
 
 
@@ -327,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
     private void setRecentlyViewedRecycler(List<ProductDTO> recentlyViewedDataList) {
         Log.d(TAG, "setRecentlyViewedRecycler: size= "+recentlyViewedDataList.size());
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 1);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
         recentlyViewedRecycler.setItemAnimator(new DefaultItemAnimator());
         recentlyViewedRecycler.setLayoutManager(layoutManager);
         recentlyViewedAdapter = new RecentlyViewedAdapter(this,recentlyViewedDataList);
@@ -356,26 +381,6 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
 
     }
 
-
-
-/*
-
- public GoogleSignInDTO getUserDetailFromGoogle()
-    {
-        GoogleSignInDTO googleSignInDTO=new GoogleSignInDTO();
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(MainActivity.this);
-        if (acct != null) {
-            googleSignInDTO.setUserName(acct.getDisplayName());
-            googleSignInDTO.setUserGivenName(acct.getGivenName());
-            googleSignInDTO.setUserFamilyName(acct.getFamilyName());
-            googleSignInDTO.setUserEmail(acct.getEmail());
-            googleSignInDTO.setUserId(acct.getId());
-            googleSignInDTO.setUserPhoto(acct.getPhotoUrl());
-        }
-
-        return googleSignInDTO;
-    }
-*/
 
 
     // now we need some item decoration class for manage spacing
@@ -534,8 +539,9 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
 
     @Override
     public void setProductListToRecyclerView(List<ProductDTO> productDTOList) {
-        List<ProductDTO> discountproductDTOList=new ArrayList<>();
-        List<ProductDTO> recentlyViewproductDTOList=new ArrayList<>();
+        Log.d(TAG, "setProductListToRecyclerView: Called");
+        //List<ProductDTO> discountedproductDTOList=new ArrayList<>();
+
 
         for (ProductDTO productDTO : productDTOList) {
         if (productDTO.isDiscountProduct()) {
@@ -546,8 +552,13 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
             recentlyViewproductDTOList.add(productDTO);
         }
     }
-        setDiscountedRecycler(discountproductDTOList);
-        setRecentlyViewedRecycler(recentlyViewproductDTOList);
+        Log.d(TAG, "setProductListToRecyclerView:  discount Size"+discountproductDTOList.size());
+
+
+        discountedProductAdapter.showShimmer=false;
+        discountedProductAdapter.notifyDataSetChanged();
+        recentlyViewedAdapter.showShimmer=false;
+        recentlyViewedAdapter.notifyDataSetChanged();
 
     }
 
@@ -587,13 +598,20 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
                 customType(this,"left-to-right");
                 break;
             case R.id.nav_share_app:
+                ShareAndRateApp shareAndRateApp=new ShareAndRateApp(this);
+                String txtmsg = "Quotes4you \n\n"+"Download App and Share with your Friends To enjoy 5000+ Quotes of Over 50+ different category\n";
+
+                shareAndRateApp.shareMyApp(b2,"Doorstep",txtmsg);
+
                 Toast.makeText(this, "Share app", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_rate_app:
+                ShareAndRateApp shareAndRateApp1=new ShareAndRateApp(this);
+                shareAndRateApp1.rateThisApp();
                 Toast.makeText(this, "Rate App", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_login_logout:
-                if(issueLoggedIn) {
+                if(isUserLoggedIn) {
                     Log.d(TAG, "onNavigationItemSelected: Logged Out Clicked");
                     CheckLoginSourceAndSignOut();
 
@@ -624,7 +642,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
         if(user!=null)
         {
             Log.d(TAG, "user!null");
-            issueLoggedIn=true;
+            isUserLoggedIn=true;
         }
     }
 }

@@ -5,17 +5,18 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:requestLegacyExternalStorage="true">
-        <activity android:name=".SplashScreen"/>
+        android:theme="@style/AppTheme">
+        <activity android:name=".EditProfile"></activity>
+        <activity android:name=".SplashScreen" />
         <activity android:name=".Profile" />
         <activity android:name=".ContactUs" />
         <activity android:name=".AddRecentlyViewedProduct" />
@@ -47,12 +48,23 @@
         <activity android:name=".ProductDetails" />
         <activity android:name=".AllCategory" />
         <activity android:name=".SingleCategory" />
-        <activity android:name=".OrderStatusChange"/>
-        <activity android:name=".OrderDashboard"/>
+        <activity
+            android:name=".OrderStatusChange"
+            android:theme="@style/MaterialTheme" />
+        <activity android:name=".OrderDashboard" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

@@ -349,6 +349,7 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
         {
             order_status_change_shipping_boy_name.setEnabled(true);
             order_status_change_shipping_boy_name.setFocusableInTouchMode(true);
+
             order_status_change_shipping_boy_mobile.setEnabled(true);
             order_status_change_shipping_boy_mobile.setFocusableInTouchMode(true);
         }

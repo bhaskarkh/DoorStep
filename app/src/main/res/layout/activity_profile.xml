@@ -41,7 +41,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@tools:sample/avatars" />
 
-                <TextView
+                <EditText
                     android:id="@+id/profile_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -72,15 +72,6 @@
                     app:layout_constraintStart_toStartOf="@+id/profile_name"
                     app:layout_constraintTop_toBottomOf="@+id/profile_mobile" />
 
-                <ImageView
-                    android:id="@+id/profile_edit_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginRight="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_edit" />
 
                 <ImageView
                     android:id="@+id/profile_ui_image"
