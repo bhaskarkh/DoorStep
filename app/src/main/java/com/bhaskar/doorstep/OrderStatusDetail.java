@@ -79,6 +79,7 @@ public class OrderStatusDetail extends AppCompatActivity {
 
     private static final String TAG = "OrderStatusDetail";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +87,7 @@ public class OrderStatusDetail extends AppCompatActivity {
         placed_to_confirmed_line=findViewById(R.id.placed_to_confirmed_line);
         order_std_back_btn=findViewById(R.id.header_back_btn_image);
         header_title=findViewById(R.id.header_title);
-        header_title.setText("All address list");
+        header_title.setText("Order status");
         order_std_prodImage=findViewById(R.id.order_std_prodImage);
         order_std_arrival_date=findViewById(R.id.order_std_arrival_date);
         order_std_placed_txt1=findViewById(R.id.order_std_placed_txt1);

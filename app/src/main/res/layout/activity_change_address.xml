@@ -53,7 +53,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_baseline_gps_fixed_24" />
+                        app:srcCompat="@drawable/ic_baseline_gps_blue_24" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginLeft="5dp"
                         android:text="@string/use_my_current_location"
-                        android:textColor="@color/gps_blue"
+                        android:textColor="@color/primary"
                         android:textSize="16sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -258,6 +258,7 @@
                 android:layout_marginTop="12dp"
                 android:text="@string/set_as_default_address"
                 android:textColor="@color/gray"
+                android:buttonTint="@color/primary"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -275,6 +276,8 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="24dp"
                 android:text="@string/save"
+                android:background="@color/primary"
+                android:textColor="@color/icons"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"

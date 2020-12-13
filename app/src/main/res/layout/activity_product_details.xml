@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/AppTheme"
+    android:background="#ffffff"
     tools:context=".ProductDetails">
 
     <include
@@ -210,7 +211,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/prodDesc"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/prodDesc"
-                app:layout_constraintVertical_bias="0.100000024"
+                app:layout_constraintVertical_bias="0.18"
                 app:srcCompat="@drawable/ic_dot" />
 
             <View

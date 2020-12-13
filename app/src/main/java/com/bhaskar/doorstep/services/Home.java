@@ -416,6 +416,22 @@ public class Home {
         return date;
 
     }
+    public String getDateFromStringWithBackSlash(Date date)
+    {
+        String sDtae="Invalid Date";
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            sDtae=simpleDateFormat.format(date);
+
+        }catch (Exception e)
+        {
+            Log.d(TAG, "getDateFromString: exception msg= "+e.getMessage());
+        }
+
+
+        return sDtae;
+
+    }
     public Date getDateAndTimeFromString(String sDate)
     {
         Date date=new Date();

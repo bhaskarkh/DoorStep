@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bhaskar.doorstep.ChangeAddress;
@@ -57,22 +58,35 @@ Intent intentforSource;
         holder.edit_address_btn_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: name= "+ addressDTO.getName());
-                Intent intent=new Intent(context, ChangeAddress.class);
-                String source=intentforSource.getStringExtra("source");
-                String sourceComingtoProductDetails=intentforSource.getStringExtra("source");
-
-                intent.putExtra("source",source);
-                intent.putExtra("selected_product",(ProductDTO)intentforSource.getParcelableExtra("selected_product"));
-                intent.putExtra("method","edit");
-                intent.putExtra("addressVal",addressDTO);
-                if(source.equals("ProductDetails")) {
-                    intent.putExtra("cat_name", intentforSource.getStringExtra("cat_name"));
-                }
-                context.startActivity(intent);
+                openAddressChange(addressDTO);
             }
         });
 
+        holder.address_list_item_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddressChange(addressDTO);
+            }
+        });
+
+
+
+    }
+
+    private void openAddressChange(AddressDTO addressDTO) {
+        Log.d(TAG, "onClick: name= "+ addressDTO.getName());
+        Intent intent=new Intent(context, ChangeAddress.class);
+        String source=intentforSource.getStringExtra("source");
+        String sourceComingtoProductDetails=intentforSource.getStringExtra("source");
+
+        intent.putExtra("source",source);
+        intent.putExtra("selected_product",(ProductDTO)intentforSource.getParcelableExtra("selected_product"));
+        intent.putExtra("method","edit");
+        intent.putExtra("addressVal",addressDTO);
+        if(source.equals("ProductDetails")) {
+            intent.putExtra("cat_name", intentforSource.getStringExtra("cat_name"));
+        }
+        context.startActivity(intent);
     }
 
     @Override
@@ -83,6 +97,7 @@ Intent intentforSource;
     public static class AddresListViewHolder extends RecyclerView.ViewHolder {
         TextView address_list_name,address_list_house_road_landmark,addresslist_city_state_pin,addresslist_rmn;
         TextView edit_address_btn_text,default_address_text;
+        ConstraintLayout address_list_item_layout;
 
 
 
@@ -94,6 +109,7 @@ Intent intentforSource;
             addresslist_rmn=itemView.findViewById(R.id.addresslist_rmn);
             edit_address_btn_text=itemView.findViewById(R.id.edit_address_btn_text);
             default_address_text=itemView.findViewById(R.id.default_address_text);
+            address_list_item_layout=itemView.findViewById(R.id.address_list_item_layout);
 
 
         }

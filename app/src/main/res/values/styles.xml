@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/primary_text</item>
+        <item name="drawerArrowStyle">@style/DrawerIcon</item>
 
     </style>
     <style name="MaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -26,6 +27,12 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="ToolBarTheme" parent="ThemeOverlay.AppCompat.Dark">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+
+    </style>
 
 
     <style name="mytoast">
@@ -49,5 +56,9 @@
         <item name="android:textColorTertiary">@android:color/black</item>
         <item name="android:textColorHint">@android:color/black</item>
     </style>
+    <style name="DrawerIcon" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/icons</item>
+    </style>
+
 
 </resources>

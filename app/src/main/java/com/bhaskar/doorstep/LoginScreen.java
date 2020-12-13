@@ -23,6 +23,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -57,9 +59,23 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
         FirebaseUser user=mAuth.getCurrentUser();
         if(user!=null)
         {
-         Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+           /* mySharedPreferences=new MySharedPreferences(this);
+            if(mySharedPreferences.getUserDetailsFromSharedPreference().getRmn()!=null && mySharedPreferences.getUserDetailsFromSharedPreference().getRmn().isEmpty())
+            {
+                Intent intent=new Intent(getApplicationContext(),EnterMobileNumber.class);
+                startActivity(intent);
+                finish();
+            }
+            else
+            {
+                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+                finish();
+            }*/
+            Intent intent=new Intent(getApplicationContext(),MainActivity.class);
             startActivity(intent);
             finish();
+
         }
     }
 
@@ -72,6 +88,7 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
         byPassLoginBtn=findViewById(R.id.byPassLoginBtn);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         mySharedPreferences=new MySharedPreferences(this);
+        mySharedPreferences.setUserRegistrationDetailsInterface(this);
 
 
         byPassLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -193,12 +210,12 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
             Log.d(TAG,"New User");
             if(source.equals("google")) {
                 RegisterGoogleUserInFireBase(user);
-                saveGoogleUserDetailsToSharedPreference(user, LoginScreen.this);
+
             }
             if(source.equals("email"))
             {
                 RegisterEmailUserInFireBase(user);
-                saveEmailUserDetailsToSharedPreference(user,LoginScreen.this);
+
 
             }
 
@@ -263,24 +280,42 @@ public class LoginScreen extends AppCompatActivity implements UserRegistrationDe
     private void RegisterGoogleUserInFireBase(final FirebaseUser fuser) {
         Log.d(TAG,"inside RegisterUserInFireBase");
         final UserRegistrationDTO userRegistrationDTO=getUserDetailFromGoogle(fuser);
-        RegisterUserToFireBase(userRegistrationDTO,fuser);
+        RegisterUserToFireBase(userRegistrationDTO,fuser,"google");
 
 
     }
     private void RegisterEmailUserInFireBase(final FirebaseUser fuser) {
         Log.d(TAG, "RegisterEmailUserInFireBase: ");
          UserRegistrationDTO userRegistrationDTO=getUserDetailFromEmail(fuser);
-        RegisterUserToFireBase(userRegistrationDTO,fuser);
+        RegisterUserToFireBase(userRegistrationDTO,fuser,"email");
 
 
     }
-    private void RegisterUserToFireBase(UserRegistrationDTO userRegistrationDTO,FirebaseUser fuser)
+    private void RegisterUserToFireBase(UserRegistrationDTO userRegistrationDTO,FirebaseUser fuser,String source)
     {
         if(userRegistrationDTO!=null)
         {
-            databaseReference.child("user").child("user_registration").child(fuser.getUid()).setValue(userRegistrationDTO);
-            Intent intent=new Intent(LoginScreen.this, EnterMobileNumber.class);
-            startActivity(intent);
+            databaseReference.child("user").child("user_registration").child(fuser.getUid()).setValue(userRegistrationDTO)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    if(source.equalsIgnoreCase("google")) {
+                        saveGoogleUserDetailsToSharedPreference(fuser, LoginScreen.this);
+                    }else {
+                        saveEmailUserDetailsToSharedPreference(fuser,LoginScreen.this);
+                    }
+                    Intent intent=new Intent(LoginScreen.this, EnterMobileNumber.class);
+                    startActivity(intent);
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(LoginScreen.this, "Failed to login  try again", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
 
         }
         else {

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class VerifyOtp extends AppCompatActivity {
    EditText otp_text;
    Button verify_otp_btn;
+   ImageView back_verify_otp_btn;
     private String verificationCodeBySystem;
     TextView mobile_number_in_verify;
     private static final String TAG = "VerifyOtp";
@@ -45,6 +47,7 @@ public class VerifyOtp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_otp);
+        back_verify_otp_btn=findViewById(R.id.back_verify_otp_btn);
         otp_text=findViewById(R.id.otp_text);
         verify_otp_btn=findViewById(R.id.verify_otp_btn);
         mobile_number_in_verify=findViewById(R.id.mobile_number_in_verify);
@@ -63,6 +66,12 @@ public class VerifyOtp extends AppCompatActivity {
 
         }
 
+        back_verify_otp_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(VerifyOtp.this,EnterMobileNumber.class));
+            }
+        });
         verify_otp_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

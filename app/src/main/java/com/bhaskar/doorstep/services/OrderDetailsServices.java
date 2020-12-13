@@ -63,6 +63,7 @@ public class OrderDetailsServices {
     public OrderDetailsServices(Context context) {
         this.context = context;
         home=new Home(context);
+        addressServices=new AddressServices(context);
 
     }
 
@@ -810,8 +811,8 @@ public class OrderDetailsServices {
         int height = 2000;
         Bitmap gridbmp = BitmapFactory.decodeResource(context.getResources(), R.drawable.gridimage);
         Bitmap gridscaledbmp = Bitmap.createScaledBitmap(gridbmp, width-1, height-1, false);
-        Bitmap headerImage=BitmapFactory.decodeResource(context.getResources(), R.drawable.invoice_heade_imager);
-        Bitmap hedaerscaledbmp = Bitmap.createScaledBitmap(headerImage, width-50, 621, false);
+        Bitmap logoImage=BitmapFactory.decodeResource(context.getResources(), R.drawable.logo500_300);
+        Bitmap logoscaledbmp = Bitmap.createScaledBitmap(logoImage, 400, 240, false);
 
         Log.d(TAG, "generatePdfFromOrderValue: ");
         PdfDocument pdfDocument = new PdfDocument();
@@ -820,12 +821,80 @@ public class OrderDetailsServices {
         PdfDocument.PageInfo myPageInfo1 = new PdfDocument.PageInfo.Builder(width, height, 1).create();
         PdfDocument.Page myPage1 = pdfDocument.startPage(myPageInfo1);
         Canvas canvas = myPage1.getCanvas();
-        canvas.drawBitmap(gridscaledbmp, 0, 0, myPaint);
-        canvas.drawBitmap(hedaerscaledbmp,50,50,myPaint);
-        titlePaint.setTextAlign(Paint.Align.CENTER);
+      //  canvas.drawBitmap(gridscaledbmp, 0, 0, myPaint);
         titlePaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        titlePaint.setTextSize(70);
-        canvas.drawText("DoorStep", width / 2, 300, titlePaint);
+        titlePaint.setTextSize(60);
+        canvas.drawText("Invoice", 100, 120, titlePaint);
+        Paint titlePaint1 = new Paint();
+        Paint titlePaintBold= new Paint();
+        titlePaintBold.setTextSize(30);
+        titlePaintBold.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        titlePaint1.setTextSize(25);
+        canvas.drawText("From", 100, 235, titlePaintBold);
+        canvas.drawText("Doorstep", 100, 275, titlePaint1);
+        canvas.drawText("Topa colliery,", 100, 300, titlePaint1);
+        canvas.drawText("Ramgarh", 100, 325, titlePaint1);
+
+        //user Details
+        AddressDTO addressDTO=addressServices.getPrimaryAddress(orderDTO.getCustomerInfoDTO().getAddressDTOList());
+        String firstLine=addressServices.firstLineAddress(addressDTO)+",";
+        String secondLine=addressServices.secondLineAddress(addressDTO)+",";
+        String thirdLine=addressDTO.getDeliveryMobileNo();
+        canvas.drawText("Bill To", 100, 400, titlePaintBold);
+        titlePaint1.setTextSize(30);
+        canvas.drawText(orderDTO.getCustomerInfoDTO().getUserName(), 100, 450, titlePaint1);
+        titlePaint1.setTextSize(25);
+        canvas.drawText(firstLine, 100, 475, titlePaint1);
+        canvas.drawText(secondLine, 100, 500, titlePaint1);
+        canvas.drawText(thirdLine, 100, 525, titlePaint1);
+
+
+        //left side
+       String orderDate=home.getDateFromStringWithBackSlash(home.getDateFromString(orderDTO.getOrderDateTime()));
+        titlePaint1.setTextAlign(Paint.Align.LEFT);
+        titlePaintBold.setTextAlign(Paint.Align.LEFT);
+        canvas.drawText("OrderId : ", 100, 600, titlePaintBold);
+        canvas.drawText(orderDTO.getOrderId(), 225, 600, titlePaint1);
+        canvas.drawText("Order Date : ", 100, 630, titlePaintBold);
+        canvas.drawText(orderDate, 265, 630, titlePaint1);
+
+        //Line
+        canvas.drawLine(100,690,1100,690,titlePaint1);
+        //left side After  Line
+        canvas.drawText("Description", 100, 750, titlePaintBold);
+        canvas.drawText(orderDTO.getProductDTO().getName(), 100, 830, titlePaint1);
+        canvas.drawText("Terms & Conditions",100,1600,titlePaintBold);
+        canvas.drawText("Payment is due within 15 days",100,1640,titlePaint1);
+
+
+        //Right Side
+
+        canvas.drawBitmap(logoscaledbmp,700,50,myPaint);
+
+        titlePaintBold.setTextAlign(Paint.Align.RIGHT);
+        titlePaint1.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText("Invoice #",940,400,titlePaintBold);
+        canvas.drawText("000000",1100,400,titlePaint1);
+
+        canvas.drawText("Invoice Date",940,440,titlePaintBold);
+        canvas.drawText("13/12/2020",1100,440,titlePaint1);
+        canvas.drawText("Amount", 1100, 750, titlePaintBold);
+        canvas.drawText(String.valueOf(orderDTO.getProductDTO().getPrice()), 1100, 830, titlePaint1);
+
+        //Line
+        canvas.drawLine(100,905,1100,905,titlePaint1);
+
+        //Right Side after 2nd Line
+        canvas.drawText("Total",900,970,titlePaintBold);
+        canvas.drawText(context.getResources().getString(R.string.rs_symbol)+orderDTO.getProductDTO().getPrice(),1100,970,titlePaintBold);
+
+
+
+
+
+
+
+
         pdfDocument.finishPage(myPage1);
 
         String extr = Environment.getExternalStorageDirectory().toString();
@@ -835,10 +904,10 @@ public class OrderDetailsServices {
             Log.d(TAG, "generatePdfFromOrderValue: fileDir not exist");
             fileDir.mkdirs();
             Log.d(TAG, "generatePdfFromOrderValue: after mkdir");
-            CreateFile(fileDir,pdfDocument);
+            CreateFile(fileDir,pdfDocument,orderDTO);
         } else {
             Log.d(TAG, "generatePdfFromOrderValue: path exist");
-            CreateFile(fileDir,pdfDocument);
+            CreateFile(fileDir,pdfDocument,orderDTO);
         }
 
        
@@ -847,9 +916,9 @@ public class OrderDetailsServices {
     }
     
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void CreateFile(File fileDir, PdfDocument pdfDocument){
+    public void CreateFile(File fileDir, PdfDocument pdfDocument,OrderDTO orderDTO){
         Log.d(TAG, "CreateFile: ");
-        File pdfFile = new File(fileDir.getAbsolutePath(), "bhaskardoorstep.pdf");
+        File pdfFile = new File(fileDir.getAbsolutePath(), orderDTO.getOrderId()+".pdf");
 
         try {
             Log.d(TAG, "generatePdfFromOrderValue: ");
