@@ -299,11 +299,7 @@ public class OrderDetailsServices {
     {
         if (orderDTO.getOrderStatus().equalsIgnoreCase("Processing"))
         {
-
             designForProcessing(orderDTO,textViewMap,imageViewMap,cicleImageMap,viewMap);
-
-
-
         }
         if(orderDTO.getOrderStatus().equalsIgnoreCase("Confirmed"))
         {
@@ -452,6 +448,7 @@ public class OrderDetailsServices {
 
     private void setTextValue(String orderStatus, OrderDTO orderDTO, Map<String, TextView> textViewMap) {
        // order_std_arrival_date
+        Log.d(TAG, "setTextValue: orderStatus= "+orderStatus);
         if(orderStatus.equalsIgnoreCase("Processing"))
         {
             for(Map.Entry<String,TextView> entry:textViewMap.entrySet())
@@ -505,6 +502,8 @@ public class OrderDetailsServices {
                     entry.getValue().setText(home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getCompleteDateTime()));
                 if (entry.getKey().equalsIgnoreCase("order_std_arrival_date"))
                    entry.getValue().setText("Order Completed on "+home.getDateToShowInStringFromStringDayAndMonthOnly(orderDTO.getCompleteDateTime()));
+                if(entry.getKey().equalsIgnoreCase("download_invoice"))
+                    entry.getValue().setVisibility(View.VISIBLE);
 
             }
 

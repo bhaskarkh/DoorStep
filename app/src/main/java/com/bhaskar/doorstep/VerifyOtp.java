@@ -16,11 +16,13 @@ import android.widget.Toast;
 
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
 import com.bhaskar.doorstep.services.MySharedPreferences;
+import com.bhaskar.doorstep.services.UserServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +44,7 @@ public class VerifyOtp extends AppCompatActivity {
     String phoneFromPreviousActivity,fuid;
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
+    UserServices userServices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,16 +56,18 @@ public class VerifyOtp extends AppCompatActivity {
         mobile_number_in_verify=findViewById(R.id.mobile_number_in_verify);
         otp_verify_progressBar=findViewById(R.id.otp_verify_progressBar);
         //firebaseFirestore=FirebaseFirestore.getInstance();
+        userServices=new UserServices(this);
         firebaseDatabase=FirebaseDatabase.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         Log.d(TAG,"verify otp firebaseAuth uid= "+firebaseAuth.getCurrentUser().getUid());
         otp_text.requestFocus();
         phoneFromPreviousActivity=getIntent().getStringExtra("mobileNumber");
         fuid=getIntent().getStringExtra("fuid");
+        verificationCodeBySystem=getIntent().getStringExtra("verificationCodeBySystem");
 
         if(phoneFromPreviousActivity!=null) {
             mobile_number_in_verify.setText(phoneFromPreviousActivity);
-            sendOtpToUser(phoneFromPreviousActivity);
+           // sendOtpToUser(phoneFromPreviousActivity);
 
         }
 
@@ -86,7 +91,7 @@ public class VerifyOtp extends AppCompatActivity {
                     }
 
                     otp_verify_progressBar.setVisibility(View.VISIBLE);
-                    verifyOtp(otp_text_value);
+                  verifyOtp(otp_text_value);
 
 
                 }
@@ -113,7 +118,7 @@ public class VerifyOtp extends AppCompatActivity {
         @Override
         public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
-            Log.d(TAG,"onCodeSent ");
+            Log.d(TAG,"onCodeSent");
             verificationCodeBySystem=s;
         }
 
@@ -135,18 +140,19 @@ public class VerifyOtp extends AppCompatActivity {
         public void onVerificationFailed(@NonNull FirebaseException e) {
             Log.i(TAG,"inside onVerificationFailed");
             Log.d(TAG,"onVerificationFailed exception= "+e.getMessage());
-
-            Toast.makeText(VerifyOtp.this, "verification Failed ", Toast.LENGTH_SHORT).show();
-
-
-
+            if (e instanceof FirebaseAuthInvalidCredentialsException)
+            Toast.makeText(VerifyOtp.this, "Invalid Mobile Number", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(VerifyOtp.this, "verification Failed ", Toast.LENGTH_SHORT).show();
 
         }
+
+
     };
 
     public void verifyOtp(String code) {
         PhoneAuthCredential credential=PhoneAuthProvider.getCredential(verificationCodeBySystem,code);
-        signInTheUserByCredential(credential);
+        userServices.signInTheUserByCredential(credential,firebaseAuth,firebaseDatabase,phoneFromPreviousActivity);
     }
 
     private void signInTheUserByCredential(PhoneAuthCredential credential) {

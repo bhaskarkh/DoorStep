@@ -57,7 +57,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:text="Add a new address"
-                android:textColor="@color/primary"
+                android:textColor="@color/button_color"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

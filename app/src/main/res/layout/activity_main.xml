@@ -24,6 +24,7 @@ tools:context=".MainActivity">
 <include layout="@layout/toolbar"
     android:id="@+id/main_toolbar"/>
 
+
 <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"

@@ -403,6 +403,7 @@
                 android:fontFamily="@font/buenard"
                 android:padding="3dp"
                 android:text="Invoice"
+                android:visibility="invisible"
                 android:textColor="@color/blue"
                 app:layout_constraintBottom_toTopOf="@+id/divider3"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -57,7 +57,7 @@
         <item name="android:textColorHint">@android:color/black</item>
     </style>
     <style name="DrawerIcon" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/icons</item>
+        <item name="color">@color/colorTextPrimary</item>
     </style>
 
 

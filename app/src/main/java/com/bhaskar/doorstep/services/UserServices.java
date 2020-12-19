@@ -1,8 +1,10 @@
 package com.bhaskar.doorstep.services;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import com.bhaskar.doorstep.EnterMobileNumber;
 import com.bhaskar.doorstep.LoginScreen;
 import com.bhaskar.doorstep.MainActivity;
 import com.bhaskar.doorstep.R;
+import com.bhaskar.doorstep.VerifyOtp;
 import com.bhaskar.doorstep.allinterface.UserRegistrationDetailsInterface;
 import com.bhaskar.doorstep.model.AddressDTO;
 import com.bhaskar.doorstep.model.UserRegistrationDTO;
@@ -21,8 +24,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -183,6 +188,44 @@ public class UserServices {
         }
 
 
+    }
+
+    public void signInTheUserByCredential(PhoneAuthCredential credential,FirebaseAuth firebaseAuth,FirebaseDatabase firebaseDatabase,String phoneFromPreviousActivity) {
+
+
+        firebaseAuth.getCurrentUser().linkWithCredential(credential)
+                .addOnCompleteListener((Activity) context, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful())
+                        {
+
+                            Toast.makeText(context, "otp verified successfully Signin Success", Toast.LENGTH_SHORT).show();
+                            DatabaseReference databaseReferenceForMobileUpdate = firebaseDatabase.getReference().child("test").child("user").child("user_registration").child(firebaseAuth.getCurrentUser().getUid());
+                            databaseReferenceForMobileUpdate.child("rmn").setValue(phoneFromPreviousActivity);
+                            databaseReferenceForMobileUpdate.child("rmnVerified").setValue(true);
+                            //Update Data of Shared Reference
+                            MySharedPreferences mySharedPreferences=new MySharedPreferences(context);
+                            UserRegistrationDTO userRegistrationDTO=mySharedPreferences.getUserDetailsFromSharedPreference();
+                            userRegistrationDTO.setRmnVerified(true);
+                            userRegistrationDTO.setRmn(phoneFromPreviousActivity);
+                            mySharedPreferences.saveUserDetailsToSharedPreference(userRegistrationDTO);
+                            Log.d(TAG,"after updateUserMobileNumber");
+                            Intent intent = new Intent(context, MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            context.startActivity(intent);
+                        }
+                        else
+                        {
+
+
+                            Log.d(TAG,"signin failed1");
+                            Toast.makeText(context, "signin failed", Toast.LENGTH_SHORT).show();
+                            //StyleableToast.makeText(VerifyOtp.this, "Hello World!", Toast.LENGTH_LONG, R.style.mytoast).show();
+                        }
+
+                    }
+                });
     }
 
 }

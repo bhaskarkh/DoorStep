@@ -210,6 +210,7 @@ public class OrderStatusDetail extends AppCompatActivity {
         textViewMap.put("order_std_completed_txt1",order_std_completed_txt1);
         textViewMap.put("order_std_completed_txt2",order_std_completed_txt2);
         textViewMap.put("order_std_completed_txt3_date",order_std_completed_txt3_date);
+        textViewMap.put("download_invoice",download_invoice);
     }
     private void setAllImageView() {
         imageViewMap.put("order_placed_image",order_placed_image);

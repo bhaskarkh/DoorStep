@@ -62,7 +62,7 @@ public class Profile extends AppCompatActivity implements UserRegistrationDetail
         profile_edit_btn = findViewById(R.id.header_profile_pic);
         header_back_btn_image=findViewById(R.id.header_back_btn_image);
         header_layout_color=findViewById(R.id.header_constraint_layout);
-        header_layout_color.setBackgroundResource(R.color.icons);
+        header_layout_color.setBackgroundResource(R.color.white);
         header_back_btn_image.setImageResource(R.drawable.ic_arrow_back_black_24dp);
         header_title=findViewById(R.id.header_title);
         header_title.setVisibility(View.INVISIBLE);
@@ -88,7 +88,7 @@ public class Profile extends AppCompatActivity implements UserRegistrationDetail
                     profile_edit_btn.setImageResource(R.drawable.ic_baseline_save_24);
                     profile_name.setEnabled(true);
                     profile_name.setFocusableInTouchMode(true);
-                    profile_name.setTextColor(getResources().getColor(R.color.primary));
+                    profile_name.setTextColor(getResources().getColor(R.color.button_color));
                     profile_name.setTypeface(Typeface.DEFAULT_BOLD);
                     profile_name.setSelection(profile_name.getText().length());
                     profile_name.requestFocus();

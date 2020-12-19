@@ -34,7 +34,7 @@
         android:padding="1dp"
         android:text="Completed"
         android:textAlignment="center"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

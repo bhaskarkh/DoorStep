@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.48000002"
-            app:srcCompat="@drawable/ic_back_arrow_white" />
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp" />
         <ImageView
             android:id="@+id/header_profile_pic"
             android:layout_width="25dp"
