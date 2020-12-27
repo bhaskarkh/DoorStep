@@ -78,6 +78,7 @@
 
 
                 <ImageView
+                    android:scaleType="fitXY"
                     android:id="@+id/profile_ui_image"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
@@ -85,17 +86,19 @@
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/profile_email"
-                    app:srcCompat="@drawable/profile_ui_blue" />
+                    app:srcCompat="@drawable/profile_ui_blue_new" />
 
                 <Button
                     android:id="@+id/profile_update_rmn"
-                    android:layout_width="50dp"
-                    android:layout_height="32dp"
+                    android:layout_width="40dp"
+                    android:layout_height="18dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:text="update"
                     android:textAllCaps="false"
                     android:textSize="8sp"
+                    android:background="@color/button_color"
+                    android:textColor="@color/button_text_color"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_mobile"
                     app:layout_constraintStart_toEndOf="@+id/profile_mobile"
                     app:layout_constraintTop_toTopOf="@+id/profile_mobile" />

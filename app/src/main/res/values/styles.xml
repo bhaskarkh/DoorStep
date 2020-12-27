@@ -18,9 +18,15 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/primary_text</item>
         <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
-        <item name="materialCalendarFullscreenTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen</item>
+        <item name="materialCalendarFullscreenTheme">@style/CustomThemeOverlay_MaterialCalendar_Fullscreen</item>
         <item name="materialCalendarTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar</item>
 
+    </style>
+    <style name="CustomThemeOverlay_MaterialCalendar_Fullscreen"
+        parent="@style/ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorOnPrimary">@color/primary</item>
+        <item name="colorOnSurface">@color/black</item>
     </style>
     <style name="FullScreenTheme"  parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowNoTitle">true</item>

@@ -72,6 +72,8 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_status_change);
         select_start_end_date=findViewById(R.id.order_status_change_select_start_end_date);
+        select_start_end_date.setBackgroundColor(getResources().getColor(R.color.button_color));
+        select_start_end_date.setTextColor(getResources().getColor(R.color.button_text_color));
         order_status_change_productName=findViewById(R.id.order_status_change_productName);
         order_status_change_txn_id=findViewById(R.id.order_status_change_txn_id);
         order_status_change_prodPrice_new=findViewById(R.id.order_status_change_prodPrice_new);
@@ -285,6 +287,7 @@ public class OrderStatusChange extends AppCompatActivity  implements AdminInterf
         builder.setTitleText("Select a Date");
         builder.setSelection(DefaultPairDate);
         builder.setCalendarConstraints(constraintBuilder.build());
+        builder.setTheme(R.style.CustomThemeOverlay_MaterialCalendar_Fullscreen);
         materialDatePicker= builder.build();
 
 

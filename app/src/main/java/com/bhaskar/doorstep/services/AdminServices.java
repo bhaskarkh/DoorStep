@@ -37,6 +37,8 @@ public class AdminServices {
         Button btnDelet = epicDialog.findViewById(R.id.deletebtnid);
         EditText passvlaue = epicDialog.findViewById(R.id.passChangeauth);
         Button verifyBtn = epicDialog.findViewById(R.id.verifypassbtn);
+        verifyBtn.setBackgroundColor(context.getResources().getColor(R.color.button_color));
+        verifyBtn.setTextColor(context.getResources().getColor(R.color.button_text_color));
         ImageView okimg = epicDialog.findViewById(R.id.verifyok);
         ImageView failedimg = epicDialog.findViewById(R.id.verifyfailed);
         LinearLayout layout1 = epicDialog.findViewById(R.id.layoutofbtn);
