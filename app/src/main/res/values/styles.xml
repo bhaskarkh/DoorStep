@@ -9,7 +9,11 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/primary_text</item>
         <item name="drawerArrowStyle">@style/DrawerIcon</item>
+        <item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
 
+    </style>
+    <style name="myCustomMenuTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@android:color/primary_text_dark</item>
     </style>
     <style name="MaterialTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->

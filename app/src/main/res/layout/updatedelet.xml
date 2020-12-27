@@ -78,6 +78,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="Verify"
+                android:background="@color/button_color"
+                android:textColor="@color/button_text_color"
                 android:textAllCaps="false" />
 
             <LinearLayout

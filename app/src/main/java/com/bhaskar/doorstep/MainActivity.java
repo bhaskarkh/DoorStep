@@ -201,10 +201,7 @@ public class MainActivity extends AppCompatActivity implements ProductInterface,
         {   login_logout_item.setIcon(R.drawable.ic_login_24);
             menu.findItem(R.id.nav_profile).setVisible(false);
             menu.findItem(R.id.nav_admin_dashboard).setVisible(false);
-
             menu.findItem(R.id.nav_login_logout).setTitle("Login");
-
-
         }
 
 
