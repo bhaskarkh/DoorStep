@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 import com.bhaskar.doorstep.allinterface.ProductInterface;
 import com.bhaskar.doorstep.model.ProductDTO;
+import com.bhaskar.doorstep.model.UserRegistrationDTO;
+import com.bhaskar.doorstep.services.MySharedPreferences;
 import com.bhaskar.doorstep.services.ProductServices;
 import com.bhaskar.doorstep.services.Home;
 import com.bumptech.glide.Glide;
@@ -61,6 +63,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
     StorageReference storageReference;
     StorageTask uploadTask;
     ProgressBar image_upload_progressbar,upload_product_progressbar;
+    MySharedPreferences mySharedPreferences;
     private static final int PICK_IMAGE_REQUEST=1;
     private Uri mImageUri;
 
@@ -87,6 +90,7 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
         add_product_discount=findViewById(R.id.add_product_discount);
 
       //  firebaseFirestore=FirebaseFirestore.getInstance();
+        mySharedPreferences=new MySharedPreferences(this);
         firebaseAuth=FirebaseAuth.getInstance();
         firebaseDatabase=FirebaseDatabase.getInstance();
         storageReference=FirebaseStorage.getInstance().getReference("product");
@@ -378,7 +382,8 @@ public class AddProductInDb extends AppCompatActivity implements ProductInterfac
 
         }
         id= String.valueOf(System.currentTimeMillis());
-        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1,isDiscount,false,"author") ;
+        UserRegistrationDTO userRegistrationDTO=mySharedPreferences.getUserDetailsFromSharedPreference();
+        ProductDTO productDTO=new ProductDTO(id,Sname,Scategory,SproductTypeId,Sdescription, imageUrlFromStorage,SquantityType, isReq,"supplierName", "supplierId",1,Double.valueOf(Sprice),150,true,1,isDiscount,false,userRegistrationDTO.getUserName()) ;
         productServices.setProductInterface(this);
         productServices.addProductInDb(productDTO,firebaseDatabase);
 
