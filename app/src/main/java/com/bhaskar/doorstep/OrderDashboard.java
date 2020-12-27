@@ -1,11 +1,13 @@
 package com.bhaskar.doorstep;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -95,6 +97,7 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
        // order_dashboard_cat.setAdapter();
 
         order_dashboard_cat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemSelected(AdapterView<?> parentView, View v, int position, long id) {
 
@@ -121,6 +124,7 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
         });
 
         auto_update_on_off_btn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 setAutoUpdate();
@@ -130,6 +134,7 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void setAutoUpdate() {
         autoUpdate=!autoUpdate;
         if (autoUpdate) {
@@ -142,6 +147,7 @@ public class OrderDashboard extends AppCompatActivity implements OrderStatusInte
         orderDetailsServices.setOrderDashboardAutoUpdateOnOrOff(autoUpdate,firebaseDatabase,category);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void fetchOrderByCategory(String category) {
 
         Log.d(TAG, "fetchOrderByCategory: category= "+category);

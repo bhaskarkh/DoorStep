@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bhaskar.doorstep.adapter.OrderDashBoardAdapter;
 import com.bhaskar.doorstep.adapter.OrderHistoryAdapter;
 import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
 import com.bhaskar.doorstep.model.OrderDTO;
@@ -30,6 +31,7 @@ public class YourOrder extends AppCompatActivity  implements OrderStatusInterfac
     OrderHistoryAdapter orderHistoryAdapter;
     FirebaseDatabase firebaseDatabase;
     FirebaseAuth firebaseAuth;
+    OrderDetailsServices orderDetailsServices;
     public String TAG="YourOrder";
     ProgressBar progressBar;
     Home hm;
@@ -45,6 +47,7 @@ public class YourOrder extends AppCompatActivity  implements OrderStatusInterfac
         header_title=findViewById(R.id.header_title);
         header_title.setText("Your order");
 
+        orderDetailsServices=new OrderDetailsServices(this);
         firebaseDatabase=FirebaseDatabase.getInstance();
         firebaseAuth=FirebaseAuth.getInstance();
         progressBar.setVisibility(View.VISIBLE);
@@ -63,7 +66,6 @@ public class YourOrder extends AppCompatActivity  implements OrderStatusInterfac
         String fuid=firebaseAuth.getCurrentUser().getUid();
         if(!fuid.isEmpty())
         {
-            OrderDetailsServices orderDetailsServices=new OrderDetailsServices(this);
             orderDetailsServices.setOrderStatusInterface(this);
             orderDetailsServices.getOrderListByUserId(fuid,firebaseDatabase);
 

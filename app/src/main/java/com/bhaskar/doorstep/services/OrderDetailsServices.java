@@ -41,11 +41,13 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 
@@ -173,9 +175,10 @@ public class OrderDetailsServices {
 
     public void getOrderListByUserId(final String fuid, FirebaseDatabase firebaseDatabase)
     {
-        final List<OrderDTO> orderDTOList=new ArrayList<>();
+        final List<OrderDTO>[] orderDTOList = new List[]{new ArrayList<>()};
         DatabaseReference ref = firebaseDatabase.getReference().child("test").child("order");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
@@ -188,7 +191,7 @@ public class OrderDetailsServices {
                             UserRegistrationDTO userDTO=dataSnapshot1.getValue(UserRegistrationDTO.class);
                             if(userDTO.getUserId().equalsIgnoreCase(fuid))
                             {
-                                orderDTOList.add(orderDTO);
+                                orderDTOList[0].add(orderDTO);
                             }
 
                         }
@@ -197,7 +200,8 @@ public class OrderDetailsServices {
 
 
                 }
-              orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
+                orderDTOList[0] =sortYourOrderListByOrderDate(orderDTOList[0]);
+              orderStatusInterface.setOrderStatusAdaptor(orderDTOList[0]);
 
             }
 
@@ -208,7 +212,8 @@ public class OrderDetailsServices {
         });
     }
 
-    public  void getOrderListByCategory(String category,FirebaseDatabase firebaseDatabase,String source,boolean autoUpdate)
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public  void getOrderListByCategory(String category, FirebaseDatabase firebaseDatabase, String source, boolean autoUpdate)
     {
         if (!autoUpdate) {
             setMySharedPreferences(context);
@@ -237,36 +242,38 @@ public class OrderDetailsServices {
         //which means auto update is on
         mySharedPreferences=new MySharedPreferences(context);
         mySharedPreferences.setOrderStatusInterface(orderStatusInterface);
-        final List<OrderDTO> orderDTOList=new ArrayList<>();
+        final List<OrderDTO>[] orderDTOList = new List[]{new ArrayList<>()};
         DatabaseReference ref = firebaseDatabase.getReference().child("test").child("order");
         ref.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                orderDTOList.clear();
+                orderDTOList[0].clear();
                 for(DataSnapshot dataSnapshot:snapshot.getChildren())
                 {
                     Log.d(TAG, "onDataChange: ");
                     OrderDTO orderDTO=dataSnapshot.getValue(OrderDTO.class);
-                    orderDTOList.add(orderDTO);
+                    orderDTOList[0].add(orderDTO);
 
                 }
 
 
                 if (source.equalsIgnoreCase("SharedPref")) {
                     if (category.equalsIgnoreCase("Show All")) {
-                        mySharedPreferences.setOrderListInSharedPreferenceAndShowInAdapter(orderDTOList);
+                        mySharedPreferences.setOrderListInSharedPreferenceAndShowInAdapter(orderDTOList[0]);
                     }else {
                         List<OrderDTO> oList = new ArrayList<>();
-                        for (OrderDTO orderDTO : orderDTOList) {
+                        for (OrderDTO orderDTO : orderDTOList[0]) {
                             if (orderDTO.getOrderStatus().equalsIgnoreCase(category)) {
                                 oList.add(orderDTO);
                             }
                         }
+                        orderDTOList[0] =sortYourOrderListByOrderDate(orderDTOList[0]);
                         mySharedPreferences.setOrderListInSharedPreferenceAndShowInAdapter(oList);
                     }
 
                 }else {
-                    setOrderListByCategoryType(category,orderDTOList);
+                    setOrderListByCategoryType(category, orderDTOList[0]);
                 }
 
             }
@@ -279,10 +286,12 @@ public class OrderDetailsServices {
     }
 
 
-    public void setOrderListByCategoryType(String category,List<OrderDTO> orderDTOList)
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setOrderListByCategoryType(String category, List<OrderDTO> orderDTOList)
     {
 
         if (category.equalsIgnoreCase("Show All")) {
+            orderDTOList=sortYourOrderListByOrderDate(orderDTOList);
             orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
         }else {
             List<OrderDTO> oList = new ArrayList<>();
@@ -291,6 +300,7 @@ public class OrderDetailsServices {
                     oList.add(orderDTO);
                 }
             }
+            oList=sortYourOrderListByOrderDate(oList);
             orderStatusInterface.setOrderStatusAdaptor(oList);
         }
     }
@@ -622,7 +632,8 @@ public class OrderDetailsServices {
         mySharedPreferences.setOrderStatusInterface(orderStatusInterface);
 
     }
-    public void  setOrderDashboardAutoUpdateOnOrOff(boolean auto_update,FirebaseDatabase firebaseDatabase,String category)
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void  setOrderDashboardAutoUpdateOnOrOff(boolean auto_update, FirebaseDatabase firebaseDatabase, String category)
     {
         setMySharedPreferences(context);
         mySharedPreferences.removeOrderListSharedPref();
@@ -776,6 +787,7 @@ public class OrderDetailsServices {
 
             fireDataBaseReference.child("test").child("order").child(orderDTO.getOrderId()).setValue(orderDTO)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.d(TAG, "onSuccess: order stats change  Updated in firebase");
@@ -930,6 +942,25 @@ public class OrderDetailsServices {
             pdfDocument.close();
         }
 
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<OrderDTO> sortYourOrderListByOrderDate(List<OrderDTO> orderDTOList)
+    {
+        orderDTOList.sort(new Comparator<OrderDTO>() {
+            DateFormat f = new SimpleDateFormat("dd MMM yyyy HH:mm");
+            @Override
+            public int compare(OrderDTO o1, OrderDTO o2) {
+                try {
+                    return -1*(f.parse(o1.getOrderDateTime()).compareTo(f.parse(o2.getOrderDateTime())));
+                } catch (ParseException e) {
+                    Log.d(TAG, "compare: msg= "+e.getMessage());
+                }
+                return 0;
+            }
+        });
+
+        return orderDTOList;
     }
         
 

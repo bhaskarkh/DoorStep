@@ -2,9 +2,11 @@ package com.bhaskar.doorstep.services;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.bhaskar.doorstep.allinterface.OrderStatusInterface;
 import com.bhaskar.doorstep.allinterface.ProductInterface;
@@ -190,9 +192,12 @@ public class MySharedPreferences {
         
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setOrderListInSharedPreferenceAndShowInAdapter(List<OrderDTO> orderDTOList)
     {
         setOrderListInSharedPreference(orderDTOList);
+        OrderDetailsServices orderDetailsServices=new OrderDetailsServices(context);
+        orderDTOList=orderDetailsServices.sortYourOrderListByOrderDate(orderDTOList);
         orderStatusInterface.setOrderStatusAdaptor(orderDTOList);
 
     }
@@ -211,6 +216,7 @@ public class MySharedPreferences {
         prefsEditor.putString("orderListPref", orderListJson);
         prefsEditor.commit();
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public List<OrderDTO> getAllOrderListFromSharedPreference()
     {
         List<OrderDTO> orderDTOList=new ArrayList<>();
@@ -228,6 +234,8 @@ public class MySharedPreferences {
         else {
             Log.d(TAG, "getAllOrderListFromSharedPreference: sharedPref doestNot exits null orderList Returned");
         }
+        OrderDetailsServices orderDetailsServices=new OrderDetailsServices(context);
+        orderDTOList=orderDetailsServices.sortYourOrderListByOrderDate(orderDTOList);
         return orderDTOList;
 
     }
@@ -272,6 +280,7 @@ public class MySharedPreferences {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public  void changeValueofOrder(OrderDTO orderDTO)
     {
         List<OrderDTO> orderDTOList=getAllOrderListFromSharedPreference();
